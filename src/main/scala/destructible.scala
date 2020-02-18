@@ -1,4 +1,4 @@
 trait Destructible {
-  def isAlive():bool
+  def isAlive(): Boolean
   def takeDamage(dmg: Int)
 }

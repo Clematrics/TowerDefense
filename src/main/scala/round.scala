@@ -1,3 +1,3 @@
-class Round {
+abstract class Round {
     val wave : List[Tuple2[Double, Enemy]]
 }
