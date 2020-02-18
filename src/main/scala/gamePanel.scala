@@ -9,44 +9,38 @@ class GamePanel extends Panel {
 	focusable = true
 	opaque = false  // for smoother rendering
 
-	var gameStatus = new GameStatus
-	var lvl = new StartLevel(gameStatus)
-
-	lvl.listenTo(mouse.moves, mouse.clicks, keys)
-	listenTo(keys, lvl)
-
-	var p = false
-
 	val timer = new Timer {
 		interval = 16
 		run = true
 	}
 
-	listenTo(timer)
-	var x: Int = 50
-	var delta  = 0.0
+	var gameStatus = new GameStatus
+	var lvl = new StartLevel(gameStatus, mouse.moves, mouse.clicks, keys)
+
+	listenTo(timer, keys, lvl)
+
+	var running_for = 0.0
+	var delta       = 0.0
 
 	reactions += {
 		case cl : ChangeLevelEvent =>
 			println(cl.m_s)
-		case KeyTyped(_, 'p', _, _) =>
-			p = true
-			println("pressed p")
-			repaint()
-		case Tick(_, t, delta) =>
-			this.delta = delta
-			x = (x + (0.1 * delta).toInt) % size.width
+			// TODO : change level
+		case Tick(_, t, d) =>
+			running_for = t
+			delta       = d
+			lvl.tick(t, d)
 			repaint()
 		case _: FocusLost => repaint()
 	}
 
 	override def paintComponent(g: Graphics2D) {
 		super.paintComponent(g)
-		if (p)
-			g.drawString("Paint!", x, 50)
-		lvl.render(g, 0)
-		g.drawString(delta.toString + "ms", 100, 100)
+		lvl.render(g, running_for, delta)
 
+		// frame per second display
+		g.setColor(new Color(240, 0, 0))
+		g.drawString(f"$delta%.1f ms", 0, 10)
 		// for smoother rendering
 		Toolkit.getDefaultToolkit().sync();
 	}
