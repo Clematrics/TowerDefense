@@ -1,30 +1,28 @@
-import java.awt.Point
-import java.awt.Dimension
-import java.awt.Graphics2D
-import java.awt.Image
+import java.awt.{Dimension, Graphics2D, Image, Point}
 import scala.swing.Reactor
-import scala.swing.event.MouseClicked
-import scala.swing.event.MouseMoved
 import java.awt.geom.AffineTransform
 
-abstract class Button extends Reactor {
-	var sprite: Image
-	var position: Point
-	var size: Dimension
+class Button(p: Point, d: Dimension) extends Reactor {
+	var sprite_back:  Image = null
+	var sprite_front: Image = null
+	var position: Point     = p
+	var size: Dimension     = d
+	var border_top    = position.getY - size.getHeight / 2
+	var border_bottom = position.getY + size.getHeight / 2
+	var border_left   = position.getX - size.getWidth  / 2
+	var border_right  = position.getX + size.getWidth  / 2
 
 	private var cursorInside = false
 	private def isInside(point: Point): Boolean = {
-		return position.getX <= point.getX && point.getX <= position.getX + size.getWidth && position.getY <= point.getY && point.getY <= position.getY + size.getHeight
+		return border_left <= point.getX && point.getX <= border_right && border_top <= point.getY && point.getY <= border_bottom
 	}
 
-	reactions += {
-		case MouseClicked(_, point, _, _, _) => {
-			if (isInside(point))
-				action()
-		}
-		case MouseMoved(_, point, _) => {
-			cursorInside = isInside(point)
-		}
+	def onRelease(point: Point) {
+		if (isInside(point))
+			action()
+	}
+	def onMoved(point: Point) {
+		cursorInside = isInside(point)
 	}
 
 	var action = () => {}
@@ -32,9 +30,11 @@ abstract class Button extends Reactor {
 		if (cursorInside) {
 			// TODO draw tooltip
 		}
-		val scaleX = size.getWidth / sprite.getWidth(null)
-		val scaleY = size.getHeight / sprite.getHeight(null)
-		g.drawImage(sprite, new AffineTransform(scaleX, 0, 0, scaleY, position.getX, position.getY), null)
+		for(sprite <- List(sprite_back, sprite_front)) {
+			val scaleX = size.getWidth / sprite.getWidth(null)
+			val scaleY = size.getHeight / sprite.getHeight(null)
+			g.drawImage(sprite, new AffineTransform(scaleX, 0, 0, scaleY, border_left, border_top), null)
+		}
 		// TODO draw button
 	}
 }

@@ -1,8 +1,9 @@
-import scala.swing._
+import scala.swing.{MainFrame, SimpleSwingApplication}
 
 object TowerDefense extends SimpleSwingApplication {
 	def top = new MainFrame {
 		title = "Tower Def[ENS]e"
-		contents = new GamePanel
+		contents = GamePanel
+		resizable = false
 	}
 }

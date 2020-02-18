@@ -1,7 +1,7 @@
 import scala.swing.event._
 import java.awt.{Dimension, Graphics2D, Point}
 
-class StartLevel(gs: GameStatus) extends Level(gs) { outer =>
+class TestLevel(gs: GameStatus) extends Level(gs) { outer =>
 	val m_gs: GameStatus = gs
 
 	reactions += {
@@ -10,17 +10,17 @@ class StartLevel(gs: GameStatus) extends Level(gs) { outer =>
 		case MouseReleased(_, point, _, _, _) =>
 			for(b <- buttons) b.onRelease(point)
 		case KeyTyped(_, 'c', _, _) =>
-			println("Key pressed from start")
+			println("Key pressed from other level")
 	}
 
 	val buttons : List[Button] = List(
 		new Button(new Point(640, 200), new Dimension(800, 160)) {
 			listenTo(outer)
 			sprite_back  = SpriteLoader.fromResource("menuButtonLarge.png")
-			sprite_front = SpriteLoader.fromString("play !", 800, 160, 100)
+			sprite_front = SpriteLoader.fromString("technically...", 800, 160, 100)
 			action = () => {
-				println("hello from start")
-				GamePanel.changeLevel("TestLevel")
+				println("hello from other")
+				GamePanel.changeLevel("StartLevel")
 			}
 		}
 	)
