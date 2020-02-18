@@ -7,14 +7,12 @@ class GamePanel extends Panel {
 	background = Color.white
 	preferredSize = (1280, 720)
 	focusable = true
-	opaque = false
+	opaque = false  // for smoother rendering
 
 	var gameStatus = new GameStatus
-	var last_time = System.nanoTime
-	var curr_time = System.nanoTime
 	var lvl = new StartLevel(gameStatus)
 
-	lvl.listenTo(mouse.clicks, keys)
+	lvl.listenTo(mouse.moves, mouse.clicks, keys)
 	listenTo(keys, lvl)
 
 	var p = false
@@ -25,7 +23,8 @@ class GamePanel extends Panel {
 	}
 
 	listenTo(timer)
-	var x = 50
+	var x: Int = 50
+	var delta  = 0.0
 
 	reactions += {
 		case cl : ChangeLevelEvent =>
@@ -34,12 +33,10 @@ class GamePanel extends Panel {
 			p = true
 			println("pressed p")
 			repaint()
-		case Tick(t) =>
-			x = (x + t.interval) % size.width
+		case Tick(_, t, delta) =>
+			this.delta = delta
+			x = (x + (0.1 * delta).toInt) % size.width
 			repaint()
-			last_time = curr_time
-			curr_time = System.nanoTime
-			println("Time delta " + ((curr_time - last_time) / 1000000.0).toString)
 		case _: FocusLost => repaint()
 	}
 
@@ -48,7 +45,9 @@ class GamePanel extends Panel {
 		if (p)
 			g.drawString("Paint!", x, 50)
 		lvl.render(g, 0)
-		g.drawString(((curr_time - last_time) / 1000000.0).toString + "ms", 100, 100)
+		g.drawString(delta.toString + "ms", 100, 100)
+
+		// for smoother rendering
 		Toolkit.getDefaultToolkit().sync();
 	}
 }
