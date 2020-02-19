@@ -1,8 +1,7 @@
 import scala.swing.event._
 import java.awt.{Dimension, Graphics2D, Point}
 
-class TestLevel(gs: GameStatus) extends Level(gs) { outer =>
-	val m_gs: GameStatus = gs
+class TestLevel extends Level { outer =>
 
 	reactions += {
 		case MouseMoved(_, point, _) =>

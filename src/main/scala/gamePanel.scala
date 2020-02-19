@@ -26,14 +26,14 @@ object GamePanel extends Panel {
 		case _: FocusLost => repaint()
 	}
 
-	var gameStatus = new GameStatus
-	var lvl: Level = new StartLevel(gameStatus)
+	var gameStatus = GameStatus
+	var lvl: Level = new StartLevel
 	lvl.listenTo(ps: _*)
 
 	def changeLevel(levelName: String) {
 		lvl.deafTo(ps: _*)
-		val constr = Class.forName(levelName).getConstructor(classOf[GameStatus])
-		lvl = constr.newInstance(gameStatus).asInstanceOf[Level]
+		val constr = Class.forName(levelName).getConstructor()
+		lvl = constr.newInstance().asInstanceOf[Level]
 		repaint()
 		val t = new javax.swing.Timer(50, new java.awt.event.ActionListener {
 			def actionPerformed(x: java.awt.event.ActionEvent): Unit = {
