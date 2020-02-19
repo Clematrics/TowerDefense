@@ -1,6 +1,7 @@
 import scala.swing.event._
 import java.awt.{Dimension, Graphics2D, Point}
 import scala.collection.mutable.ArrayBuffer
+import java.awt.geom.AffineTransform
 
 class CampaignMenu extends Level { outer =>
 	reactions += {
@@ -12,7 +13,7 @@ class CampaignMenu extends Level { outer =>
 			for(b <- campaignButtons) b.onRelease(point)
 	}
 
-	var campaign = Campaigns.previousCampaign
+	var campaign = Campaigns.currentCampaign
 	private def loadCampaignButtons(): List[Button] = {
 		val marginX = 240
 		val marginY = 200
@@ -23,10 +24,10 @@ class CampaignMenu extends Level { outer =>
 		val arr: ArrayBuffer[Button] = new ArrayBuffer
 		for((c,i) <- campaign.rounds.view.zipWithIndex) {
 			arr += new Button(new Point(marginX + offsetX * (i % inARow), marginY + offsetY * (i / inARow)), new Dimension(150, 150)) {
-				println(f"$i position $position")
+				// println(f"$i position $position")
 				sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 				action = () => {
-					println(f"campaign ${Campaigns.selectedCampaign} $i")
+					// println(f"campaign ${Campaigns.selectedCampaign} $i")
 				}
 			}
 		}
@@ -50,7 +51,6 @@ class CampaignMenu extends Level { outer =>
 			sprite_front   = SpriteLoader.fromString("<", 100, 500, 100)
 			action = () => {
 				campaign = Campaigns.previousCampaign
-				println(Campaigns.selectedCampaign)
 				campaignButtons = loadCampaignButtons()
 			}
 		},
@@ -60,7 +60,6 @@ class CampaignMenu extends Level { outer =>
 			sprite_front   = SpriteLoader.fromString(">", 100, 500, 100)
 			action = () => {
 				campaign = Campaigns.nextCampaign
-				println(Campaigns.selectedCampaign)
 				campaignButtons = loadCampaignButtons()
 			}
 		}
@@ -68,6 +67,8 @@ class CampaignMenu extends Level { outer =>
 
 
 	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
+		val spriteTitle = SpriteLoader.fromString(campaign.name, 1280, 100, 57)
+		g.drawImage(spriteTitle, new AffineTransform(1, 0, 0, 1, 0, 0), null)
 		for(b <- buttons) {
 			b.render(g, running_for, delta)
 		}
