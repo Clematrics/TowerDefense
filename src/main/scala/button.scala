@@ -31,9 +31,11 @@ class Button(p: Point, d: Dimension) extends Reactor {
 	var action = () => {}
 	def render(g: Graphics2D, time: Double, delta: Double) = {
 		for(sprite <- List(sprite_back, sprite_front)) {
-			val scaleX = size.getWidth / sprite.getWidth(null)
-			val scaleY = size.getHeight / sprite.getHeight(null)
-			g.drawImage(sprite, new AffineTransform(scaleX, 0, 0, scaleY, borderLeft, borderTop), null)
+			if (sprite != null) {
+				val scaleX = size.getWidth / sprite.getWidth(null)
+				val scaleY = size.getHeight / sprite.getHeight(null)
+				g.drawImage(sprite, new AffineTransform(scaleX, 0, 0, scaleY, borderLeft, borderTop), null)
+			}
 		}
 		if (cursorInside && sprite_tooltip != null) {
 			g.drawImage(sprite_tooltip, new AffineTransform(1, 0, 0, 1, mousePosition.getX - sprite_tooltip.getWidth(null), mousePosition.getY - sprite_tooltip.getHeight(null)), null)
