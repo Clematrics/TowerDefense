@@ -27,7 +27,7 @@ class CampaignMenu extends Level { outer =>
 				// println(f"$i position $position")
 				sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 				action = () => {
-					// println(f"campaign ${Campaigns.selectedCampaign} $i")
+					GamePanel.changeLevel("DefensePhase")
 				}
 			}
 		}
