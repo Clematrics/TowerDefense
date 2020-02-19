@@ -16,8 +16,9 @@ class StartLevel(gs: GameStatus) extends Level(gs) { outer =>
 	val buttons : List[Button] = List(
 		new Button(new Point(640, 200), new Dimension(800, 160)) {
 			listenTo(outer)
-			sprite_back  = SpriteLoader.fromResource("menuButtonLarge.png")
-			sprite_front = SpriteLoader.fromString("play !", 800, 160, 100)
+			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
+			sprite_front   = SpriteLoader.fromString("play !", 800, 160, 100)
+			sprite_tooltip = SpriteLoader.tooltip("A long text that can't stand in a short 200 pixel wide line")
 			action = () => {
 				println("hello from start")
 				GamePanel.changeLevel("TestLevel")
