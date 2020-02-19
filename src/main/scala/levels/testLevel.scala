@@ -14,7 +14,6 @@ class TestLevel extends Level { outer =>
 
 	val buttons : List[Button] = List(
 		new Button(new Point(640, 200), new Dimension(800, 160)) {
-			listenTo(outer)
 			sprite_back  = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front = SpriteLoader.fromString("technically...", 800, 160, 100)
 			action = () => {
