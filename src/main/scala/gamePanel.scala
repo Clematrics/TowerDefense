@@ -27,7 +27,7 @@ object GamePanel extends Panel {
 	}
 
 	var gameStatus = GameStatus
-	var lvl: Level = new StartLevel
+	var lvl: Level = new MainMenu
 	lvl.listenTo(ps: _*)
 
 	def changeLevel(levelName: String) {

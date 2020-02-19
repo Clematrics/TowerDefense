@@ -1,0 +1,79 @@
+import scala.swing.event._
+import java.awt.{Dimension, Graphics2D, Point}
+import scala.collection.mutable.ArrayBuffer
+
+class CampaignMenu extends Level { outer =>
+	reactions += {
+		case MouseMoved(_, point, _) =>
+			for(b <- buttons) b.onMoved(point)
+			for(b <- campaignButtons) b.onMoved(point)
+		case MouseReleased(_, point, _, _, _) =>
+			for(b <- buttons) b.onRelease(point)
+			for(b <- campaignButtons) b.onRelease(point)
+	}
+
+	var campaign = Campaigns.previousCampaign
+	private def loadCampaignButtons(): List[Button] = {
+		val marginX = 240
+		val marginY = 200
+		val offsetX = 200
+		val offsetY = 200
+		val inARow = 5
+
+		val arr: ArrayBuffer[Button] = new ArrayBuffer
+		for((c,i) <- campaign.rounds.view.zipWithIndex) {
+			arr += new Button(new Point(marginX + offsetX * (i % inARow), marginY + offsetY * (i / inARow)), new Dimension(150, 150)) {
+				println(f"$i position $position")
+				sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
+				action = () => {
+					println(f"campaign ${Campaigns.selectedCampaign} $i")
+				}
+			}
+		}
+		return arr.toList
+	}
+	var campaignButtons = loadCampaignButtons()
+
+
+	val buttons : List[Button] = List(
+		new Button(new Point(80, 40), new Dimension(150, 60)) {
+			listenTo(outer)
+			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
+			sprite_front   = SpriteLoader.fromString("go back", 150, 60, 30)
+			action = () => {
+				GamePanel.changeLevel("MainMenu")
+			}
+		},
+		new Button(new Point(60, 360), new Dimension(100, 500)) {
+			listenTo(outer)
+			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
+			sprite_front   = SpriteLoader.fromString("<", 100, 500, 100)
+			action = () => {
+				campaign = Campaigns.previousCampaign
+				println(Campaigns.selectedCampaign)
+				campaignButtons = loadCampaignButtons()
+			}
+		},
+		new Button(new Point(1220, 360), new Dimension(100, 500)) {
+			listenTo(outer)
+			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
+			sprite_front   = SpriteLoader.fromString(">", 100, 500, 100)
+			action = () => {
+				campaign = Campaigns.nextCampaign
+				println(Campaigns.selectedCampaign)
+				campaignButtons = loadCampaignButtons()
+			}
+		}
+	)
+
+
+	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
+		for(b <- buttons) {
+			b.render(g, running_for, delta)
+		}
+		for(b <- campaignButtons) {
+			b.render(g, running_for, delta)
+		}
+	}
+}
+

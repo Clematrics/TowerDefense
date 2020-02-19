@@ -33,6 +33,7 @@ object SpriteLoader {
 		val font = Font.createFont(Font.TRUETYPE_FONT, getClass.getResourceAsStream("/Some Time Later.otf")).deriveFont(Font.PLAIN, 20)
 		val frc = new FontRenderContext(null, true, true)
 
+		// inspired from https://docs.oracle.com/javase/tutorial/2d/text/drawmulstring.html
 		val attrString = new AttributedString(str)
 		attrString.addAttribute(TextAttribute.FONT, font)
 		val paragraph  = attrString.getIterator
