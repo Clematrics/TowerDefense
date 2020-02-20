@@ -13,7 +13,11 @@ import System.nanoTime
   */
 case class Tick(source: Timer, running_for: Double, delta: Double) extends Event
 
-// inspired from https://stackoverflow.com/questions/6825729/how-to-write-a-scala-wrapper-for-javax-swing-timer
+/**
+  * This class handles the synchronized rendering of the game.
+  *
+  * Inspired from https://stackoverflow.com/questions/6825729/how-to-write-a-scala-wrapper-for-javax-swing-timer
+  */
 abstract class Timer extends Publisher {
 	private val timer = this
 

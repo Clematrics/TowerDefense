@@ -7,12 +7,32 @@ import java.awt.font.LineBreakMeasurer
 import java.text.AttributedString
 import java.awt.font.TextAttribute
 
+/**
+  * This class contains several auxillary rendering functions.
+  */
 object SpriteLoader {
+
+	/**
+	  * Loads an image from a file.
+	  *
+	  * @param str File path
+	  * @return An ImageIcon object that can be used for rendering
+	  */
 	def fromResource(str: String): Image = {
 		return new ImageIcon(getClass.getResource(str)).getImage()
 	}
 
-	// inspired from https://stackoverflow.com/questions/8281886/stretch-a-jlabel-text/8282330#8282330
+	/**
+	  * Draws a string and returns it as a BufferedImage object.
+	  *
+	  * Inspired from https://stackoverflow.com/questions/8281886/stretch-a-jlabel-text/8282330#8282330
+	  *
+	  * @param str		The string to draw
+	  * @param width	Width of the area
+	  * @param height	Height of the area
+	  * @param fontsize	Size of the font
+	  * @return The buffered image containing the specified text
+	  */
 	def fromString(str: String, width: Int, height: Int, fontsize: Int): Image = {
 		val font = Font.createFont(Font.TRUETYPE_FONT, getClass.getResourceAsStream("/Some Time Later.otf")).deriveFont(Font.PLAIN, fontsize)
 		val frc = new FontRenderContext(null, true, true)
@@ -29,6 +49,12 @@ object SpriteLoader {
 		return bi
 	}
 
+	/**
+	  * Draws a help message
+	  *
+	  * @param str The text of the tip
+	  * @return	A buffered image with the text
+	  */
 	def tooltip(str: String): Image = {
 		val font = Font.createFont(Font.TRUETYPE_FONT, getClass.getResourceAsStream("/Some Time Later.otf")).deriveFont(Font.PLAIN, 20)
 		val frc = new FontRenderContext(null, true, true)
@@ -64,7 +90,7 @@ object SpriteLoader {
 
 		// Get lines from until the entire paragraph
 		// has been displayed.
-		var drawPosY   = 0.0f
+		var drawPosY = 0.0f
 		lineMeasurer.setPosition(paragraphStart);
 		while (lineMeasurer.getPosition() < paragraphEnd) {
 			val layout = lineMeasurer.nextLayout(breakWidth)

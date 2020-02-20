@@ -1,6 +1,9 @@
 import scala.swing.event._
 import java.awt.{Dimension, Graphics2D, Point}
 
+/**
+  * This class handles the startup menu of this application.
+  */
 class MainMenu extends Level { outer =>
 	reactions += {
 		case MouseMoved(_, point, _) =>

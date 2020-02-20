@@ -3,6 +3,10 @@ import scala.swing.Swing.pair2Dimension
 import java.awt.{Color, Graphics2D, Toolkit}
 import scala.swing.event.FocusLost
 
+/**
+  * GamePanel is the main component of this application. It hosts all the objects and menus
+  * used during the execution.
+  */
 object GamePanel extends Panel {
 	background = Color.black
 	preferredSize = (1280, 720)

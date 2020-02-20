@@ -1,5 +1,9 @@
 import java.awt.Graphics2D;
 
+/**
+  * The Entity class is the base class for all objects present in a level, such
+  * as towers and monsters.
+  */
 abstract class Entity {
 	def update():Unit
 	def render(g:Graphics2D):Unit = {}

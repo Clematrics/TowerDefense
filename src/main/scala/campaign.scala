@@ -1,11 +1,23 @@
+/**
+  * A round in a game of TowerDefense.
+  */
 class Round {
 }
 
+/**
+  * 
+  *
+  * @param str
+  * @param rnds
+  */
 class Campaign(str: String, rnds: List[Round]) {
 	var name    = str
 	var rounds  = rnds
 }
 
+/**
+  * This class contains all available compaigns.
+  */
 object Campaigns {
 	var selectedCampaign: Int = 0
 	var campaigns = List(
@@ -22,7 +34,7 @@ object Campaigns {
 			List(new Round, new Round)
 		),
 		new Campaign(
-			"true",
+			"The shitfuckery of Logics and Semantics",
 			List(new Round, new Round, new Round)
 		),
 		new Campaign(
@@ -34,7 +46,7 @@ object Campaigns {
 			List(new Round, new Round, new Round, new Round, new Round)
 		),
 		new Campaign(
-			"true",
+			"The story of Levi-Civita in Lorentzian manifolds",
 			List(new Round, new Round, new Round, new Round, new Round, new Round)
 		),
 		new Campaign(

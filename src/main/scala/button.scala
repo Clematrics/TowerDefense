@@ -2,6 +2,13 @@ import java.awt.{Dimension, Graphics2D, Image, Point}
 import scala.swing.Reactor
 import java.awt.geom.AffineTransform
 
+/**
+  * The class Button implements the visual item that the player
+  * can press to go to another level or to perform different actions.
+  *
+  * @param p Location of the button
+  * @param d Size of the button
+  */
 class Button(p: Point, d: Dimension) extends Reactor {
 	var sprite_back:  Image   = null
 	var sprite_front: Image   = null
