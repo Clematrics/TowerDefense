@@ -22,7 +22,7 @@ class AttackPhase extends Level { outer =>
 		},
 	)
 
-	var entities: Array[Entity] = Array()
+	var entities: Array[Entity] = Array(new SphereEnemy)
 
 	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
 		for(b <- buttons) {

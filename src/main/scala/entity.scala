@@ -5,6 +5,6 @@ import java.awt.Graphics2D;
   * as towers and monsters.
   */
 abstract class Entity {
-	def update():Unit
-	def render(g:Graphics2D):Unit = {}
+	def update(): Unit
+	def render(g: Graphics2D): Unit = {}
 }
