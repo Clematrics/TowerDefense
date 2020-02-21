@@ -1,13 +1,24 @@
 import java.awt.Graphics2D
 import java.awt.Color
-class SphereEnemy extends Enemy {
-	var lifePoints = 100
+import java.awt.geom.Point2D
 
-	var x, y: Float = 10
+abstract class LivingEnemy(life: Int) extends Enemy {
+	var lifePoints = life
 
 	def isAlive(): Boolean = {
 		return lifePoints <= 0
 	}
+
+	def drawHealthBar(g: Graphics2D, p: ScreenPosition) = {
+		g.setColor(Color.DARK_GRAY)
+		g.fillRoundRect(p.x - 50, p.y, 100, 10, 10, 10)
+		g.setColor(Color.RED)
+		g.fillRoundRect(p.x - 50, p.y, lifePoints, 10, 10, 10)
+	}
+}
+
+class SphereEnemy extends LivingEnemy(100) {
+	var pos: CellPosition = new CellPosition(10, 10)
 
 	def getName(): String = {
 		return "High Dimensional Sphere"
@@ -21,13 +32,9 @@ class SphereEnemy extends Enemy {
 	}
 
 	override def render(g: Graphics2D): Unit = {
-		val u = (x * 24).toInt
-		val v = (y * 24).toInt
+		val sPos = pos.toScreenPosition
 		g.setColor(new Color(80, 20, 100, 255))
-		g.fillOval(u - 40, v.toInt - 40, 80, 80)
-		g.setColor(Color.DARK_GRAY)
-		g.fillRoundRect(u - 60, v - 60, 120, 10, 10, 10)
-		g.setColor(Color.RED)
-		g.fillRoundRect(u - 60, v - 60, 120 * lifePoints / 100, 10, 10, 10)
+		g.fillOval(sPos.x - 40, sPos.y - 40, 80, 80)
+		drawHealthBar(g, sPos + new ScreenPosition(0, -60))
 	}
 }

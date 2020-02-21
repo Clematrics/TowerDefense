@@ -67,7 +67,7 @@ object Campaigns {
 	var campaigns = List(
 		new Campaign(
 			"The valley of prime numbers",
-			List()
+			List(new Map("map"))
 		),
 		new Campaign(
 			"The sea of differential equations",

@@ -3,5 +3,5 @@
   * Entity and Destructible.
   */
 trait Enemy extends Entity with Destructible {
-  def getName():String
+	def getName(): String
 }
