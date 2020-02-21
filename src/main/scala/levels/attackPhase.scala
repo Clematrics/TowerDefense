@@ -22,16 +22,37 @@ class AttackPhase extends Level { outer =>
 		},
 	)
 
-	var entities: Array[Entity] = Array(new SphereEnemy)
+	var time = -5.0
+
+	var wave: Array[Tuple3[Double, Int, String]] = GameStatus.map.wave
+	var entities: Array[Entity] = Array()
+
+	print(wave)
+	wave.foreach(print(_))
+
+	override def tick(running_for: Double, delta: Double): Unit = {
+		time += delta
+
+		while (wave.length > 0 && wave.head._1 * 1000 <= time) {
+			val (t, i, name) = wave.head
+			val constr = Class.forName(name).getConstructor()
+			entities +:= constr.newInstance().asInstanceOf[Entity]
+			wave = wave.take(0)
+			print("spawned one")
+		}
+
+		for (e <- entities)
+			e.tick(running_for, delta)
+	}
 
 	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
 		for(b <- buttons) {
 			b.render(g, running_for, delta)
 		}
 
-		g.drawImage(GameStatus.map.img, new AffineTransform(24, 0, 0, 24, 0, 0), null)
+		g.drawImage(GameStatus.map.mapImg, new AffineTransform(24, 0, 0, 24, 0, 0), null)
 		for(cp <- GameStatus.map.checkpoints) {
-			val stroke = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, Array(3, 1), 0)
+			val stroke = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, Array(10, 5), 0)
 			g.setStroke(stroke);
 			g.setColor(new Color(255, 0, 255, 255))
 			g.drawLine(cp.aX * 24, cp.aY * 24, cp.bX * 24, cp.bY * 24)
@@ -40,5 +61,8 @@ class AttackPhase extends Level { outer =>
 		for(e <- entities) {
 			e.render(g)
 		}
+
+		g.setColor(Color.PINK)
+		g.drawString(f"$time%.1f ms", 0, 30)
 	}
 }

@@ -36,7 +36,7 @@ class DefensePhase extends Level { outer =>
 			b.render(g, running_for, delta)
 		}
 
-		g.drawImage(GameStatus.map.img, new AffineTransform(24, 0, 0, 24, 0, 0), null)
+		g.drawImage(GameStatus.map.mapImg, new AffineTransform(24, 0, 0, 24, 0, 0), null)
 		for(cp <- GameStatus.map.checkpoints) {
 			val stroke = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, Array(3, 1), 0)
 			g.setStroke(stroke);

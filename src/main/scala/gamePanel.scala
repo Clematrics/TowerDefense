@@ -57,6 +57,6 @@ object GamePanel extends Panel {
 		g.drawString(f"$delta%.1f ms", 0, 10)
 
 		// for smoother rendering, according to https://stackoverflow.com/questions/35436094/scala-swing-performance-depends-on-events
-		Toolkit.getDefaultToolkit().sync();
+		Toolkit.getDefaultToolkit().sync()
 	}
 }

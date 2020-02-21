@@ -28,7 +28,7 @@ class SphereEnemy extends LivingEnemy(100) {
 		lifePoints -= dmg
 	}
 
-	def update(): Unit = {
+	def tick(running_for: Double, delta: Double) : Unit = {
 	}
 
 	override def render(g: Graphics2D): Unit = {
