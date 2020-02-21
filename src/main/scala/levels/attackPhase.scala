@@ -1,5 +1,7 @@
 import scala.swing.event._
-import java.awt.{Dimension, Graphics2D, Point}
+import java.awt.{Color, Dimension, Graphics2D, Point}
+import java.awt.geom.AffineTransform
+import java.awt.BasicStroke
 
 class AttackPhase extends Level { outer =>
 	reactions += {
@@ -10,12 +12,33 @@ class AttackPhase extends Level { outer =>
 	}
 
 	val buttons : List[Button] = List(
+		new Button(new Point(1200, 40), new Dimension(150, 60)) {
+			listenTo(outer)
+			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
+			sprite_front   = SpriteLoader.fromString("nevermind", 150, 60, 30)
+			action = () => {
+				GamePanel.changeLevel("DefensePhase")
+			}
+		},
 	)
 
+	var entities: Array[Entity] = Array()
 
 	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
 		for(b <- buttons) {
 			b.render(g, running_for, delta)
+		}
+
+		g.drawImage(GameStatus.map.img, new AffineTransform(24, 0, 0, 24, 0, 0), null)
+		for(cp <- GameStatus.map.checkpoints) {
+			val stroke = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, Array(3, 1), 0)
+			g.setStroke(stroke);
+			g.setColor(new Color(255, 0, 255, 255))
+			g.drawLine(cp.aX * 24, cp.aY * 24, cp.bX * 24, cp.bY * 24)
+		}
+
+		for(e <- entities) {
+			e.render(g)
 		}
 	}
 }

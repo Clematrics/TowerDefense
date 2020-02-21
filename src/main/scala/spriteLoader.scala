@@ -19,7 +19,7 @@ object SpriteLoader {
 	  * @return An ImageIcon object that can be used for rendering
 	  */
 	def fromResource(str: String): Image = {
-		return new ImageIcon(getClass.getResource(str)).getImage()
+		return new ImageIcon(getClass.getResource(str)).getImage
 	}
 
 	/**

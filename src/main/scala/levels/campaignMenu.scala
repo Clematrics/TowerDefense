@@ -22,11 +22,12 @@ class CampaignMenu extends Level { outer =>
 		val inARow = 5
 
 		val arr: ArrayBuffer[Button] = new ArrayBuffer
-		for((c,i) <- campaign.rounds.view.zipWithIndex) {
+		for((map,i) <- campaign.rounds.view.zipWithIndex) {
 			arr += new Button(new Point(marginX + offsetX * (i % inARow), marginY + offsetY * (i / inARow)), new Dimension(150, 150)) {
 				// println(f"$i position $position")
 				sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 				action = () => {
+					GameStatus.map = map
 					GamePanel.changeLevel("DefensePhase")
 				}
 			}
