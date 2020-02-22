@@ -6,7 +6,7 @@ abstract class LivingEnemy(life: Int) extends Enemy {
 	var lifePoints = life
 
 	def isAlive(): Boolean = {
-		return lifePoints <= 0
+		return lifePoints >= 0
 	}
 
 	def drawHealthBar(g: Graphics2D, p: ScreenPosition) = {
