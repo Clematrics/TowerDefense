@@ -27,9 +27,6 @@ class AttackPhase extends Level { outer =>
 	var wave: Array[Tuple3[Double, Int, String]] = GameStatus.map.wave
 	var entities: Array[Entity] = Array()
 
-	print(wave)
-	wave.foreach(print(_))
-
 	override def tick(running_for: Double, delta: Double): Unit = {
 		time += delta
 
@@ -38,7 +35,6 @@ class AttackPhase extends Level { outer =>
 			val constr = Class.forName(name).getConstructor()
 			entities +:= constr.newInstance().asInstanceOf[Entity]
 			wave = wave.take(0)
-			print("spawned one")
 		}
 
 		for (e <- entities)
