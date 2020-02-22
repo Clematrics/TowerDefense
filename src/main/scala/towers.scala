@@ -1,4 +1,4 @@
-class ProtoTower extends Entity with Tower {
+class ProtoTower extends Tower {
 	var pos: CellPosition = new CellPosition(15, 10)
 
 	def getName(): String = {
