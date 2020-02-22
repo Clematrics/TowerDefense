@@ -27,12 +27,10 @@ class ScreenPosition(xIn: Int, yIn: Int) extends Point2D {
 	def toCellPosition(): CellPosition = {
 		return new CellPosition(x / 24, y / 24)
 	}
-	// def X(): Int = {
-	// 	return x
-	// }
-	// def Y(): Int = {
-	// 	return y
-	// }
+
+	def this(p: Point) = {
+		this(p.getX.toInt, p.getY.toInt)
+	}
 
 	def +(p: ScreenPosition): ScreenPosition = {
 		return new ScreenPosition(x + p.x, y + p.y)
