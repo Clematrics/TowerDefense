@@ -14,7 +14,7 @@ object MapLoader {
 		  * Second line contains the number N of checkpoints for monster
 		  * N next lines are five integers, describing the coordinates of two points and the id of the following checkpoint
 		  * The next line contains the number M of mobs to spawn during the wave
-		  * M next lines are a double for the time of spawning, the checkpoint id for the location and finaly the name of the enemy
+		  * M next lines are a double for the time of spawning, the checkpoint id for the location and finally the enemy's name
 		  */
 		val name = lines.next
 		val N = lines.next.toInt
