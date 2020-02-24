@@ -1,9 +1,10 @@
 import java.awt._
 import java.awt.geom.{AffineTransform, Point2D}
+import scala.math.{cos, sin, atan}
 
 abstract class LivingEnemy(life: Int) extends Enemy {
 	var lifePoints = life
-	
+
 	def isAlive(): Boolean = {
 		return lifePoints >= 0
 	}
@@ -17,10 +18,9 @@ abstract class LivingEnemy(life: Int) extends Enemy {
 }
 
 class SphereEnemy extends LivingEnemy(100) {
-	var pos: CellPosition = new CellPosition(10, 10)
 	var gold:Int = 200
-	var speed:Double = 1
-	
+	var speed:Double = 0.01
+
 	def getName(): String = {
 		return "High Dimensional Sphere"
 	}
@@ -30,7 +30,21 @@ class SphereEnemy extends LivingEnemy(100) {
 	}
 
 	def tick(running_for: Double, delta: Double) : Unit = {
-		pos.move(speed,0)
+		var cp = GameStatus.map.checkpoints(targetedCheckpoint)
+		if (pos.distance(targetedCellPoint) <= speed) {
+			targetedCheckpoint = cp.next
+			if (targetedCheckpoint == -1) {
+				valid = false
+				return
+			}
+			cp = GameStatus.map.checkpoints(targetedCheckpoint)
+			val r = scala.util.Random
+			targetedCellPoint = new CellPosition(cp.aX + r.nextFloat * (cp.bX - cp.aX), cp.aY + r.nextFloat * (cp.bY - cp.aY))
+		}
+		// println(f"Sphere $targetedCheckpoint, $targetedCellPoint")
+
+		val theta = atan((targetedCellPoint.y - pos.y) / (targetedCellPoint.x - pos.x))
+		pos.move(speed * cos(theta), speed * sin(theta))
 	}
 
 	override def render(g: Graphics2D): Unit = {
@@ -42,10 +56,9 @@ class SphereEnemy extends LivingEnemy(100) {
 }
 
 class ProtoEnemy extends LivingEnemy(75) {
-	var pos: CellPosition = new CellPosition(10, 10)
 	var gold:Int = 500
-	var speed:Double = 2
-	
+	var speed:Double = 0.01
+
 	def getName(): String = {
 		return "Chess pawn"
 	}
@@ -55,7 +68,21 @@ class ProtoEnemy extends LivingEnemy(75) {
 	}
 
 	def tick(running_for: Double, delta: Double) : Unit = {
-		pos.move(speed,0)
+		var cp = GameStatus.map.checkpoints(targetedCheckpoint)
+		if (pos.distance(targetedCellPoint) <= speed) {
+			targetedCheckpoint = cp.next
+			if (targetedCheckpoint == -1) {
+				valid = false
+				return
+			}
+			cp = GameStatus.map.checkpoints(targetedCheckpoint)
+			val r = scala.util.Random
+			targetedCellPoint = new CellPosition(cp.aX + r.nextFloat * (cp.bX - cp.aX), cp.aY + r.nextFloat * (cp.bY - cp.aY))
+		}
+		// println(f"Proto $targetedCheckpoint, $targetedCellPoint")
+
+		val theta = atan((targetedCellPoint.y - pos.y) / (targetedCellPoint.x - pos.x))
+		pos.move(speed * cos(theta), speed * sin(theta))
 	}
 
 	override def render(g: Graphics2D): Unit = {

@@ -63,7 +63,7 @@ class CellPosition (xIn: Double, yIn: Double) extends Point2D {
 		x = xx
 		y = yy
 	}
-	
+
 	def move(offsetx: Double, offsety: Double): Unit = {
 		x += offsetx
 		y += offsety

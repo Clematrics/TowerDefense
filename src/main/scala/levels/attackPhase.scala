@@ -4,6 +4,8 @@ import java.awt.geom.AffineTransform
 import java.awt.BasicStroke
 
 class AttackPhase extends Level { outer =>
+	val r = scala.util.Random
+
 	reactions += {
 		case MouseMoved(_, point, _) =>
 			for(b <- buttons) b.onMoved(point)
@@ -36,14 +38,27 @@ class AttackPhase extends Level { outer =>
 		while (wave.length > 0 && wave.head._1 * 1000 <= time) {
 			val (t, i, name) = wave.head
 			val constr = Class.forName(name).getConstructor()
-			entities +:= constr.newInstance().asInstanceOf[Entity]
-			wave = wave.take(0)
+			val enemy: Enemy = constr.newInstance().asInstanceOf[Enemy]
+			println(name)
+			val cp = GameStatus.map.checkpoints(i)
+			enemy.pos = new CellPosition(cp.aX + r.nextFloat * (cp.bX - cp.aX), cp.aY + r.nextFloat * (cp.bY - cp.aY))
+			enemy.targetedCheckpoint = cp.next
+			val cpp = GameStatus.map.checkpoints(cp.next)
+			enemy.targetedCellPoint = new CellPosition(cpp.aX + r.nextFloat * (cpp.bX - cpp.aX), cpp.aY + r.nextFloat * (cpp.bY - cpp.aY))
+			entities +:= enemy.asInstanceOf[Entity]
+
+			// revoir les types !!
+			val b = wave.toBuffer
+			b.remove(0)
+			wave = b.toArray
 		}
 
 		for (e <- entities)
-		e.tick(running_for, delta)
+			e.tick(running_for, delta)
 
-		if (waves.length == 0 && entities.length == 0) {
+		entities = entities.filter((p: Entity) => p.valid)
+
+		if (wave.length == 0 && entities.length == 0) {
 			GamePanel.changeLevel("WinMenu")
 		}
 	}

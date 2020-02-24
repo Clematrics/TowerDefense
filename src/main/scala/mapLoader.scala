@@ -20,14 +20,20 @@ object MapLoader {
 		val N = lines.next.toInt
 		var checkpoints: Array[MonsterCheckPoint] = Array()
 		for(i <- 0 until N) {
-			checkpoints +:= new MonsterCheckPoint(lines.next.split(" ").map((s: String) => { s.toInt }): _*)
+			checkpoints :+= new MonsterCheckPoint(lines.next.split(" ").map((s: String) => { s.toInt }): _*)
 		}
+		// for (c <- checkpoints)
+		// 	println(c)
+
 		val M = lines.next.toInt
 		var wave: Array[Tuple3[Double, Int, String]] = Array()
 		for (i <- 0 until M) {
 			val strs = lines.next.split(" ")
-			wave +:= (strs(0).toDouble, strs(1).toInt, strs(2))
+			wave :+= (strs(0).toDouble, strs(1).toInt, strs(2))
 		}
+		// trier wave !!
+		// for (c <- wave)
+		// 	println(c)
 
 		val map = Array.ofDim[CellType](45, 30)
 		val img = SpriteLoader.fromResource(str + ".png")
