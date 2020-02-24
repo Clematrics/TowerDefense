@@ -22,7 +22,7 @@ class WinMenu extends Level { outer =>
 
 	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
 		val loseImg = SpriteLoader.fromString("You win!", 800, 160, 69)
-		g.drawImage(loseImg, new AffineTransform(1, 0, 0, 1, 640, 300), null)
+		g.drawImage(loseImg, new AffineTransform(1, 0, 0, 1, 640 - 400, 300 - 80), null)
 
 		for(b <- buttons) {
 			b.render(g, running_for, delta)

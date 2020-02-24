@@ -37,6 +37,7 @@ abstract class MovingEnemy(speed_coef: Double) extends LivingEnemy {
 		if (pos.distance(targetedCellPoint) <= speed) {
 			targetedCheckpoint = cp.next
 			if (targetedCheckpoint == -1) {
+				GameStatus.health = (GameStatus.health - 20) max 0
 				valid = false
 				return
 			}

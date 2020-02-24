@@ -1,6 +1,8 @@
 import java.awt.image.BufferedImage
 import java.awt.Point
 import scala.io.Source
+import scala.collection.mutable._
+import scala.math.Ordering.IntOrdering
 
 object MapLoader {
 	def loadMap(str: String): Map = {
@@ -18,22 +20,18 @@ object MapLoader {
 		  */
 		val name = lines.next
 		val N = lines.next.toInt
-		var checkpoints: Array[MonsterCheckPoint] = Array()
+		val checkpoints: ArrayBuffer[MonsterCheckPoint] = ArrayBuffer()
 		for(i <- 0 until N) {
-			checkpoints :+= new MonsterCheckPoint(lines.next.split(" ").map((s: String) => { s.toInt }): _*)
+			checkpoints += new MonsterCheckPoint(lines.next.split(" ").map((s: String) => { s.toInt }): _*)
 		}
-		// for (c <- checkpoints)
-		// 	println(c)
 
 		val M = lines.next.toInt
-		var wave: Array[Tuple3[Double, Int, String]] = Array()
+		var wave: ArrayBuffer[Tuple3[Double, Int, String]] = ArrayBuffer()
 		for (i <- 0 until M) {
 			val strs = lines.next.split(" ")
-			wave :+= (strs(0).toDouble, strs(1).toInt, strs(2))
+			wave += ((strs(0).toDouble, strs(1).toInt, strs(2)))
 		}
-		// trier wave !!
-		// for (c <- wave)
-		// 	println(c)
+		wave = wave.sortBy(_._1)
 
 		val map = Array.ofDim[CellType](45, 30)
 		val img = SpriteLoader.fromResource(str + ".png")
@@ -53,6 +51,6 @@ object MapLoader {
 					}
 				}
 
-		return new Map(name, map, img, checkpoints, wave)
+		return new Map(name, map, img, checkpoints.toArray, wave.toArray)
 	}
 }
