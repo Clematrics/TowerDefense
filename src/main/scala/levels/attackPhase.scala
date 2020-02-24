@@ -68,6 +68,10 @@ class AttackPhase extends Level { outer =>
 		}
 	}
 
+	def getEnemiesAround(tower: Tower, pos: CellPosition, radius: Double): Array[Enemy] = {
+		return entities.filter(e => e.getClass == classOf[Enemy] && pos.distance(e.asInstanceOf[Enemy].pos) <= radius).map(x => x.asInstanceOf[Enemy]).toArray[Enemy]
+	}
+
 	/**
 	  * Rendering of the game, with the map and all entities
 	  *
