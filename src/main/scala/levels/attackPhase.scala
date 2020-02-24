@@ -3,9 +3,16 @@ import java.awt.{Color, Dimension, Graphics2D, Point}
 import java.awt.geom.AffineTransform
 import java.awt.BasicStroke
 
+/**
+  * This class is the phase of the game (seen as a Level class) where
+  * enemies attack and towers defend the player.
+  */
 class AttackPhase extends Level { outer =>
 	val r = scala.util.Random
-
+	var time = -5.0
+	var wave: Array[Tuple3[Double, Int, String]] = GameStatus.map.wave
+	var entities: Array[Entity] = Array()
+	
 	reactions += {
 		case MouseMoved(_, point, _) =>
 			for(b <- buttons) b.onMoved(point)
@@ -23,11 +30,6 @@ class AttackPhase extends Level { outer =>
 		},
 	)
 
-	var time = -5.0
-
-	var wave: Array[Tuple3[Double, Int, String]] = GameStatus.map.wave
-	var entities: Array[Entity] = Array()
-
 	override def tick(running_for: Double, delta: Double): Unit = {
 		if (GameStatus.health <= 0) {
 			GamePanel.changeLevel("LoseMenu")
@@ -39,30 +41,39 @@ class AttackPhase extends Level { outer =>
 			val (t, i, name) = wave.head
 			val constr = Class.forName(name).getConstructor()
 			val enemy: Enemy = constr.newInstance().asInstanceOf[Enemy]
-			println(name)
+			
+			println(name)//DEBUG
+			
+			//Random choice of the target on the portal segment for spawn location
 			val cp = GameStatus.map.checkpoints(i)
 			enemy.pos = new CellPosition(cp.aX + r.nextFloat * (cp.bX - cp.aX), cp.aY + r.nextFloat * (cp.bY - cp.aY))
 			enemy.targetedCheckpoint = cp.next
+			
+			//Random choice of the target on the portal segment for destination
 			val cpp = GameStatus.map.checkpoints(cp.next)
 			enemy.targetedCellPoint = new CellPosition(cpp.aX + r.nextFloat * (cpp.bX - cpp.aX), cpp.aY + r.nextFloat * (cpp.bY - cpp.aY))
 			entities +:= enemy.asInstanceOf[Entity]
 
-			// revoir les types !!
-			val b = wave.toBuffer
-			b.remove(0)
-			wave = b.toArray
+			wave = wave.tail
 		}
 
 		for (e <- entities)
 			e.tick(running_for, delta)
 
-		entities = entities.filter((p: Entity) => p.valid)
+		entities = entities.filter((p: Entity) => p.valid)//QUESTION : et les monstres morts?
 
 		if (wave.length == 0 && entities.length == 0) {
 			GamePanel.changeLevel("WinMenu")
 		}
 	}
 
+	/**
+	  * Rendering of the game, with the map and all entities
+	  *
+	  * @param g A Graphics2D object representing the drawing surface
+	  * @param running_for Total time the game has been running
+	  * @param delta 
+	  */
 	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
 		for(b <- buttons) {
 			b.render(g, running_for, delta)
