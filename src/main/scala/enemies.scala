@@ -1,4 +1,4 @@
-import java.awt.{Color, Dimension, Graphics2D, Point, Image}
+import java.awt._
 import java.awt.geom.{AffineTransform, Point2D}
 
 abstract class LivingEnemy(life: Int) extends Enemy {
