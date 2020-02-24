@@ -64,7 +64,7 @@ class AttackPhase extends Level { outer =>
 		for (e <- entities)
 			e.tick(running_for, delta)
 
-		entities = entities.filter((p: Entity) => p.valid)//QUESTION : et les monstres morts?
+		entities = entities.filter((p: Entity) => p.valid)
 
 		if (wave.length == 0 && entities.length == 0) {
 			GamePanel.changeLevel("WinMenu")

@@ -7,11 +7,18 @@ import scala.math.{cos, sin, atan}
   * they react to attacks is determined by the takeDamage procedure
   * of the concrete enemies classes.
   */
-trait LivingEnemy {
+trait LivingEnemy extends Enemy {
 	var lifePoints = 100
 
 	def isAlive(): Boolean = {
 		return lifePoints >= 0
+	}
+
+	def setLifePoints(lp: Int) = {
+		lifePoints = lp
+		if (lifePoints >= 0) {
+			valid = false
+		}
 	}
 
 	def drawHealthBar(g: Graphics2D, p: ScreenPosition) = {
@@ -61,7 +68,7 @@ class SphereEnemy extends MovingEnemy with LivingEnemy {
 	}
 
 	def takeDamage(dmg: Int): Unit = {
-		lifePoints -= dmg
+		setLifePoints(lifePoints - dmg)
 	}
 
 	override def render(g: Graphics2D): Unit = {
@@ -81,7 +88,7 @@ class ProtoEnemy extends MovingEnemy with LivingEnemy {
 	}
 
 	def takeDamage(dmg: Int): Unit = {
-		lifePoints -= dmg
+		setLifePoints(lifePoints - dmg)
 	}
 
 	override def render(g: Graphics2D): Unit = {
