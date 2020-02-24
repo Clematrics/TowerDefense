@@ -45,14 +45,17 @@ class AttackPhase extends Level { outer =>
 			val constr = Class.forName(name).getConstructor()
 			val enemy: Enemy = constr.newInstance().asInstanceOf[Enemy]
 
-			//Random choice of the target on the portal segment for spawn location
-			val cp = GameStatus.map.checkpoints(i)
-			enemy.pos = new CellPosition(cp.aX + r.nextFloat * (cp.bX - cp.aX), cp.aY + r.nextFloat * (cp.bY - cp.aY))
-			enemy.targetedCheckpoint = cp.next
+			if (enemy.isInstanceOf[MovingEnemy]) {
+				val menemy = enemy.asInstanceOf[MovingEnemy]
+				//Random choice of the target on the portal segment for spawn location
+				val cp = GameStatus.map.checkpoints(i)
+				menemy.pos = new CellPosition(cp.aX + r.nextFloat * (cp.bX - cp.aX), cp.aY + r.nextFloat * (cp.bY - cp.aY))
+				menemy.targetedCheckpoint = cp.next
 
-			//Random choice of the target on the portal segment for destination
-			val cpp = GameStatus.map.checkpoints(cp.next)
-			enemy.targetedCellPoint = new CellPosition(cpp.aX + r.nextFloat * (cpp.bX - cpp.aX), cpp.aY + r.nextFloat * (cpp.bY - cpp.aY))
+				//Random choice of the target on the portal segment for destination
+				val cpp = GameStatus.map.checkpoints(cp.next)
+				menemy.targetedCellPoint = new CellPosition(cpp.aX + r.nextFloat * (cpp.bX - cpp.aX), cpp.aY + r.nextFloat * (cpp.bY - cpp.aY))
+			}
 
 			entities += enemy.asInstanceOf[Entity]
 			wave.remove(0)
@@ -69,7 +72,7 @@ class AttackPhase extends Level { outer =>
 	}
 
 	def getEnemiesAround(tower: Tower, pos: CellPosition, radius: Double): Array[Enemy] = {
-		return entities.filter(e => e.getClass == classOf[Enemy] && pos.distance(e.asInstanceOf[Enemy].pos) <= radius).map(x => x.asInstanceOf[Enemy]).toArray[Enemy]
+		return entities.filter(e => e.isInstanceOf[MovingEnemy] && pos.distance(e.asInstanceOf[MovingEnemy].pos) <= radius).map(x => x.asInstanceOf[Enemy]).toArray[Enemy]
 	}
 
 	/**

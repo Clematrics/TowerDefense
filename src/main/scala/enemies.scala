@@ -7,7 +7,7 @@ import scala.math.{cos, sin, atan}
   * they react to attacks is determined by the takeDamage procedure
   * of the concrete enemies classes.
   */
-abstract class LivingEnemy extends Enemy {
+trait LivingEnemy {
 	var lifePoints = 100
 
 	def isAlive(): Boolean = {
@@ -23,15 +23,17 @@ abstract class LivingEnemy extends Enemy {
 }
 
 /**
-  * The MovingEnemy class represents an enemy with a speed that can
-  * move across the board. It naturally extends LivingEnemy as in order
-  * to move, the enemy must be alive. 
+  * The MovingEnemy trait represents an enemy with a speed that can
+  * move across the board.
   *
-  * @param speed_coef The speed coefficient of the enemy. Each tick of the clock (60 times per second or so), the enemy will go further to this unit of distance.
+  * speed : The speed of the enemy. Each tick of the clock (60 times per second or so), the enemy will go further by this unit of distance.
   */
-abstract class MovingEnemy(speed_coef: Double) extends LivingEnemy {
-	var speed = speed_coef
-	
+trait MovingEnemy extends Enemy {
+	var speed: Double = 0.04
+	var targetedCheckpoint: Int = -2
+	var targetedCellPoint: CellPosition = new CellPosition(0, 0)
+	var pos: CellPosition = new CellPosition(0, 0)
+
 	def tick(running_for: Double, delta: Double) : Unit = {
 		var cp = GameStatus.map.checkpoints(targetedCheckpoint)
 		if (pos.distance(targetedCellPoint) <= speed) {
@@ -45,23 +47,22 @@ abstract class MovingEnemy(speed_coef: Double) extends LivingEnemy {
 			val r = scala.util.Random
 			targetedCellPoint = new CellPosition(cp.aX + r.nextFloat * (cp.bX - cp.aX), cp.aY + r.nextFloat * (cp.bY - cp.aY))
 		}
-		// println(f"Sphere/Proto $targetedCheckpoint, $targetedCellPoint")
 
 		val theta = atan((targetedCellPoint.y - pos.y) / (targetedCellPoint.x - pos.x))
 		pos.move(speed * cos(theta), speed * sin(theta))
 	}
 }
 
-class SphereEnemy extends MovingEnemy(0.01) {
+class SphereEnemy extends MovingEnemy with LivingEnemy {
 	var gold:Int = 200
-	
+
 	def getName(): String = {
 		return "High Dimensional Sphere"
 	}
 
 	def takeDamage(dmg: Int): Unit = {
 		lifePoints -= dmg
-	}	
+	}
 
 	override def render(g: Graphics2D): Unit = {
 		val sPos = pos.toScreenPosition
@@ -71,7 +72,8 @@ class SphereEnemy extends MovingEnemy(0.01) {
 	}
 }
 
-class ProtoEnemy extends MovingEnemy(0.02) {
+class ProtoEnemy extends MovingEnemy with LivingEnemy {
+	speed = 0.02
 	var gold:Int = 500
 
 	def getName(): String = {
@@ -87,6 +89,5 @@ class ProtoEnemy extends MovingEnemy(0.02) {
 		val sPos = pos.toScreenPosition
 		g.drawImage(s, new AffineTransform(0.2, 0, 0, 0.2, sPos.x-40, sPos.y-40), null)
 		drawHealthBar(g, sPos + new ScreenPosition(0, -60))
-	
 	}
 }
