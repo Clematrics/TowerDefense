@@ -13,7 +13,6 @@ class AttackPhase extends Level { outer =>
 
 	val buttons : List[Button] = List(
 		new Button(new Point(1200, 40), new Dimension(150, 60)) {
-			listenTo(outer)
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front   = SpriteLoader.fromString("nevermind", 150, 60, 30)
 			action = () => {

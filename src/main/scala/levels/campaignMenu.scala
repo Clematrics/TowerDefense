@@ -39,7 +39,6 @@ class CampaignMenu extends Level { outer =>
 
 	val buttons : List[Button] = List(
 		new Button(new Point(80, 40), new Dimension(150, 60)) {
-			listenTo(outer)
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front   = SpriteLoader.fromString("go back", 150, 60, 30)
 			action = () => {
@@ -47,7 +46,6 @@ class CampaignMenu extends Level { outer =>
 			}
 		},
 		new Button(new Point(60, 360), new Dimension(100, 500)) {
-			listenTo(outer)
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front   = SpriteLoader.fromString("<", 100, 500, 100)
 			action = () => {
@@ -56,7 +54,6 @@ class CampaignMenu extends Level { outer =>
 			}
 		},
 		new Button(new Point(1220, 360), new Dimension(100, 500)) {
-			listenTo(outer)
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front   = SpriteLoader.fromString(">", 100, 500, 100)
 			action = () => {

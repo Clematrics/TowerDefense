@@ -18,7 +18,6 @@ class DefensePhase extends Level { outer =>
 
 	val buttons : List[Button] = List(
 		new Button(new Point(1215, 40), new Dimension(120, 60)) {
-			listenTo(outer)
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front   = SpriteLoader.fromString("fight !", 120, 60, 30)
 			action = () => {
@@ -26,7 +25,6 @@ class DefensePhase extends Level { outer =>
 			}
 		},
 		new Button(new Point(1215, 290), new Dimension(120, 120)) {
-			listenTo(outer)
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front   = SpriteLoader.fromString("tower 1", 120, 120, 30)
 			action = () => {
@@ -42,7 +40,6 @@ class DefensePhase extends Level { outer =>
 			}
 		},
 		new Button(new Point(1215, 570), new Dimension(120, 120)) {
-			listenTo(outer)
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front   = SpriteLoader.fromString("tower 3", 120, 120, 30)
 			action = () => {
@@ -50,7 +47,6 @@ class DefensePhase extends Level { outer =>
 			}
 		},
 		new Button(new Point(1215, 680), new Dimension(120, 60)) {
-			listenTo(outer)
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front   = SpriteLoader.fromString("go back", 120, 60, 30)
 			action = () => {
@@ -64,7 +60,7 @@ class DefensePhase extends Level { outer =>
 		g.drawImage(GameStatus.map.mapImg, new AffineTransform(24, 0, 0, 24, 0, 0), null)
 		for(cp <- GameStatus.map.checkpoints) {
 			val stroke = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, Array(3, 1), 0)
-			g.setStroke(stroke);
+			g.setStroke(stroke)
 			g.setColor(new Color(255, 0, 255, 255))
 			g.drawLine(cp.aX * 24, cp.aY * 24, cp.bX * 24, cp.bY * 24)
 		}
