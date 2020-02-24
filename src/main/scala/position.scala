@@ -63,6 +63,11 @@ class CellPosition (xIn: Double, yIn: Double) extends Point2D {
 		x = xx
 		y = yy
 	}
+	
+	def move(offsetx: Double, offsety: Double): Unit = {
+		x += offsetx
+		y += offsety
+	}
 
 	def toScreenPosition(): ScreenPosition = {
 		return new ScreenPosition((x * 24).toInt, (y * 24).toInt)

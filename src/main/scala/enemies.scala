@@ -3,7 +3,7 @@ import java.awt.geom.{AffineTransform, Point2D}
 
 abstract class LivingEnemy(life: Int) extends Enemy {
 	var lifePoints = life
-
+	
 	def isAlive(): Boolean = {
 		return lifePoints >= 0
 	}
@@ -18,7 +18,9 @@ abstract class LivingEnemy(life: Int) extends Enemy {
 
 class SphereEnemy extends LivingEnemy(100) {
 	var pos: CellPosition = new CellPosition(10, 10)
-
+	var gold:Int = 200
+	var speed:Double = 1
+	
 	def getName(): String = {
 		return "High Dimensional Sphere"
 	}
@@ -28,6 +30,7 @@ class SphereEnemy extends LivingEnemy(100) {
 	}
 
 	def tick(running_for: Double, delta: Double) : Unit = {
+		pos.move(speed,0)
 	}
 
 	override def render(g: Graphics2D): Unit = {
@@ -40,7 +43,9 @@ class SphereEnemy extends LivingEnemy(100) {
 
 class ProtoEnemy extends LivingEnemy(75) {
 	var pos: CellPosition = new CellPosition(10, 10)
-
+	var gold:Int = 500
+	var speed:Double = 2
+	
 	def getName(): String = {
 		return "Chess pawn"
 	}
@@ -50,7 +55,7 @@ class ProtoEnemy extends LivingEnemy(75) {
 	}
 
 	def tick(running_for: Double, delta: Double) : Unit = {
-		
+		pos.move(speed,0)
 	}
 
 	override def render(g: Graphics2D): Unit = {
