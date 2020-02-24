@@ -1,3 +1,6 @@
+import java.awt._
+import java.awt.geom.{AffineTransform, Point2D}
+
 class ProtoTower extends Tower {
 	var pos: CellPosition = new CellPosition(15, 10)
 
@@ -9,7 +12,7 @@ class ProtoTower extends Tower {
 		
 	}
 
-	def render(g: Graphics2D): Unit = {
+	override def render(g: Graphics2D): Unit = {
 		val s:Image = SpriteLoader.fromResource("tour.png")
 		val sPos = pos.toScreenPosition
 		g.drawImage(s, new AffineTransform(0.1, 0, 0, 0.1, sPos.x-40, sPos.y-40), null)	
