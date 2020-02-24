@@ -27,6 +27,10 @@ class AttackPhase extends Level { outer =>
 	var entities: Array[Entity] = Array()
 
 	override def tick(running_for: Double, delta: Double): Unit = {
+		if (GameStatus.health <= 0) {
+			GamePanel.changeLevel("LoseMenu")
+		}
+
 		time += delta
 
 		while (wave.length > 0 && wave.head._1 * 1000 <= time) {
@@ -37,7 +41,11 @@ class AttackPhase extends Level { outer =>
 		}
 
 		for (e <- entities)
-			e.tick(running_for, delta)
+		e.tick(running_for, delta)
+
+		if (waves.length == 0 && entities.length == 0) {
+			GamePanel.changeLevel("WinMenu")
+		}
 	}
 
 	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
