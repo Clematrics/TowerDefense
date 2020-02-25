@@ -30,8 +30,14 @@ abstract class Timer extends Publisher {
 			var delta        = (current_time - last_tick_time) / 1000000.0
 			publish(Tick(timer, running_for, delta))
 			last_tick_time = current_time
+			action(running_for, delta)
+			if (_once) {
+				run = false
+			}
 		}
 	}
+
+	def action(running_for: Double, delta: Double) = {}
 
 	private var _interval = 1000
 	def interval:Int = _interval
@@ -45,6 +51,12 @@ abstract class Timer extends Publisher {
 	def run_=(f:Boolean):Unit = {
 		_run = f
 		runStop(f)
+	}
+
+	private var _once = false
+	def once:Boolean = _once
+	def once_=(f:Boolean):Unit = {
+		_once = f
 	}
 
 	private def runStop(f:Boolean) = f match {

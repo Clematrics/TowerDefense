@@ -12,40 +12,41 @@ object GamePanel extends Panel {
 	preferredSize = (1280, 720)
 	focusable = true
 
+	reactions += {
+		case _: FocusLost => repaint()
+	}
+
+	val ps = List(mouse.moves, mouse.clicks, keys)
+
+	var lvl: Level = new MainMenu
+	lvl.listenTo(ps: _*)
+
 	var running_for = 0.0
 	var delta       = 0.0
 	val timer = new Timer {
 		interval = 16
 		run = true
-	}
-
-	val ps = List(mouse.moves, mouse.clicks, keys)
-	listenTo(timer)
-	reactions += {
-		case Tick(_, t, d) =>
-			running_for = t
+		override def action(r: Double, d: Double) = {
+			running_for = r
 			delta       = d
-			lvl.tick(t, d)
+			lvl.tick(r, d)
 			repaint()
-		case _: FocusLost => repaint()
+		}
 	}
-
-	var gameStatus = GameStatus
-	var lvl: Level = new MainMenu
-	lvl.listenTo(ps: _*)
 
 	def changeLevel(levelName: String) {
 		lvl.deafTo(ps: _*)
 		val constr = Class.forName(levelName).getConstructor()
 		lvl = constr.newInstance().asInstanceOf[Level]
 		repaint()
-		val t = new javax.swing.Timer(50, new java.awt.event.ActionListener {
-			def actionPerformed(x: java.awt.event.ActionEvent): Unit = {
+		new Timer {
+			interval = 50
+			once = true
+			run = true
+			override def action(r: Double, d: Double) = {
 				lvl.listenTo(ps: _*)
 			}
-		})
-		t.setRepeats(false)
-		t.start()
+		}
 	}
 
 	override def paintComponent(g: Graphics2D) {
