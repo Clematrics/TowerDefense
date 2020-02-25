@@ -11,8 +11,7 @@ import scala.collection.mutable.ArrayBuffer
 class AttackPhase extends View { outer =>
 	val r = scala.util.Random
 	var time = -5.0
-	var wave: ArrayBuffer[Tuple3[Double, Int, String]] = ArrayBuffer(GameStatus.map.wave: _*)
-	var entities: ArrayBuffer[Entity] = ArrayBuffer()
+	var wave: ArrayBuffer[Tuple3[Double, Int, String]] = ArrayBuffer(Game.map.wave: _*)
 
 	reactions += {
 		case MouseMoved(_, point, _) =>
@@ -32,7 +31,7 @@ class AttackPhase extends View { outer =>
 	)
 
 	override def tick(running_for: Double, delta: Double): Unit = {
-		if (GameStatus.health <= 0) {
+		if (Game.health <= 0) {
 			GamePanel.changeView("LoseMenu")
 		}
 
@@ -47,40 +46,27 @@ class AttackPhase extends View { outer =>
 			if (enemy.isInstanceOf[MovingEnemy]) {
 				val menemy = enemy.asInstanceOf[MovingEnemy]
 				//Random choice of the target on the portal segment for spawn location
-				val cp = GameStatus.map.checkpoints(i)
+				val cp = Game.map.checkpoints(i)
 				menemy.pos = new CellPoint(cp.a.x + r.nextFloat * (cp.b.x - cp.a.x), cp.a.y + r.nextFloat * (cp.b.y - cp.a.y))
 				menemy.targetedCheckpoint = cp.next
 
 				//Random choice of the target on the portal segment for destination
-				val cpp = GameStatus.map.checkpoints(cp.next)
+				val cpp = Game.map.checkpoints(cp.next)
 				menemy.targetedCellPoint = new CellPoint(cpp.a.x + r.nextFloat * (cpp.b.x - cpp.a.x), cpp.a.y + r.nextFloat * (cpp.b.y - cpp.a.y))
 			}
 
-			entities += enemy.asInstanceOf[Entity]
+			Game.entities += enemy.asInstanceOf[Entity]
 			wave.remove(0)
 		}
 
-		for (e <- entities)
+		for (e <- Game.entities)
 			e.tick(running_for, delta)
 
-		entities = entities.filter((p: Entity) => p.valid)
+		Game.entities = Game.entities.filter((p: Entity) => p.valid)
 
-		if (wave.length == 0 && entities.length == 0) {
+		if (wave.length == 0 && Game.entities.length == 0) {
 			GamePanel.changeView("WinMenu")
 		}
-	}
-
-	/**
-	  * This function finds all enemies near the specified position and within the
-	  * given radius.
-	  *
-	  * @param pos Center of the search
-	  * @param radius Radius of view
-	  * @return An array of Enemy objects. Note that the enemies that are found are instances of MovingEnemy at least.
-	  */
-	def getEnemiesAround(pos: CellPoint, radius: Double): Array[Enemy] = {
-		return 	entities.filter(e => e.isInstanceOf[MovingEnemy]
-				&& pos.distance(e.asInstanceOf[MovingEnemy].pos) <= radius).map(x => x.asInstanceOf[Enemy]).toArray[Enemy]
 	}
 
 	/**
@@ -92,8 +78,8 @@ class AttackPhase extends View { outer =>
 	  */
 	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
 		if (debugMode) {
-			g.drawImage(GameStatus.map.mapImg, new AffineTransform(24, 0, 0, 24, 0, 0), null)
-			for(cp <- GameStatus.map.checkpoints) {
+			g.drawImage(Game.map.mapImg, new AffineTransform(24, 0, 0, 24, 0, 0), null)
+			for(cp <- Game.map.checkpoints) {
 				val stroke = new BasicStroke(2)
 				g.setStroke(stroke)
 				g.setColor(new Color(255, 0, 255, 255))
@@ -103,7 +89,7 @@ class AttackPhase extends View { outer =>
 			}
 		}
 
-		for(e <- entities) {
+		for(e <- Game.entities) {
 			e.render(g)
 		}
 
@@ -114,7 +100,7 @@ class AttackPhase extends View { outer =>
 		g.setColor(Color.BLACK)
 		g.fillRect(1220, 100, 40, 600)
 		g.setColor(Color.RED)
-		g.fillRect(1220, 100 + ((100 - GameStatus.health) * 600 / 100), 40, GameStatus.health * 600 / 100)
+		g.fillRect(1220, 100 + ((100 - Game.health) * 600 / 100), 40, Game.health * 600 / 100)
 
 		if (debugMode) {
 			g.setColor(Color.PINK)

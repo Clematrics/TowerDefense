@@ -57,8 +57,8 @@ class DefensePhase extends View { outer =>
 
 	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
 		if (debugMode) {
-			g.drawImage(GameStatus.map.mapImg, new AffineTransform(24, 0, 0, 24, 0, 0), null)
-			for(cp <- GameStatus.map.checkpoints) {
+			g.drawImage(Game.map.mapImg, new AffineTransform(24, 0, 0, 24, 0, 0), null)
+			for(cp <- Game.map.checkpoints) {
 				val stroke = new BasicStroke(2)
 				g.setStroke(stroke)
 				g.setColor(new Color(255, 0, 255, 255))
@@ -74,9 +74,9 @@ class DefensePhase extends View { outer =>
 			g.fillRect(mousePos.x.toInt * 24, mousePos.y.toInt * 24, 24, 24)
 		}
 
-		val gold = SpriteLoader.fromString(f"Gold : ${GameStatus.gold}", 120, 30, 30)
+		val gold = SpriteLoader.fromString(f"Gold : ${Game.gold}", 120, 30, 30)
 		g.drawImage(gold, new AffineTransform(1, 0, 0, 1, 1155, 90), null)
-		val exp = SpriteLoader.fromString(f"Exp : ${GameStatus.experience}", 120, 30, 30)
+		val exp = SpriteLoader.fromString(f"Exp : ${Game.experience}", 120, 30, 30)
 		g.drawImage(exp, new AffineTransform(1, 0, 0, 1, 1155, 140), null)
 
 		for(b <- buttons) {

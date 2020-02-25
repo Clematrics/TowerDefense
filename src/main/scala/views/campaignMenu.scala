@@ -27,7 +27,7 @@ class CampaignMenu extends View { outer =>
 				// println(f"$i position $position")
 				sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 				action = () => {
-					GameStatus.map = map
+					Game.map = map
 					GamePanel.changeView("DefensePhase")
 				}
 			}

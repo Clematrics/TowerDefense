@@ -40,15 +40,15 @@ trait MovingEnemy extends Enemy {
 	var pos: CellPoint = new CellPoint(0, 0)
 
 	def tick(running_for: Double, delta: Double) : Unit = {
-		var cp = GameStatus.map.checkpoints(targetedCheckpoint)
+		var cp = Game.map.checkpoints(targetedCheckpoint)
 		if (pos.distance(targetedCellPoint) <= speed) {
 			targetedCheckpoint = cp.next
 			if (targetedCheckpoint == -1) {
-				GameStatus.health = (GameStatus.health - 20) max 0
+				Game.health = (Game.health - 20) max 0
 				valid = false
 				return
 			}
-			cp = GameStatus.map.checkpoints(targetedCheckpoint)
+			cp = Game.map.checkpoints(targetedCheckpoint)
 			val r = scala.util.Random
 			targetedCellPoint = cp.a + new CellPoint(r.nextFloat, r.nextFloat) * (cp.b - cp.a)
 		}
