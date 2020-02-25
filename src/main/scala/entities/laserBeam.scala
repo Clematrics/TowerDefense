@@ -11,7 +11,6 @@ class LaserBeam(d: Double, me: MovingEnemy, t: Tower) extends Entity {
 
     def tick(running_for: Double, delta: Double) = {
         if (bornTime + 400 < running_for)
-			println("deleted")
             valid = false
     }
 
@@ -21,6 +20,5 @@ class LaserBeam(d: Double, me: MovingEnemy, t: Tower) extends Entity {
         val sa = a.toScreenPosition
         val sb = b.toScreenPosition
 		g.drawLine(sa.x, sa.y, sb.x, sb.y)
-		println("calledS")
     }
 }
