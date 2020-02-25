@@ -29,7 +29,10 @@ class ArmedTower extends RadiusTower(3, 1, 5) {
 	}
 
 	def tick(running_for: Double, delta: Double) : Unit = {
-		var enemiesNear : Array[Enemy] = GameStatus.
+		var enemiesNear : Array[Enemy] = Game.getEnemiesAround(pos, radius)
+		
+		for (e <- enemiesNear)
+			e.takeDamage(pow)
 	}
 
 	override def render(g: Graphics2D): Unit = {
@@ -41,11 +44,14 @@ class ArmedTower extends RadiusTower(3, 1, 5) {
 
 class LaserTower extends RadiusTower(3, 2, 20) {
 	def getName(): String = {
-		return "Armed Tower"
+		return "Laser Tower"
 	}
 
 	def tick(running_for: Double, delta: Double) : Unit = {
+		var enemiesNear : Array[Enemy] = Game.getEnemiesAround(pos, radius)
 		
+		for (e <- enemiesNear)
+			e.takeDamage(pow)
 	}
 
 	override def render(g: Graphics2D): Unit = {

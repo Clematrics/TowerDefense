@@ -26,7 +26,7 @@ class DefensePhase extends View { outer =>
 		},
 		new Button(new Point(1215, 290), new Dimension(120, 120)) {
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
-			sprite_front   = SpriteLoader.fromString("tower 1", 120, 120, 30)
+			sprite_front   = SpriteLoader.fromString("Blaster Tower", 120, 120, 30)
 			action = () => {
 				selectedTower = new Color(255, 255, 0, 255)
 			}
@@ -34,14 +34,14 @@ class DefensePhase extends View { outer =>
 		new Button(new Point(1215, 430), new Dimension(120, 120)) {
 			listenTo(outer)
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
-			sprite_front   = SpriteLoader.fromString("tower 2", 120, 120, 30)
+			sprite_front   = SpriteLoader.fromString("Laser Tower", 120, 120, 30)
 			action = () => {
 				selectedTower = new Color(0, 255, 255, 255)
 			}
 		},
 		new Button(new Point(1215, 570), new Dimension(120, 120)) {
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
-			sprite_front   = SpriteLoader.fromString("tower 3", 120, 120, 30)
+			sprite_front   = SpriteLoader.fromString("Chess Tower", 120, 120, 30)
 			action = () => {
 				selectedTower = new Color(255, 0, 255, 255)
 			}
