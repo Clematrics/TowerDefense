@@ -7,16 +7,20 @@ class LaserBeam(d: Double, me: MovingEnemy, t: Tower) extends Entity {
     var b: CellPoint = t.pos
 	var bornTime: Double = d
 
+	println("created")
+
     def tick(running_for: Double, delta: Double) = {
-        if (running_for - bornTime >= 400)
+        if (bornTime + 400 < running_for)
+			println("deleted")
             valid = false
     }
 
-    def render(g: Graphics2D, running_for: Double, delta: Double) = {
+    override def render(g: Graphics2D) = {
         g.setColor(Color.RED)
         g.setStroke(new BasicStroke(10))
         val sa = a.toScreenPosition
         val sb = b.toScreenPosition
-        g.drawLine(sa.x, sa.y, sb.x, sb.y)
+		g.drawLine(sa.x, sa.y, sb.x, sb.y)
+		println("calledS")
     }
 }

@@ -37,7 +37,7 @@ class ArmedTower extends RadiusTower(6, 1000, 5) {
 
 			for (e <- enemiesNear) {
 				e.takeDamage(pow)
-				Game.entities.+=(new Particle(e.asInstanceOf[MovingEnemy], this))
+				Game.entities += new Particle(e.asInstanceOf[MovingEnemy], this)
 			}
 			lastShot = running_for
 		}
@@ -63,7 +63,7 @@ class LaserTower extends RadiusTower(6, 2000, 20) {
 
 			for (e <- enemiesNear) {
 				e.takeDamage(pow)
-				Game.entities.+=(new LaserBeam(running_for, e.asInstanceOf[MovingEnemy], this))
+				Game.entities += new LaserBeam(running_for, e.asInstanceOf[MovingEnemy], this)
 			}
 			lastShot = running_for
 		}
