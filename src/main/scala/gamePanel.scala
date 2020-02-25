@@ -14,6 +14,7 @@ object GamePanel extends Panel {
 	focusable = true
 	var displayFramerate = false
 
+	listenTo(keys)
 	reactions += {
 		case Tick(t, d) =>
 			running_for = t
