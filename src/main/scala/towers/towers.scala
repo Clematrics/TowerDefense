@@ -32,7 +32,7 @@ class ArmedTower extends RadiusTower(3, 1000, 5) {
 	def tick(running_for: Double, delta: Double) : Unit = {
 		if (lastShot + reload < running_for) {
 			var enemiesNear : Array[Enemy] = Game.getEnemiesAround(pos, radius)
-			
+
 			for (e <- enemiesNear) {
 				e.takeDamage(pow)
 				Game.entities.+=(new Particle(e.asInstanceOf[MovingEnemy], this))
