@@ -9,6 +9,8 @@ abstract class RadiusTower(radiusValue:Int, reloadTime:Double, power:Int) extend
 }
 
 class ProtoTower extends Tower {
+	cost = 15
+
 	def getName(): String = {
 		return "Chess Tower"
 	}
@@ -23,7 +25,8 @@ class ProtoTower extends Tower {
 	}
 }
 
-class ArmedTower extends RadiusTower(3, 1000, 5) {
+class ArmedTower extends RadiusTower(6, 1000, 5) {
+	cost = 10
 	def getName(): String = {
 		return "Armed Tower"
 	}
@@ -47,7 +50,9 @@ class ArmedTower extends RadiusTower(3, 1000, 5) {
 	}
 }
 
-class LaserTower extends RadiusTower(3, 2000, 20) {
+class LaserTower extends RadiusTower(6, 2000, 20) {
+	cost = 20
+
 	def getName(): String = {
 		return "Laser Tower"
 	}

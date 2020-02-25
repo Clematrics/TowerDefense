@@ -15,10 +15,11 @@ class DefensePhase extends View { outer =>
 
 			val mousePos = mouseCursorPosition.toCellPoint
 			if (mousePos.x <= 45 - 1 && mousePos.y <= 30 - 1) {
-				if (Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == EmptyTowerCell) {
+				if (Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == EmptyTowerCell && Game.gold >= towerToAdd.cost) {
 					towerToAdd.pos = mousePos
 					Game.entities += towerToAdd
 					Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) = OccupiedTowerCell
+					Game.gold -= towerToAdd.cost
 					val towerName = towerToAdd.getClass.getName
 					towerToAdd = Class.forName(towerName).getConstructor().newInstance().asInstanceOf[Tower]
 				}
@@ -90,7 +91,7 @@ class DefensePhase extends View { outer =>
 
 		val mousePos = mouseCursorPosition.toCellPoint
 		if (mousePos.x <= 45 - 1 && mousePos.y <= 30 - 1) {
-			if (Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == EmptyTowerCell) {
+			if (Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == EmptyTowerCell && Game.gold >= towerToAdd.cost) {
 				g.setColor(selectedTower)
 				towerToAdd.pos = mousePos
 				towerToAdd.render(g)

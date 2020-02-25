@@ -9,7 +9,6 @@ object Game {
 	var gold = 100
 	var experience = 0
 
-	var mapName = ""
 	var map: Map = null
 	var entities: ArrayBuffer[Entity] = ArrayBuffer()
 
@@ -30,7 +29,7 @@ object Game {
 		health = maxHealth
 		gold = 100
 		experience = 0
-		map = MapLoader.loadMap(mapName)
+		map = MapLoader.loadMap(Game.map.name)
 		entities = ArrayBuffer()
 	}
 }
