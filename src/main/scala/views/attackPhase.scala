@@ -23,7 +23,7 @@ class AttackPhase extends View { outer =>
 	val buttons : List[Button] = List(
 		new Button(new Point(1200, 40), new Dimension(150, 60)) {
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
-			sprite_front   = SpriteLoader.fromString("nevermind", 150, 60, 30)
+			sprite_front   = SpriteLoader.fromString("nevermind", 150, 30)
 			action = () => {
 				GamePanel.changeView("DefensePhase")
 			}

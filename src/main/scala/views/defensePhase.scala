@@ -31,14 +31,14 @@ class DefensePhase extends View { outer =>
 	val buttons : List[Button] = List(
 		new Button(new Point(1215, 40), new Dimension(120, 60)) {
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
-			sprite_front   = SpriteLoader.fromString("fight !", 120, 60, 30)
+			sprite_front   = SpriteLoader.fromString("fight !", 120, 30)
 			action = () => {
 				GamePanel.changeView("AttackPhase")
 			}
 		},
 		new Button(new Point(1215, 290), new Dimension(120, 120)) {
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
-			sprite_front   = SpriteLoader.fromString("Blaster Tower", 120, 120, 30)
+			sprite_front   = SpriteLoader.fromString("Blaster Tower", 120, 30)
 			action = () => {
 				selectedTower = new Color(255, 255, 0, 255)
 				towerToAdd = new ArmedTower
@@ -47,7 +47,7 @@ class DefensePhase extends View { outer =>
 		new Button(new Point(1215, 430), new Dimension(120, 120)) {
 			listenTo(outer)
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
-			sprite_front   = SpriteLoader.fromString("Laser Tower", 120, 120, 30)
+			sprite_front   = SpriteLoader.fromString("Laser Tower", 120, 30)
 			action = () => {
 				selectedTower = new Color(0, 255, 255, 255)
 				towerToAdd = new LaserTower
@@ -55,7 +55,7 @@ class DefensePhase extends View { outer =>
 		},
 		new Button(new Point(1215, 570), new Dimension(120, 120)) {
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
-			sprite_front   = SpriteLoader.fromString("Chess Tower", 120, 120, 30)
+			sprite_front   = SpriteLoader.fromString("Chess Tower", 120, 30)
 			action = () => {
 				selectedTower = new Color(255, 0, 255, 255)
 				towerToAdd = new ProtoTower
@@ -63,7 +63,7 @@ class DefensePhase extends View { outer =>
 		},
 		new Button(new Point(1215, 680), new Dimension(120, 60)) {
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
-			sprite_front   = SpriteLoader.fromString("go back", 120, 60, 30)
+			sprite_front   = SpriteLoader.fromString("go back", 120, 30)
 			action = () => {
 				GamePanel.changeView("CampaignMenu")
 			}
@@ -106,10 +106,10 @@ class DefensePhase extends View { outer =>
 			}
 		}
 
-		val gold = SpriteLoader.fromString(f"Gold : ${Game.gold}", 120, 30, 30)
-		g.drawImage(gold, new AffineTransform(1, 0, 0, 1, 1155, 90), null)
-		val exp = SpriteLoader.fromString(f"Exp : ${Game.experience}", 120, 30, 30)
-		g.drawImage(exp, new AffineTransform(1, 0, 0, 1, 1155, 140), null)
+		val gold = SpriteLoader.fromString(f"Gold : ${Game.gold}", 120, 30)
+		g.drawImage(gold, new AffineTransform(1, 0, 0, 1, 1160, 90), null)
+		val exp = SpriteLoader.fromString(f"Exp : ${Game.experience}", 120, 30)
+		g.drawImage(exp, new AffineTransform(1, 0, 0, 1, 1160, 180), null)
 
 		for(b <- buttons) {
 			b.render(g, running_for, delta)

@@ -24,7 +24,6 @@ class CampaignMenu extends View { outer =>
 		val arr: ArrayBuffer[Button] = new ArrayBuffer
 		for((map,i) <- campaign.rounds.view.zipWithIndex) {
 			arr += new Button(new Point(marginX + offsetX * (i % inARow), marginY + offsetY * (i / inARow)), new Dimension(150, 150)) {
-				// println(f"$i position $position")
 				sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 				action = () => {
 					Game.map = map
@@ -40,14 +39,14 @@ class CampaignMenu extends View { outer =>
 	val buttons : List[Button] = List(
 		new Button(new Point(80, 40), new Dimension(150, 60)) {
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
-			sprite_front   = SpriteLoader.fromString("go back", 150, 60, 30)
+			sprite_front   = SpriteLoader.fromString("go back", 150, 30)
 			action = () => {
 				GamePanel.changeView("MainMenu")
 			}
 		},
 		new Button(new Point(60, 360), new Dimension(100, 500)) {
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
-			sprite_front   = SpriteLoader.fromString("<", 100, 500, 100)
+			sprite_front   = SpriteLoader.fromString("<", 100, 100)
 			action = () => {
 				campaign = Campaigns.previousCampaign
 				campaignButtons = loadCampaignButtons()
@@ -55,7 +54,7 @@ class CampaignMenu extends View { outer =>
 		},
 		new Button(new Point(1220, 360), new Dimension(100, 500)) {
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
-			sprite_front   = SpriteLoader.fromString(">", 100, 500, 100)
+			sprite_front   = SpriteLoader.fromString(">", 100, 100)
 			action = () => {
 				campaign = Campaigns.nextCampaign
 				campaignButtons = loadCampaignButtons()
@@ -65,8 +64,8 @@ class CampaignMenu extends View { outer =>
 
 
 	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
-		val spriteTitle = SpriteLoader.fromString(campaign.name, 1280, 100, 57)
-		g.drawImage(spriteTitle, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		val spriteTitle = SpriteLoader.fromString(campaign.name, 1280, 57)
+		g.drawImage(spriteTitle, new AffineTransform(1, 0, 0, 1, 640 - spriteTitle.getWidth(null) / 2, 0), null)
 		for(b <- buttons) {
 			b.render(g, running_for, delta)
 		}

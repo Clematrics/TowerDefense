@@ -6,6 +6,7 @@ import java.text.AttributedCharacterIterator
 import java.awt.font.LineBreakMeasurer
 import java.text.AttributedString
 import java.awt.font.TextAttribute
+import scala.concurrent.duration.`package`.fromNow
 
 /**
   * This class contains several auxillary rendering functions.
@@ -27,36 +28,13 @@ object SpriteLoader {
 	  *
 	  * Inspired from https://stackoverflow.com/questions/8281886/stretch-a-jlabel-text/8282330#8282330
 	  *
-	  * @param str		The string to draw
-	  * @param width	Width of the area
-	  * @param height	Height of the area
-	  * @param fontsize	Size of the font
+	  * @param str		      The string to draw
+	  * @param breakWidthIn   Width of the area before breaking the line
+	  * @param fontsize	      Size of the font
 	  * @return The buffered image containing the specified text
 	  */
-	def fromString(str: String, width: Int, height: Int, fontsize: Int): Image = {
+	def fromString(str: String, breakWidthIn: Int, fontsize: Int): Image = {
 		val font = Font.createFont(Font.TRUETYPE_FONT, getClass.getResourceAsStream("/Some Time Later.otf")).deriveFont(Font.PLAIN, fontsize)
-		val frc = new FontRenderContext(null, true, true)
-		val layout = new TextLayout(str, font, frc)
-		val r = layout.getPixelBounds(null, 0, 0)
-		val bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
-		val g2d = bi.getGraphics.asInstanceOf[Graphics2D]
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
-		g2d.setColor(new Color(0, 0, 0, 0))
-		g2d.fillRect(0, 0, bi.getWidth(), bi.getHeight())
-		g2d.setColor(new Color(255, 255, 255))
-		layout.draw(g2d, (width - r.width) / 2  - r.x, (height - r.height) / 2 - r.y)
-		g2d.dispose()
-		return bi
-	}
-
-	/**
-	  * Draws a help message
-	  *
-	  * @param str The text of the tip
-	  * @return	A buffered image with the text
-	  */
-	def tooltip(str: String): Image = {
-		val font = Font.createFont(Font.TRUETYPE_FONT, getClass.getResourceAsStream("/Some Time Later.otf")).deriveFont(Font.PLAIN, 20)
 		val frc = new FontRenderContext(null, true, true)
 
 		// inspired from https://docs.oracle.com/javase/tutorial/2d/text/drawmulstring.html
@@ -68,7 +46,7 @@ object SpriteLoader {
 		val lineMeasurer = new LineBreakMeasurer(paragraph, frc)
 
 		// Set break width to width of Component.
-		val breakWidth = 200.0f
+		val breakWidth = breakWidthIn.toFloat
 		var width      = 0.0f
 		var height     = 0.0f
 
@@ -101,5 +79,15 @@ object SpriteLoader {
 
 		g2d.dispose()
 		return bi
+	}
+
+	/**
+	  * Draws a help message
+	  *
+	  * @param str The text of the tip
+	  * @return	A buffered image with the text
+	  */
+	def tooltip(str: String): Image = {
+		return fromString(str, 200, 20)
 	}
 }
