@@ -1,5 +1,4 @@
 import java.awt._
-import java.awt.geom.{AffineTransform, Point2D}
 import scala.math.{cos, sin, atan}
 
 /**
@@ -32,8 +31,6 @@ trait LivingEnemy extends Enemy {
 /**
   * The MovingEnemy trait represents an enemy with a speed that can
   * move across the board.
-  *
-  * speed : The speed of the enemy. Each tick of the clock (60 times per second or so), the enemy will go further by this unit of distance.
   */
 trait MovingEnemy extends Enemy {
 	var speed: Double = 0.04
