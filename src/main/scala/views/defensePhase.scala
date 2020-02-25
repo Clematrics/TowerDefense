@@ -12,13 +12,16 @@ class DefensePhase extends View { outer =>
 			for(b <- buttons) b.onMoved(point)
 		case MouseReleased(_, point, _, _, _) =>
 			for(b <- buttons) b.onRelease(point)
-			
+
 			val mousePos = mouseCursorPosition.toCellPoint
 			if (mousePos.x <= 45 - 1 && mousePos.y <= 30 - 1) {
-				towerToAdd.pos = mousePos
-				Game.entities.+=(towerToAdd)
-				selectedTower = new Color(255, 255, 0, 255)
-				towerToAdd = new ArmedTower
+				if (Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == EmptyTowerCell) {
+					towerToAdd.pos = mousePos
+					Game.entities += towerToAdd
+					Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) = OccupiedTowerCell
+					val towerName = towerToAdd.getClass.getName
+					towerToAdd = Class.forName(towerName).getConstructor().newInstance().asInstanceOf[Tower]
+				}
 			}
 	}
 
@@ -82,10 +85,25 @@ class DefensePhase extends View { outer =>
 			}
 		}
 
+		for (t <- Game.entities)
+			t.render(g)
+
 		val mousePos = mouseCursorPosition.toCellPoint
 		if (mousePos.x <= 45 - 1 && mousePos.y <= 30 - 1) {
-			g.setColor(selectedTower)
-			g.fillRect(mousePos.x.toInt * 24, mousePos.y.toInt * 24, 24, 24)
+			if (Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == EmptyTowerCell) {
+				g.setColor(selectedTower)
+				towerToAdd.pos = mousePos
+				towerToAdd.render(g)
+			}
+			else {
+				val stroke = new BasicStroke(8)
+				g.setStroke(stroke)
+				g.setColor(Color.RED)
+				val x = mousePos.x.toInt * 24
+				val y = mousePos.y.toInt * 24
+				g.drawLine(x, y, x + 24, y + 24)
+				g.drawLine(x + 24, y, x, y + 24)
+			}
 		}
 
 		val gold = SpriteLoader.fromString(f"Gold : ${Game.gold}", 120, 30, 30)

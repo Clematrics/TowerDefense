@@ -64,7 +64,7 @@ class AttackPhase extends View { outer =>
 
 		Game.entities = Game.entities.filter((p: Entity) => p.valid)
 
-		if (wave.length == 0 && Game.entities.length == 0) {
+		if (wave.length == 0 && Game.entities.filter(_.isInstanceOf[Enemy]).length == 0) {
 			GamePanel.changeView("WinMenu")
 		}
 	}

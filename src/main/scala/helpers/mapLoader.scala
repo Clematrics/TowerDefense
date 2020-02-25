@@ -44,7 +44,7 @@ object MapLoader {
 			for (j <- 0 until 30)
 				bi.getRGB(i, j) match {
 					case 0xFF000000 => {
-						map(i)(j) = TowerCell
+						map(i)(j) = EmptyTowerCell
 					}
 					case 0xFFFFFFFF => {
 						map(i)(j) = Path

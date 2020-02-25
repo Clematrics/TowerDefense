@@ -2,7 +2,8 @@ import java.awt.Image
 
 sealed trait CellType
 case object Path extends CellType
-case object TowerCell extends CellType
+case object EmptyTowerCell extends CellType
+case object OccupiedTowerCell extends CellType
 
 /**
   * A map in a game of TowerDefense.
