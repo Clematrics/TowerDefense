@@ -1,6 +1,7 @@
 import scala.swing.event._
 import java.awt.{Color, Dimension, Graphics2D, Point}
 import java.awt.geom.AffineTransform
+import scala.collection.mutable._
 
 class WinMenu extends View { outer =>
 	reactions += {
@@ -16,6 +17,8 @@ class WinMenu extends View { outer =>
 			sprite_front   = SpriteLoader.fromString("Explode more monsters", 800, 160, 69)
 			action = () => {
 				GamePanel.changeView("CampaignMenu")
+				Game.map = MapLoader.loadMap(Game.map.name)
+				Game.entities = ArrayBuffer()
 			}
 		}
 	)
