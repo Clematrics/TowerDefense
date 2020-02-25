@@ -3,7 +3,7 @@ import java.awt.{Color, Dimension, Graphics2D, Point}
 import java.awt.geom.AffineTransform
 import java.awt.BasicStroke
 
-class DefensePhase extends Level { outer =>
+class DefensePhase extends View { outer =>
 	var mouseCursorPosition = new ScreenPoint(0, 0)
 
 	reactions += {
@@ -21,7 +21,7 @@ class DefensePhase extends Level { outer =>
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front   = SpriteLoader.fromString("fight !", 120, 60, 30)
 			action = () => {
-				GamePanel.changeLevel("AttackPhase")
+				GamePanel.changeView("AttackPhase")
 			}
 		},
 		new Button(new Point(1215, 290), new Dimension(120, 120)) {
@@ -50,7 +50,7 @@ class DefensePhase extends Level { outer =>
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front   = SpriteLoader.fromString("go back", 120, 60, 30)
 			action = () => {
-				GamePanel.changeLevel("CampaignMenu")
+				GamePanel.changeView("CampaignMenu")
 			}
 		}
 	)

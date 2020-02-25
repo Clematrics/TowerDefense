@@ -5,7 +5,7 @@ import scala.swing.event.KeyTyped
 /**
 	* Abstract class representing a level of the game
 	*/
-abstract class Level extends Publisher {
+abstract class View extends Publisher {
 	var debugMode = false
 	reactions += {
 		case KeyTyped(_, 'd', _, _) =>

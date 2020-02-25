@@ -4,7 +4,7 @@ import java.awt.{Dimension, Graphics2D, Point}
 /**
   * This class handles the startup menu of this application.
   */
-class MainMenu extends Level { outer =>
+class MainMenu extends View { outer =>
 	reactions += {
 		case MouseMoved(_, point, _) =>
 			for(b <- buttons) b.onMoved(point)
@@ -17,7 +17,7 @@ class MainMenu extends Level { outer =>
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front   = SpriteLoader.fromString("play & prove yourself !", 800, 160, 69)
 			action = () => {
-				GamePanel.changeLevel("CampaignMenu")
+				GamePanel.changeView("CampaignMenu")
 			}
 		},
 		new Button(new Point(640, 600), new Dimension(800, 160)) {

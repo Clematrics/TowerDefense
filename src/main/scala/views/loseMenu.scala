@@ -2,7 +2,7 @@ import scala.swing.event._
 import java.awt.{Color, Dimension, Graphics2D, Point}
 import java.awt.geom.AffineTransform
 
-class WinMenu extends Level { outer =>
+class LoseMenu extends View { outer =>
 	reactions += {
 		case MouseMoved(_, point, _) =>
 			for(b <- buttons) b.onMoved(point)
@@ -13,15 +13,15 @@ class WinMenu extends Level { outer =>
 	val buttons : List[Button] = List(
 		new Button(new Point(640, 420), new Dimension(800, 160)) {
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
-			sprite_front   = SpriteLoader.fromString("Explode more monsters", 800, 160, 69)
+			sprite_front   = SpriteLoader.fromString("Retry", 800, 160, 69)
 			action = () => {
-				GamePanel.changeLevel("CampaignMenu")
+				GamePanel.changeView("DefensePhase")
 			}
 		}
 	)
 
 	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
-		val loseImg = SpriteLoader.fromString("You win!", 800, 160, 69)
+		val loseImg = SpriteLoader.fromString("You lose!", 800, 160, 69)
 		g.drawImage(loseImg, new AffineTransform(1, 0, 0, 1, 640 - 400, 300 - 80), null)
 
 		for(b <- buttons) {

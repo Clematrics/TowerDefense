@@ -28,7 +28,7 @@ object GamePanel extends Panel {
 
 	val ps = List(mouse.moves, mouse.clicks, keys)
 
-	var lvl: Level = new MainMenu
+	var lvl: View = new MainMenu
 	lvl.listenTo(ps: _*)
 
 	var running_for = 0.0
@@ -39,10 +39,10 @@ object GamePanel extends Panel {
 	}
 	listenTo(timer)
 
-	def changeLevel(levelName: String) {
+	def changeView(levelName: String) {
 		lvl.deafTo(ps: _*)
 		val constr = Class.forName(levelName).getConstructor()
-		lvl = constr.newInstance().asInstanceOf[Level]
+		lvl = constr.newInstance().asInstanceOf[View]
 		repaint()
 		new Delay(50, () => lvl.listenTo(ps: _*)) { run = true }
 	}

@@ -8,7 +8,7 @@ import scala.collection.mutable.ArrayBuffer
   * This class is the phase of the game (seen as a Level class) where
   * enemies attack and towers defend the player.
   */
-class AttackPhase extends Level { outer =>
+class AttackPhase extends View { outer =>
 	val r = scala.util.Random
 	var time = -5.0
 	var wave: ArrayBuffer[Tuple3[Double, Int, String]] = ArrayBuffer(GameStatus.map.wave: _*)
@@ -26,14 +26,14 @@ class AttackPhase extends Level { outer =>
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front   = SpriteLoader.fromString("nevermind", 150, 60, 30)
 			action = () => {
-				GamePanel.changeLevel("DefensePhase")
+				GamePanel.changeView("DefensePhase")
 			}
 		}
 	)
 
 	override def tick(running_for: Double, delta: Double): Unit = {
 		if (GameStatus.health <= 0) {
-			GamePanel.changeLevel("LoseMenu")
+			GamePanel.changeView("LoseMenu")
 		}
 
 		time += delta
@@ -66,7 +66,7 @@ class AttackPhase extends Level { outer =>
 		entities = entities.filter((p: Entity) => p.valid)
 
 		if (wave.length == 0 && entities.length == 0) {
-			GamePanel.changeLevel("WinMenu")
+			GamePanel.changeView("WinMenu")
 		}
 	}
 

@@ -3,7 +3,7 @@ import java.awt.{Dimension, Graphics2D, Point}
 import scala.collection.mutable.ArrayBuffer
 import java.awt.geom.AffineTransform
 
-class CampaignMenu extends Level { outer =>
+class CampaignMenu extends View { outer =>
 	reactions += {
 		case MouseMoved(_, point, _) =>
 			for(b <- buttons) b.onMoved(point)
@@ -28,7 +28,7 @@ class CampaignMenu extends Level { outer =>
 				sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 				action = () => {
 					GameStatus.map = map
-					GamePanel.changeLevel("DefensePhase")
+					GamePanel.changeView("DefensePhase")
 				}
 			}
 		}
@@ -42,7 +42,7 @@ class CampaignMenu extends Level { outer =>
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front   = SpriteLoader.fromString("go back", 150, 60, 30)
 			action = () => {
-				GamePanel.changeLevel("MainMenu")
+				GamePanel.changeView("MainMenu")
 			}
 		},
 		new Button(new Point(60, 360), new Dimension(100, 500)) {
