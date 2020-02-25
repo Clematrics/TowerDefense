@@ -16,9 +16,8 @@ class WinMenu extends View { outer =>
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front   = SpriteLoader.fromString("Explode more monsters", 800, 69)
 			action = () => {
+				Game.reset
 				GamePanel.changeView("CampaignMenu")
-				Game.map = MapLoader.loadMap(Game.map.name)
-				Game.entities = ArrayBuffer()
 			}
 		}
 	)

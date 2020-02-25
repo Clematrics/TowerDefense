@@ -11,7 +11,6 @@ object Game {
 
 	var mapName = ""
 	var map: Map = null
-	var towers = Array.ofDim[Tower](45, 30)
 	var entities: ArrayBuffer[Entity] = ArrayBuffer()
 
 	/**
@@ -25,5 +24,13 @@ object Game {
 	def getEnemiesAround(pos: CellPoint, radius: Double): Array[Enemy] = {
 		return 	entities.filter(e => e.isInstanceOf[MovingEnemy]
 				&& pos.distance(e.asInstanceOf[MovingEnemy].pos) <= radius).map(x => x.asInstanceOf[Enemy]).toArray[Enemy]
+	}
+
+	def reset(): Unit = {
+		health = maxHealth
+		gold = 100
+		experience = 0
+		map = MapLoader.loadMap(mapName)
+		entities = ArrayBuffer()
 	}
 }

@@ -16,9 +16,8 @@ class LoseMenu extends View { outer =>
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front   = SpriteLoader.fromString("Retry", 800, 69)
 			action = () => {
+				Game.reset
 				GamePanel.changeView("DefensePhase")
-				Game.map = MapLoader.loadMap(Game.map.name)
-				Game.entities = ArrayBuffer()
 			}
 		}
 	)

@@ -25,8 +25,7 @@ class AttackPhase extends View { outer =>
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front   = SpriteLoader.fromString("nevermind", 150, 30)
 			action = () => {
-				Game.map = MapLoader.loadMap(Game.map.name)
-				Game.entities = ArrayBuffer()
+				Game.reset
 				GamePanel.changeView("DefensePhase")
 			}
 		}
