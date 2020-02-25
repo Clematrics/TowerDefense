@@ -7,9 +7,10 @@ case object TowerCell extends CellType
 /**
   * A map in a game of TowerDefense.
   */
-class Map(nameIn: String, mapIn: Array[Array[CellType]], mapImgIn: Image, checkpointsIn: Array[Checkpoint], waveIn: Array[Tuple3[Double, Int, String]]) {
+class Map(nameIn: String, mapIn: Array[Array[CellType]], mapLayoutIn: Image, mapImgIn: Image, checkpointsIn: Array[Checkpoint], waveIn: Array[Tuple3[Double, Int, String]]) {
 	val name = nameIn
 	var map = mapIn
+	var mapLayout = mapLayoutIn
 	var mapImg = mapImgIn
 	var checkpoints = checkpointsIn
 	var wave = waveIn

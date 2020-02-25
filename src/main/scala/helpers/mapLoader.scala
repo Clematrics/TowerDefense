@@ -34,7 +34,7 @@ object MapLoader {
 		wave = wave.sortBy(_._1)
 
 		val map = Array.ofDim[CellType](45, 30)
-		val img = SpriteLoader.fromResource(str + ".png")
+		val imgLayout = SpriteLoader.fromResource(str + "Layout.png")
 		val bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB)
 		val g = bi.createGraphics
 		g.drawImage(img, 0, 0, null)
@@ -51,6 +51,8 @@ object MapLoader {
 					}
 				}
 
-		return new Map(name, map, img, checkpoints.toArray, wave.toArray)
+		val img = SpriteLoader.fromResource(str + "Background.png")
+
+		return new Map(name, map, imgLayout, img, checkpoints.toArray, wave.toArray)
 	}
 }
