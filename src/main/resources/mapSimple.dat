@@ -1,0 +1,17 @@
+mapSimple
+4
+0 4 0 12 1
+45 4 45 12 -1
+0 18 0 26 3
+45 18 45 26 -1
+10
+2 0 SphereEnemy
+4 0 SphereEnemy
+6 2 SphereEnemy
+8 2 SphereEnemy
+2 0 ProtoEnemy
+3 0 ProtoEnemy
+5 2 ProtoEnemy
+9 2 ProtoEnemy
+10 2 ProtoEnemy
+11 2 ProtoEnemy
