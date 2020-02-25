@@ -35,11 +35,11 @@ object MapLoader {
 
 		val map = Array.ofDim[CellType](45, 30)
 		val imgLayout = SpriteLoader.fromResource(str + "Layout.png")
-		val bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB)
+		val bi = new BufferedImage(imgLayout.getWidth(null), imgLayout.getHeight(null), BufferedImage.TYPE_INT_ARGB)
 		val g = bi.createGraphics
-		g.drawImage(img, 0, 0, null)
+		g.drawImage(imgLayout, 0, 0, null)
 		g.dispose
-		assert(img.getWidth(null) == 45 && img.getHeight(null) == 30)
+		assert(imgLayout.getWidth(null) == 45 && imgLayout.getHeight(null) == 30)
 		for (i <- 0 until 45)
 			for (j <- 0 until 30)
 				bi.getRGB(i, j) match {

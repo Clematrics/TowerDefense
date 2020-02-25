@@ -77,10 +77,10 @@ class AttackPhase extends View { outer =>
 	  * @param delta
 	  */
 	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
-		g.drawImage(Game.map.mapImg, new AffineTransform(24, 0, 0, 24, 0, 0), null)
+		g.drawImage(Game.map.mapImg, new AffineTransform(6, 0, 0, 6, 0, 0), null)
 
 		if (debugMode) {
-			g.drawImage(Game.map.mapLayoutImg, new AffineTransform(24, 0, 0, 24, 0, 0), null)
+			g.drawImage(Game.map.mapLayout, new AffineTransform(24, 0, 0, 24, 0, 0), null)
 			for(cp <- Game.map.checkpoints) {
 				val stroke = new BasicStroke(2)
 				g.setStroke(stroke)
