@@ -1,9 +1,13 @@
 import java.awt._
 import java.awt.geom.{AffineTransform, Point2D}
 
-class ProtoTower extends Tower {
-	var pos: CellPoint = new CellPoint(15, 10)
+abstract class RadiusTower(radiusValue:Int, reloadTime:Double, power:Int) extends Tower {
+  var radius = radiusValue
+  var reload = reloadTime
+  var pow = power
+}
 
+class ProtoTower extends Tower {
 	def getName(): String = {
 		return "Chess Tower"
 	}
@@ -19,9 +23,23 @@ class ProtoTower extends Tower {
 	}
 }
 
-class ArmedTower extends Tower {
-	var pos: CellPoint = new CellPoint(15, 10)
-	var radius:Double = 3
+class ArmedTower extends RadiusTower(3, 1, 5) {
+	def getName(): String = {
+		return "Armed Tower"
+	}
+
+	def tick(running_for: Double, delta: Double) : Unit = {
+		var enemiesNear : Array[Enemy] = GameStatus.
+	}
+
+	override def render(g: Graphics2D): Unit = {
+		val s:Image = SpriteLoader.fromResource("armedtour.png")
+		val sPos = pos.toScreenPosition
+		g.drawImage(s, new AffineTransform(0.1, 0, 0, 0.1, sPos.x-40, sPos.y-40), null)	
+	}
+}
+
+class LaserTower extends RadiusTower(3, 2, 20) {
 	def getName(): String = {
 		return "Armed Tower"
 	}
