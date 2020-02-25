@@ -48,12 +48,12 @@ class AttackPhase extends Level { outer =>
 				val menemy = enemy.asInstanceOf[MovingEnemy]
 				//Random choice of the target on the portal segment for spawn location
 				val cp = GameStatus.map.checkpoints(i)
-				menemy.pos = new CellPosition(cp.aX + r.nextFloat * (cp.bX - cp.aX), cp.aY + r.nextFloat * (cp.bY - cp.aY))
+				menemy.pos = new CellPoint(cp.a.x + r.nextFloat * (cp.b.x - cp.a.x), cp.a.y + r.nextFloat * (cp.b.y - cp.a.y))
 				menemy.targetedCheckpoint = cp.next
 
 				//Random choice of the target on the portal segment for destination
 				val cpp = GameStatus.map.checkpoints(cp.next)
-				menemy.targetedCellPoint = new CellPosition(cpp.aX + r.nextFloat * (cpp.bX - cpp.aX), cpp.aY + r.nextFloat * (cpp.bY - cpp.aY))
+				menemy.targetedCellPoint = new CellPoint(cpp.a.x + r.nextFloat * (cpp.b.x - cpp.a.x), cpp.a.y + r.nextFloat * (cpp.b.y - cpp.a.y))
 			}
 
 			entities += enemy.asInstanceOf[Entity]
@@ -78,8 +78,8 @@ class AttackPhase extends Level { outer =>
 	  * @param radius Radius of view
 	  * @return An array of Enemy objects. Note that the enemies that are found are instances of MovingEnemy at least.
 	  */
-	def getEnemiesAround(pos: CellPosition, radius: Double): Array[Enemy] = {
-		return 	entities.filter(e => e.isInstanceOf[MovingEnemy] 
+	def getEnemiesAround(pos: CellPoint, radius: Double): Array[Enemy] = {
+		return 	entities.filter(e => e.isInstanceOf[MovingEnemy]
 				&& pos.distance(e.asInstanceOf[MovingEnemy].pos) <= radius).map(x => x.asInstanceOf[Enemy]).toArray[Enemy]
 	}
 
@@ -97,7 +97,9 @@ class AttackPhase extends Level { outer =>
 				val stroke = new BasicStroke(2)
 				g.setStroke(stroke)
 				g.setColor(new Color(255, 0, 255, 255))
-				g.drawLine(cp.aX * 24, cp.aY * 24, cp.bX * 24, cp.bY * 24)
+				val spa = cp.a.toScreenPosition
+				val spb = cp.b.toScreenPosition
+				g.drawLine(spa.x, spa.y, spa.x, spa.y)
 			}
 		}
 

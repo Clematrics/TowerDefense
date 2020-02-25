@@ -4,11 +4,11 @@ import java.awt.geom.AffineTransform
 import java.awt.BasicStroke
 
 class DefensePhase extends Level { outer =>
-	var mouseCursorPosition = new ScreenPosition(0, 0)
+	var mouseCursorPosition = new ScreenPoint(0, 0)
 
 	reactions += {
 		case MouseMoved(_, point, _) =>
-			mouseCursorPosition = new ScreenPosition(point)
+			mouseCursorPosition = new ScreenPoint(point)
 			for(b <- buttons) b.onMoved(point)
 		case MouseReleased(_, point, _, _, _) =>
 			for(b <- buttons) b.onRelease(point)
@@ -62,11 +62,13 @@ class DefensePhase extends Level { outer =>
 				val stroke = new BasicStroke(2)
 				g.setStroke(stroke)
 				g.setColor(new Color(255, 0, 255, 255))
-				g.drawLine(cp.aX * 24, cp.aY * 24, cp.bX * 24, cp.bY * 24)
+				val spa = cp.a.toScreenPosition
+				val spb = cp.b.toScreenPosition
+				g.drawLine(spa.x, spa.y, spa.x, spa.y)
 			}
 		}
 
-		val mousePos = mouseCursorPosition.toCellPosition
+		val mousePos = mouseCursorPosition.toCellPoint
 		if (mousePos.x <= 45 - 1 && mousePos.y <= 30 - 1) {
 			g.setColor(selectedTower)
 			g.fillRect(mousePos.x.toInt * 24, mousePos.y.toInt * 24, 24, 24)

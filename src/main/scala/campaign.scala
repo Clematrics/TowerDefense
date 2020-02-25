@@ -8,10 +8,10 @@ sealed trait CellType
 case object Path extends CellType
 case object TowerCell extends CellType
 
-class MonsterCheckPoint(seq: Int*) {
-	val Seq(aX, aY, bX, bY, n) = seq
-	val a: Point  = new Point(aX, aY)
-	val b: Point  = new Point(bX, bY)
+class Checkpoint(seq: Int*) {
+	private val Seq(aX, aY, bX, bY, n) = seq
+	val a = new CellPoint(aX, aY)
+	val b = new CellPoint(bX, bY)
 	val next: Int = n
 }
 
@@ -19,7 +19,7 @@ class MonsterCheckPoint(seq: Int*) {
 /**
   * A map in a game of TowerDefense.
   */
-class Map(nameIn: String, mapIn: Array[Array[CellType]], mapImgIn: Image, checkpointsIn: Array[MonsterCheckPoint], waveIn: Array[Tuple3[Double, Int, String]]) {
+class Map(nameIn: String, mapIn: Array[Array[CellType]], mapImgIn: Image, checkpointsIn: Array[Checkpoint], waveIn: Array[Tuple3[Double, Int, String]]) {
 	val name = nameIn
 	var map = mapIn
 	var mapImg = mapImgIn

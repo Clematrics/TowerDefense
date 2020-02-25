@@ -21,7 +21,7 @@ trait LivingEnemy extends Enemy {
 		}
 	}
 
-	def drawHealthBar(g: Graphics2D, p: ScreenPosition) = {
+	def drawHealthBar(g: Graphics2D, p: ScreenPoint) = {
 		g.setColor(Color.BLACK)
 		g.fillRect(p.x - 51, p.y - 1, 102, 12)
 		g.setColor(Color.RED)
@@ -36,8 +36,8 @@ trait LivingEnemy extends Enemy {
 trait MovingEnemy extends Enemy {
 	var speed: Double = 0.04
 	var targetedCheckpoint: Int = -2
-	var targetedCellPoint: CellPosition = new CellPosition(0, 0)
-	var pos: CellPosition = new CellPosition(0, 0)
+	var targetedCellPoint: CellPoint = new CellPoint(0, 0)
+	var pos: CellPoint = new CellPoint(0, 0)
 
 	def tick(running_for: Double, delta: Double) : Unit = {
 		var cp = GameStatus.map.checkpoints(targetedCheckpoint)
@@ -50,11 +50,16 @@ trait MovingEnemy extends Enemy {
 			}
 			cp = GameStatus.map.checkpoints(targetedCheckpoint)
 			val r = scala.util.Random
-			targetedCellPoint = new CellPosition(cp.aX + r.nextFloat * (cp.bX - cp.aX), cp.aY + r.nextFloat * (cp.bY - cp.aY))
+			targetedCellPoint = cp.a + new CellPoint(r.nextFloat, r.nextFloat) * (cp.b - cp.a)
+			// targetedCellPoint = new CellPoint(cp.a.x + r.nextFloat * (cp.b.x - cp.a.x), cp.a.y + r.nextFloat * (cp.b.y - cp.a.y))
 		}
 
-		val theta = atan((targetedCellPoint.y - pos.y) / (targetedCellPoint.x - pos.x))
-		pos.move(speed * cos(theta), speed * sin(theta))
+		// val theta = atan((targetedCellPoint.y - pos.y) / (targetedCellPoint.x - pos.x))
+		val dist = pos.distance(targetedCellPoint)
+		val dirx = (targetedCellPoint.x - pos.x) / dist
+		val diry = (targetedCellPoint.y - pos.y) / dist
+		pos += new CellPoint(dirx, diry) * speed
+		// new CellPoint(speed * cos(theta), speed * sin(theta))
 	}
 }
 
@@ -73,7 +78,7 @@ class SphereEnemy extends MovingEnemy with LivingEnemy {
 		val sPos = pos.toScreenPosition
 		g.setColor(new Color(80, 20, 100, 255))
 		g.fillOval(sPos.x - 40, sPos.y - 40, 80, 80)
-		drawHealthBar(g, sPos + new ScreenPosition(0, -60))
+		drawHealthBar(g, sPos + new ScreenPoint(0, -60))
 	}
 }
 
@@ -93,6 +98,6 @@ class ProtoEnemy extends MovingEnemy with LivingEnemy {
 		val s:Image = SpriteLoader.fromResource("pion.png")
 		val sPos = pos.toScreenPosition
 		g.drawImage(s, new AffineTransform(0.2, 0, 0, 0.2, sPos.x-40, sPos.y-40), null)
-		drawHealthBar(g, sPos + new ScreenPosition(0, -60))
+		drawHealthBar(g, sPos + new ScreenPoint(0, -60))
 	}
 }

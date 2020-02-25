@@ -20,9 +20,9 @@ object MapLoader {
 		  */
 		val name = lines.next
 		val N = lines.next.toInt
-		val checkpoints: ArrayBuffer[MonsterCheckPoint] = ArrayBuffer()
+		val checkpoints: ArrayBuffer[Checkpoint] = ArrayBuffer()
 		for(i <- 0 until N) {
-			checkpoints += new MonsterCheckPoint(lines.next.split(" ").map((s: String) => { s.toInt }): _*)
+			checkpoints += new Checkpoint(lines.next.split(" ").map((s: String) => { s.toInt }): _*)
 		}
 
 		val M = lines.next.toInt

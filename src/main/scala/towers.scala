@@ -2,7 +2,7 @@ import java.awt._
 import java.awt.geom.{AffineTransform, Point2D}
 
 class ProtoTower extends Tower {
-	var pos: CellPosition = new CellPosition(15, 10)
+	var pos: CellPoint = new CellPoint(15, 10)
 
 	def getName(): String = {
 		return "Chess Tower"
@@ -20,7 +20,7 @@ class ProtoTower extends Tower {
 }
 
 class ArmedTower extends Tower {
-	var pos: CellPosition = new CellPosition(15, 10)
+	var pos: CellPoint = new CellPoint(15, 10)
 	var radius:Double = 3
 	def getName(): String = {
 		return "Armed Tower"
