@@ -2,7 +2,7 @@ import java.awt.Graphics2D
 import java.awt.BasicStroke
 import java.awt.Color
 
-class LaserBeam(d: Double, me: MovingEnemy, t:Tower) extends Entity {
+class LaserBeam(d: Double, me: MovingEnemy, t: Tower) extends Entity {
     var a: CellPoint = me.pos
     var b: CellPoint = t.pos
 	var bornTime: Double = d
