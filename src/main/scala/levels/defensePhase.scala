@@ -56,13 +56,14 @@ class DefensePhase extends Level { outer =>
 	)
 
 	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
-
-		g.drawImage(GameStatus.map.mapImg, new AffineTransform(24, 0, 0, 24, 0, 0), null)
-		for(cp <- GameStatus.map.checkpoints) {
-			val stroke = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, Array(3, 1), 0)
-			g.setStroke(stroke)
-			g.setColor(new Color(255, 0, 255, 255))
-			g.drawLine(cp.aX * 24, cp.aY * 24, cp.bX * 24, cp.bY * 24)
+		if (debugMode) {
+			g.drawImage(GameStatus.map.mapImg, new AffineTransform(24, 0, 0, 24, 0, 0), null)
+			for(cp <- GameStatus.map.checkpoints) {
+				val stroke = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, Array(3, 1), 0)
+				g.setStroke(stroke)
+				g.setColor(new Color(255, 0, 255, 255))
+				g.drawLine(cp.aX * 24, cp.aY * 24, cp.bX * 24, cp.bY * 24)
+			}
 		}
 
 		val mousePos = mouseCursorPosition.toCellPosition

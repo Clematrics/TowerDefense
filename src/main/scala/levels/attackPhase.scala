@@ -28,9 +28,8 @@ class AttackPhase extends Level { outer =>
 			action = () => {
 				GamePanel.changeLevel("DefensePhase")
 			}
-		},
+		}
 	)
-
 
 	override def tick(running_for: Double, delta: Double): Unit = {
 		if (GameStatus.health <= 0) {
@@ -92,12 +91,14 @@ class AttackPhase extends Level { outer =>
 	  * @param delta
 	  */
 	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
-		g.drawImage(GameStatus.map.mapImg, new AffineTransform(24, 0, 0, 24, 0, 0), null)
-		for(cp <- GameStatus.map.checkpoints) {
-			val stroke = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, Array(10, 5), 0)
-			g.setStroke(stroke)
-			g.setColor(new Color(255, 0, 255, 255))
-			g.drawLine(cp.aX * 24, cp.aY * 24, cp.bX * 24, cp.bY * 24)
+		if (debugMode) {
+			g.drawImage(GameStatus.map.mapImg, new AffineTransform(24, 0, 0, 24, 0, 0), null)
+			for(cp <- GameStatus.map.checkpoints) {
+				val stroke = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, Array(10, 5), 0)
+				g.setStroke(stroke)
+				g.setColor(new Color(255, 0, 255, 255))
+				g.drawLine(cp.aX * 24, cp.aY * 24, cp.bX * 24, cp.bY * 24)
+			}
 		}
 
 		for(e <- entities) {

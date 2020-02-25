@@ -2,6 +2,7 @@ import scala.swing.Panel
 import scala.swing.Swing.pair2Dimension
 import java.awt.{Color, Graphics2D, Toolkit}
 import scala.swing.event.FocusLost
+import scala.swing.event.KeyTyped
 
 /**
   * GamePanel is the main component of this application. It hosts all the objects and menus
@@ -11,6 +12,7 @@ object GamePanel extends Panel {
 	background = Color.black
 	preferredSize = (1280, 720)
 	focusable = true
+	var displayFramerate = false
 
 	reactions += {
 		case Tick(t, d) =>
@@ -18,6 +20,8 @@ object GamePanel extends Panel {
 			delta       = d
 			lvl.tick(t, d)
 			repaint()
+		case KeyTyped(_, 'f', _, _) =>
+			displayFramerate = !displayFramerate
 		case _: FocusLost => repaint()
 	}
 
@@ -47,8 +51,10 @@ object GamePanel extends Panel {
 		lvl.render(g, running_for, delta)
 
 		// frame per second display
-		g.setColor(new Color(240, 0, 0))
-		g.drawString(f"$delta%.1f ms", 0, 10)
+		if (displayFramerate) {
+			g.setColor(new Color(240, 0, 0))
+			g.drawString(f"$delta%.1f ms", 0, 10)
+		}
 
 		// for smoother rendering, according to https://stackoverflow.com/questions/35436094/scala-swing-performance-depends-on-events
 		Toolkit.getDefaultToolkit().sync()
