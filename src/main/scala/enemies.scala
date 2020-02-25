@@ -1,5 +1,6 @@
 import java.awt._
 import scala.math.{cos, sin, atan}
+import java.awt.geom.AffineTransform
 
 /**
   * Living enemies all have 100 HP (health points). The manner

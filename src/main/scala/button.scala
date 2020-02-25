@@ -47,6 +47,5 @@ class Button(p: Point, d: Dimension) extends Reactor {
 		if (cursorInside && sprite_tooltip != null) {
 			g.drawImage(sprite_tooltip, new AffineTransform(1, 0, 0, 1, mousePosition.getX - sprite_tooltip.getWidth(null), mousePosition.getY - sprite_tooltip.getHeight(null)), null)
 		}
-		// TODO draw button border, animation, ...
 	}
 }

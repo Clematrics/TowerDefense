@@ -1,6 +1,6 @@
 /**
-  * The abstract representation of a tower.
-  */
+	* The abstract representation of a tower.
+	*/
 abstract class Tower extends Entity {
-    def getName(): String
+	def getName(): String
 }
