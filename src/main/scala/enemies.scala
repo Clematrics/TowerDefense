@@ -51,15 +51,12 @@ trait MovingEnemy extends Enemy {
 			cp = GameStatus.map.checkpoints(targetedCheckpoint)
 			val r = scala.util.Random
 			targetedCellPoint = cp.a + new CellPoint(r.nextFloat, r.nextFloat) * (cp.b - cp.a)
-			// targetedCellPoint = new CellPoint(cp.a.x + r.nextFloat * (cp.b.x - cp.a.x), cp.a.y + r.nextFloat * (cp.b.y - cp.a.y))
 		}
 
-		// val theta = atan((targetedCellPoint.y - pos.y) / (targetedCellPoint.x - pos.x))
 		val dist = pos.distance(targetedCellPoint)
 		val dirx = (targetedCellPoint.x - pos.x) / dist
 		val diry = (targetedCellPoint.y - pos.y) / dist
 		pos += new CellPoint(dirx, diry) * speed
-		// new CellPoint(speed * cos(theta), speed * sin(theta))
 	}
 }
 

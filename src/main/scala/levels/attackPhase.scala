@@ -99,7 +99,7 @@ class AttackPhase extends Level { outer =>
 				g.setColor(new Color(255, 0, 255, 255))
 				val spa = cp.a.toScreenPosition
 				val spb = cp.b.toScreenPosition
-				g.drawLine(spa.x, spa.y, spa.x, spa.y)
+				g.drawLine(spa.x, spa.y, spb.x, spb.y)
 			}
 		}
 
