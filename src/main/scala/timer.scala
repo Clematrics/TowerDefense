@@ -7,11 +7,10 @@ import System.nanoTime
 /**
   * Tick
   *
-  * @param source The source timer
   * @param running_for Time in milliseconds the timer is running for
   * @param delta Time in milliseconds since the last tick
   */
-case class Tick(source: Timer, running_for: Double, delta: Double) extends Event
+case class Tick(running_for: Double, delta: Double) extends Event
 
 /**
   * This class handles the synchronized rendering of the game.
@@ -28,16 +27,10 @@ abstract class Timer extends Publisher {
 			var current_time = System.nanoTime
 			var running_for  = (current_time - start_time) / 1000000.0
 			var delta        = (current_time - last_tick_time) / 1000000.0
-			publish(Tick(timer, running_for, delta))
+			publish(Tick(running_for, delta))
 			last_tick_time = current_time
-			action(running_for, delta)
-			if (_once) {
-				run = false
-			}
 		}
 	}
-
-	def action(running_for: Double, delta: Double) = {}
 
 	private var _interval = 1000
 	def interval:Int = _interval
@@ -46,17 +39,18 @@ abstract class Timer extends Publisher {
 		peer.setDelay(i)
 	}
 
+	private var _repeat = true
+	def repeat:Boolean = _repeat
+	def repeat_=(f:Boolean):Unit = {
+		_repeat = f
+		peer.setRepeats(_repeat)
+	}
+
 	private var _run = false
 	def run:Boolean = _run
 	def run_=(f:Boolean):Unit = {
 		_run = f
 		runStop(f)
-	}
-
-	private var _once = false
-	def once:Boolean = _once
-	def once_=(f:Boolean):Unit = {
-		_once = f
 	}
 
 	private def runStop(f:Boolean) = f match {
@@ -68,5 +62,4 @@ abstract class Timer extends Publisher {
 			peer.stop()
 	}
 	val peer = new javax.swing.Timer(_interval, tick)
-	peer.setRepeats(true)
 }

@@ -13,6 +13,11 @@ object GamePanel extends Panel {
 	focusable = true
 
 	reactions += {
+		case Tick(t, d) =>
+			running_for = t
+			delta       = d
+			lvl.tick(t, d)
+			repaint()
 		case _: FocusLost => repaint()
 	}
 
@@ -26,27 +31,15 @@ object GamePanel extends Panel {
 	val timer = new Timer {
 		interval = 16
 		run = true
-		override def action(r: Double, d: Double) = {
-			running_for = r
-			delta       = d
-			lvl.tick(r, d)
-			repaint()
-		}
 	}
+	listenTo(timer)
 
 	def changeLevel(levelName: String) {
 		lvl.deafTo(ps: _*)
 		val constr = Class.forName(levelName).getConstructor()
 		lvl = constr.newInstance().asInstanceOf[Level]
 		repaint()
-		new Timer {
-			interval = 50
-			once = true
-			run = true
-			override def action(r: Double, d: Double) = {
-				lvl.listenTo(ps: _*)
-			}
-		}
+		new Delay(50, () => lvl.listenTo(ps: _*)) { run = true }
 	}
 
 	override def paintComponent(g: Graphics2D) {
