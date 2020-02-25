@@ -2,9 +2,9 @@ import java.awt.Graphics2D
 import java.awt.BasicStroke
 import java.awt.Color
 
-class Particle(me: MovingEnemy, t:Tower) extends Entity {
+class Particle(me: MovingEnemy, t: Tower) extends Entity {
     var target = me
-    var pos = t.pos
+    var pos = new CellPoint(t.pos)
     val speed = 0.2
     val dmg = 10
 

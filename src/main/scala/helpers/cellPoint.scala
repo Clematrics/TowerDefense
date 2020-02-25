@@ -11,6 +11,10 @@ class CellPoint(xIn: Double, yIn: Double) extends Point2D {
 	var x: Double = xIn
 	var y: Double = yIn
 
+	def this(p: CellPoint) = {
+		this(p.x, p.y)
+	}
+
 	def getX(): Double = {
 		return x
 	}

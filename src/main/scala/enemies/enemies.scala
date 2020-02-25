@@ -16,7 +16,7 @@ trait LivingEnemy extends Enemy {
 
 	def setLifePoints(lp: Int) = {
 		lifePoints = lp
-		if (lifePoints >= 0) {
+		if (lifePoints <= 0) {
 			valid = false
 		}
 	}
