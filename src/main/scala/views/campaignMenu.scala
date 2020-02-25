@@ -25,6 +25,7 @@ class CampaignMenu extends View { outer =>
 		for((map,i) <- campaign.rounds.view.zipWithIndex) {
 			arr += new Button(new Point(marginX + offsetX * (i % inARow), marginY + offsetY * (i / inARow)), new Dimension(150, 150)) {
 				sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
+				sprite_front   = SpriteLoader.fromString(map.name, 150, 30)
 				action = () => {
 					Game.map = map
 					GamePanel.changeView("DefensePhase")
