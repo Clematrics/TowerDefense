@@ -32,12 +32,12 @@ class DefensePhase extends View { outer =>
 	val buttons : List[Button] = List(
 		new Button(new Point(1215, 40), new Dimension(120, 60)) {
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
-			sprite_front   = SpriteLoader.fromString("fight !", 120, 30)
+			sprite_front   = SpriteLoader.fromString("Fight !", 120, 30)
 			action = () => {
 				GamePanel.changeView("AttackPhase")
 			}
 		},
-		new Button(new Point(1215, 290), new Dimension(120, 120)) {
+		new Button(new Point(1215, 280), new Dimension(120, 90)) {
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front   = SpriteLoader.fromString("Blaster Tower", 120, 30)
 			action = () => {
@@ -45,7 +45,7 @@ class DefensePhase extends View { outer =>
 				towerToAdd = new ArmedTower
 			}
 		},
-		new Button(new Point(1215, 430), new Dimension(120, 120)) {
+		new Button(new Point(1215, 380), new Dimension(120, 90)) {
 			listenTo(outer)
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front   = SpriteLoader.fromString("Laser Tower", 120, 30)
@@ -54,7 +54,7 @@ class DefensePhase extends View { outer =>
 				towerToAdd = new LaserTower
 			}
 		},
-		new Button(new Point(1215, 570), new Dimension(120, 120)) {
+		new Button(new Point(1215, 480), new Dimension(120, 90)) {
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front   = SpriteLoader.fromString("Chess Tower", 120, 30)
 			action = () => {
@@ -62,9 +62,17 @@ class DefensePhase extends View { outer =>
 				towerToAdd = new ProtoTower
 			}
 		},
-		new Button(new Point(1215, 680), new Dimension(120, 60)) {
+		new Button(new Point(1215, 580), new Dimension(120, 90)) {
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
-			sprite_front   = SpriteLoader.fromString("go back", 120, 30)
+			sprite_front   = SpriteLoader.fromString("Multi Tower", 120, 30)
+			action = () => {
+				selectedTower = new Color(255, 0, 255, 255)
+				towerToAdd = new MultiTower
+			}
+		},
+		new Button(new Point(1215, 660), new Dimension(120, 60)) {
+			sprite_back    = SpriteLoader.fromResource("menuButtonLargeVar.png")
+			sprite_front   = SpriteLoader.fromString("Go back", 120, 30)
 			action = () => {
 				GamePanel.changeView("CampaignMenu")
 			}
