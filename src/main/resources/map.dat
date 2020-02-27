@@ -8,11 +8,54 @@ map
 22 22 26 26 3
 37 0 32 0 7
 27 10 31 12 3
-7
-5 0 SphereEnemy
-5 0 SphereEnemy
-5 0 SphereEnemy
-5 0 SphereEnemy
+50
 2 1 ProtoEnemy
 2 1 ProtoEnemy
 2 1 ProtoEnemy
+5 0 SphereEnemy
+5 0 SphereEnemy
+5 0 SphereEnemy
+5 0 SphereEnemy
+15 1 ProtoEnemy
+15 1 SphereEnemy
+15 0 SphereEnemy
+16 1 SphereEnemy
+15 1 ProtoEnemy
+17 0 SphereEnemy
+18 0 SphereEnemy
+15 1 SphereEnemy
+16 0 SphereEnemy
+35 1 ProtoEnemy
+35 0 ProtoEnemy
+35 0 ProtoEnemy
+35 1 SphereEnemy
+35 0 SphereEnemy
+36 1 SphereEnemy
+35 1 ProtoEnemy
+37 0 SphereEnemy
+38 0 SphereEnemy
+35 1 SphereEnemy
+36 0 SphereEnemy
+55 1 ProtoEnemy
+55 0 ProtoEnemy
+55 0 ProtoEnemy
+55 1 SphereEnemy
+55 0 SphereEnemy
+56 1 SphereEnemy
+55 1 ProtoEnemy
+55 1 SphereEnemy
+55 0 SphereEnemy
+56 1 SphereEnemy
+55 1 ProtoEnemy
+57 0 SphereEnemy
+58 0 SphereEnemy
+55 0 SphereEnemy
+56 1 SphereEnemy
+55 1 ProtoEnemy
+57 0 SphereEnemy
+58 0 SphereEnemy
+55 1 SphereEnemy
+56 0 SphereEnemy
+60 2 ProtoEnemy
+60 2 SphereEnemy
+59 0 SphereEnemy
