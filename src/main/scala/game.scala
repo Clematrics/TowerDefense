@@ -1,7 +1,9 @@
 import scala.collection.mutable._
 
 /**
-  * 
+  * This object manages the status of the game : health of the player, money and
+  * EXP. It also contains a reference to the current map, and an array with every
+  * entity present on the level.
   */
 object Game {
 	var health = 100
