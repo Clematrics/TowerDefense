@@ -7,8 +7,6 @@ class LaserBeam(d: Double, me: MovingEnemy, t: Tower) extends Entity {
     var b: CellPoint = t.pos
 	var bornTime: Double = d
 
-	println("created")
-
     def tick(running_for: Double, delta: Double) = {
         if (bornTime + 400 < running_for)
             valid = false

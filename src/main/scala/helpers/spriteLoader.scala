@@ -7,6 +7,7 @@ import java.awt.font.LineBreakMeasurer
 import java.text.AttributedString
 import java.awt.font.TextAttribute
 import scala.concurrent.duration.`package`.fromNow
+import java.awt.geom.AffineTransform
 
 /**
   * This class contains several auxillary rendering functions.
@@ -102,6 +103,13 @@ object SpriteLoader {
 	  * @return	A buffered image with the text
 	  */
 	def tooltip(str: String): Image = {
-		return fromString(str, 200, 20)
+		val img = fromString(str, 200, 20)
+		val bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB)
+		val g = bi.getGraphics.asInstanceOf[Graphics2D]
+		g.setColor(new Color(128, 128, 128, 255))
+		g.fillRect(0, 0, bi.getWidth, bi.getHeight)
+		g.drawImage(img, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		g.dispose()
+		return bi
 	}
 }
