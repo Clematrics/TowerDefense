@@ -8,6 +8,7 @@ import java.text.AttributedString
 import java.awt.font.TextAttribute
 import scala.concurrent.duration.`package`.fromNow
 import java.awt.geom.AffineTransform
+import scala.util.control.Breaks._
 
 /**
   * This class contains several auxillary rendering functions.
@@ -66,7 +67,19 @@ object SpriteLoader {
 				// has been displayed.
 				lineMeasurer.setPosition(paragraphStart);
 				while (lineMeasurer.getPosition() < paragraphEnd) {
-					val layout = lineMeasurer.nextLayout(breakWidth)
+					val next = lineMeasurer.nextOffset(breakWidth)
+					var limit = next
+					if (limit <= str.length) {
+						breakable { for (i <- lineMeasurer.getPosition until next) {
+							val c = str.charAt(i)
+							if (c == '\n') {
+								limit = i + 1
+								break
+							}
+						} }
+					}
+
+					val layout = lineMeasurer.nextLayout(breakWidth, limit, false)
 					height += layout.getAscent + layout.getDescent + layout.getLeading
 					width = width.max(layout.getBounds.getWidth.toFloat)
 				}
@@ -83,7 +96,19 @@ object SpriteLoader {
 				var drawPosY = 0.0f
 				lineMeasurer.setPosition(paragraphStart);
 				while (lineMeasurer.getPosition() < paragraphEnd) {
-					val layout = lineMeasurer.nextLayout(breakWidth)
+					val next = lineMeasurer.nextOffset(breakWidth)
+					var limit = next
+					if (limit <= str.length) {
+						breakable { for (i <- lineMeasurer.getPosition until next) {
+							val c = str.charAt(i)
+							if (c == '\n') {
+								limit = i + 1
+								break
+							}
+						} }
+					}
+
+					val layout = lineMeasurer.nextLayout(breakWidth, limit, false)
 					drawPosY += layout.getAscent
 					layout.draw(g2d, 0, drawPosY)
 					drawPosY += layout.getDescent + layout.getLeading
