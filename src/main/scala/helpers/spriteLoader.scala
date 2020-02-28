@@ -20,7 +20,14 @@ object SpriteLoader {
 	  * @return An ImageIcon object that can be used for rendering
 	  */
 	def fromResource(str: String): Image = {
-		return new ImageIcon(getClass.getResource(str)).getImage
+		val sig = f"fromResource-{$str}"
+		ResourcesManager.getImage(sig) match {
+			case Some(value) => value
+			case None =>
+				val img = new ImageIcon(getClass.getResource(str)).getImage
+				ResourcesManager.registerImage(sig, img)
+				img
+		}
 	}
 
 	/**
@@ -34,51 +41,58 @@ object SpriteLoader {
 	  * @return The buffered image containing the specified text
 	  */
 	def fromString(str: String, breakWidthIn: Int, fontsize: Int): Image = {
-		val font = Font.createFont(Font.TRUETYPE_FONT, getClass.getResourceAsStream("/Some Time Later.otf")).deriveFont(Font.PLAIN, fontsize)
-		val frc = new FontRenderContext(null, true, true)
+		val sig = f"fromString-{$str}-{$breakWidthIn}-{$fontsize}"
+		ResourcesManager.getImage(sig) match {
+			case Some(value) => value
+			case None =>
+				val font = Font.createFont(Font.TRUETYPE_FONT, getClass.getResourceAsStream("/Some Time Later.otf")).deriveFont(Font.PLAIN, fontsize)
+				val frc = new FontRenderContext(null, true, true)
 
-		// inspired from https://docs.oracle.com/javase/tutorial/2d/text/drawmulstring.html
-		val attrString = new AttributedString(str)
-		attrString.addAttribute(TextAttribute.FONT, font)
-		val paragraph  = attrString.getIterator
-		val paragraphStart = paragraph.getBeginIndex()
-		val paragraphEnd = paragraph.getEndIndex()
-		val lineMeasurer = new LineBreakMeasurer(paragraph, frc)
+				// inspired from https://docs.oracle.com/javase/tutorial/2d/text/drawmulstring.html
+				val attrString = new AttributedString(str)
+				attrString.addAttribute(TextAttribute.FONT, font)
+				val paragraph  = attrString.getIterator
+				val paragraphStart = paragraph.getBeginIndex()
+				val paragraphEnd = paragraph.getEndIndex()
+				val lineMeasurer = new LineBreakMeasurer(paragraph, frc)
 
-		// Set break width to width of Component.
-		val breakWidth = breakWidthIn.toFloat
-		var width      = 0.0f
-		var height     = 0.0f
+				// Set break width to width of Component.
+				val breakWidth = breakWidthIn.toFloat
+				var width      = 0.0f
+				var height     = 0.0f
 
-		// Get lines from until the entire paragraph
-		// has been displayed.
-		lineMeasurer.setPosition(paragraphStart);
-		while (lineMeasurer.getPosition() < paragraphEnd) {
-			val layout = lineMeasurer.nextLayout(breakWidth)
-			height += layout.getAscent + layout.getDescent + layout.getLeading
-			width = width.max(layout.getBounds.getWidth.toFloat)
+				// Get lines from until the entire paragraph
+				// has been displayed.
+				lineMeasurer.setPosition(paragraphStart);
+				while (lineMeasurer.getPosition() < paragraphEnd) {
+					val layout = lineMeasurer.nextLayout(breakWidth)
+					height += layout.getAscent + layout.getDescent + layout.getLeading
+					width = width.max(layout.getBounds.getWidth.toFloat)
+				}
+
+				val bi = new BufferedImage(width.ceil.toInt, height.ceil.toInt, BufferedImage.TYPE_INT_ARGB)
+				val g2d = bi.getGraphics.asInstanceOf[Graphics2D]
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
+				g2d.setColor(new Color(0, 0, 0, 0))
+				g2d.fillRect(0, 0, bi.getWidth(), bi.getHeight())
+				g2d.setColor(new Color(255, 255, 255))
+
+				// Get lines from until the entire paragraph
+				// has been displayed.
+				var drawPosY = 0.0f
+				lineMeasurer.setPosition(paragraphStart);
+				while (lineMeasurer.getPosition() < paragraphEnd) {
+					val layout = lineMeasurer.nextLayout(breakWidth)
+					drawPosY += layout.getAscent
+					layout.draw(g2d, 0, drawPosY)
+					drawPosY += layout.getDescent + layout.getLeading
+				}
+
+				g2d.dispose()
+				val img = bi
+				ResourcesManager.registerImage(sig, img)
+				img
 		}
-
-		val bi = new BufferedImage(width.ceil.toInt, height.ceil.toInt, BufferedImage.TYPE_INT_ARGB)
-		val g2d = bi.getGraphics.asInstanceOf[Graphics2D]
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
-		g2d.setColor(new Color(0, 0, 0, 0))
-		g2d.fillRect(0, 0, bi.getWidth(), bi.getHeight())
-		g2d.setColor(new Color(255, 255, 255))
-
-		// Get lines from until the entire paragraph
-		// has been displayed.
-		var drawPosY = 0.0f
-		lineMeasurer.setPosition(paragraphStart);
-		while (lineMeasurer.getPosition() < paragraphEnd) {
-			val layout = lineMeasurer.nextLayout(breakWidth)
-			drawPosY += layout.getAscent
-			layout.draw(g2d, 0, drawPosY)
-			drawPosY += layout.getDescent + layout.getLeading
-		}
-
-		g2d.dispose()
-		return bi
 	}
 
 	/**
