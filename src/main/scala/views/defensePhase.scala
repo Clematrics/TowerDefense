@@ -27,7 +27,6 @@ class DefensePhase extends View { outer =>
 	}
 
 	var towerToAdd: Tower = new ArmedTower
-	var selectedTower = new Color(255, 255, 0, 255)
 
 	val buttons : List[Button] = List(
 		new Button(new Point(1215, 40), new Dimension(120, 60)) {
@@ -42,7 +41,6 @@ class DefensePhase extends View { outer =>
 			sprite_front   = SpriteLoader.fromString("Blaster Tower", 120, 30)
 			sprite_tooltip = SpriteLoader.tooltip("Cost : 10 Gold\nRadius : 6\nReload time : 1s\nPower : 5\nA tower that shoots balls")
 			action = () => {
-				selectedTower = new Color(255, 255, 0, 255)
 				towerToAdd = new ArmedTower
 			}
 		},
@@ -52,7 +50,6 @@ class DefensePhase extends View { outer =>
 			sprite_front   = SpriteLoader.fromString("Laser Tower", 120, 30)
 			sprite_tooltip = SpriteLoader.tooltip("Cost : 20 Gold\nRadius : 6\nReload time : 2s\nPower : 20\nLAAASEERSS!")
 			action = () => {
-				selectedTower = new Color(0, 255, 255, 255)
 				towerToAdd = new LaserTower
 			}
 		},
@@ -61,7 +58,6 @@ class DefensePhase extends View { outer =>
 			sprite_front   = SpriteLoader.fromString("Chess Tower", 120, 30)
 			sprite_tooltip = SpriteLoader.tooltip("Cost : 15 Gold\nA noob tower that does nothing else than watching its enemies in the eyes")
 			action = () => {
-				selectedTower = new Color(255, 0, 255, 255)
 				towerToAdd = new ProtoTower
 			}
 		},
@@ -70,7 +66,6 @@ class DefensePhase extends View { outer =>
 			sprite_front   = SpriteLoader.fromString("Multi Tower", 120, 30)
 			sprite_tooltip = SpriteLoader.tooltip("Cost : 40 Gold\nRadius : 7\nReload time : 2s\nPower : 20\nCan shoot multiple enemies at the same time")
 			action = () => {
-				selectedTower = new Color(255, 0, 255, 255)
 				towerToAdd = new MultiTower
 			}
 		},
@@ -79,7 +74,6 @@ class DefensePhase extends View { outer =>
 			sprite_front   = SpriteLoader.fromString("Dual Tower", 120, 30)
 			sprite_tooltip = SpriteLoader.tooltip("Cost : 80 Gold\nPower : 20\nTwo towers making a laser barrier")
 			action = () => {
-				selectedTower = new Color(255, 0, 255, 255)
 				towerToAdd = new DualTower
 			}
 		},
@@ -113,7 +107,6 @@ class DefensePhase extends View { outer =>
 		val mousePos = mouseCursorPosition.toCellPoint
 		if (mousePos.x <= 45 - 1 && mousePos.y <= 30 - 1) {
 			if (Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == EmptyTowerCell && Game.gold >= towerToAdd.cost) {
-				g.setColor(selectedTower)
 				towerToAdd.pos = mousePos
 				towerToAdd.render(g)
 			}
