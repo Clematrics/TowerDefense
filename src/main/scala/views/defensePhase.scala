@@ -68,13 +68,22 @@ class DefensePhase extends View { outer =>
 		new Button(new Point(1215, 580), new Dimension(120, 90)) {
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front   = SpriteLoader.fromString("Multi Tower", 120, 30)
-			sprite_tooltip = SpriteLoader.tooltip("Cost : 15 Gold\nRadius : 7\nReload time : 2s\nPower : 20\nCan shoot multiple enemies at the same time")
+			sprite_tooltip = SpriteLoader.tooltip("Cost : 40 Gold\nRadius : 7\nReload time : 2s\nPower : 20\nCan shoot multiple enemies at the same time")
 			action = () => {
 				selectedTower = new Color(255, 0, 255, 255)
 				towerToAdd = new MultiTower
 			}
 		},
-		new Button(new Point(1215, 660), new Dimension(120, 60)) {
+		new Button(new Point(1215, 680), new Dimension(120, 90)) {
+			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
+			sprite_front   = SpriteLoader.fromString("Dual Tower", 120, 30)
+			sprite_tooltip = SpriteLoader.tooltip("Cost : 80 Gold\nPower : 20\nTwo towers making a laser barrier")
+			action = () => {
+				selectedTower = new Color(255, 0, 255, 255)
+				towerToAdd = new DualTower
+			}
+		},
+		new Button(new Point(1215, 760), new Dimension(120, 60)) {
 			sprite_back    = SpriteLoader.fromResource("menuButtonLargeVar.png")
 			sprite_front   = SpriteLoader.fromString("Go back", 120, 30)
 			action = () => {

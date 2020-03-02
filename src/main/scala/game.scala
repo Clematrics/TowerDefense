@@ -26,6 +26,16 @@ object Game {
 		return 	entities.filter(e => e.isInstanceOf[MovingEnemy]
 				&& pos.distance(e.asInstanceOf[MovingEnemy].pos) <= radius).map(x => x.asInstanceOf[Enemy]).toArray[Enemy]
 	}
+	
+	/**
+	  * 
+	  *
+	  * @param filter
+	  * @return
+	  */
+	def getEnemiesWhere(filter: MovingEnemy => Boolean): Array[Enemy] = {
+		return 	entities.filter(e => e.isInstanceOf[MovingEnemy] && filter(e.asInstanceOf[MovingEnemy])).map(x => x.asInstanceOf[Enemy]).toArray[Enemy]
+	}
 
 	def reset(): Unit = {
 		health = maxHealth
