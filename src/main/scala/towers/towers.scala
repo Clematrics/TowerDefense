@@ -69,7 +69,7 @@ class LaserTower extends RadiusTower(6, 2000, 20) {
 				e.takeDamage(pow)
 				if (!e.isAlive())
 					Game.gold += e.getGold()
-				Game.entities += new LaserBeam(running_for, e.asInstanceOf[MovingEnemy], this)
+				Game.entities += new LaserBeam(running_for, e.asInstanceOf[MovingEnemy], this, Color.RED)
 				lastShot = running_for
 			}
 		}
@@ -96,7 +96,7 @@ class MultiTower extends RadiusTower(7, 2000, 20) {
 				e.takeDamage(pow)
 				if (!e.isAlive())
 					Game.gold += e.getGold()
-				Game.entities += new LaserBeam(running_for, e.asInstanceOf[MovingEnemy], this)
+				Game.entities += new LaserBeam(running_for, e.asInstanceOf[MovingEnemy], this, Color.MAGENTA)
 			}
 
 			if (enemiesNear.length > 0)

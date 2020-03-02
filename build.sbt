@@ -4,4 +4,4 @@ settings(
 	name := "Tower Defense",
 	libraryDependencies += swing
 )
-mainClass in assembly := Some("TowerDefense")
+//mainClass in assembly := Some("TowerDefense")
