@@ -24,7 +24,7 @@ class WinMenu extends View { outer =>
 
 	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
 		val winImg = SpriteLoader.fromString("You win!", 800, 69)
-		g.drawImage(winImg, new AffineTransform(1, 0, 0, 1, 640 - winImg.getWidth(null) / 2, 220), null)
+		RenderLayers.userInterface.drawImage(winImg, new AffineTransform(1, 0, 0, 1, 640 - winImg.getWidth(null) / 2, 220), null)
 
 		for(b <- buttons) {
 			b.render(g, running_for, delta)

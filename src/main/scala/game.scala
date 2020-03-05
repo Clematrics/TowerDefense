@@ -23,10 +23,10 @@ object Game {
 	  * @return An array of Enemy objects. Note that the enemies that are found are instances of MovingEnemy at least.
 	  */
 	def getEnemiesAround(pos: CellPoint, radius: Double): Array[Enemy] = {
-		return 	entities.filter(e => e.isInstanceOf[MovingEnemy]
-				&& pos.distance(e.asInstanceOf[MovingEnemy].pos) <= radius).map(x => x.asInstanceOf[Enemy]).toArray[Enemy]
+		return entities.filter(e => e.isInstanceOf[MovingEnemy]
+		       && pos.distance(e.asInstanceOf[MovingEnemy].pos) <= radius).map(x => x.asInstanceOf[Enemy]).toArray[Enemy]
 	}
-	
+
 	/**
 	  * 
 	  *
@@ -34,7 +34,7 @@ object Game {
 	  * @return
 	  */
 	def getEnemiesWhere(filter: MovingEnemy => Boolean): Array[Enemy] = {
-		return 	entities.filter(e => e.isInstanceOf[MovingEnemy] && filter(e.asInstanceOf[MovingEnemy])).map(x => x.asInstanceOf[Enemy]).toArray[Enemy]
+		return entities.filter(e => e.isInstanceOf[MovingEnemy] && filter(e.asInstanceOf[MovingEnemy])).map(x => x.asInstanceOf[Enemy]).toArray[Enemy]
 	}
 
 	def reset(): Unit = {

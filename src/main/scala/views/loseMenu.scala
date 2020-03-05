@@ -24,7 +24,7 @@ class LoseMenu extends View { outer =>
 
 	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
 		val loseImg = SpriteLoader.fromString("You lose!", 800, 69)
-		g.drawImage(loseImg, new AffineTransform(1, 0, 0, 1, 640 - loseImg.getWidth(null) / 2, 220), null)
+		RenderLayers.userInterface.drawImage(loseImg, new AffineTransform(1, 0, 0, 1, 640 - loseImg.getWidth(null) / 2, 220), null)
 
 		for(b <- buttons) {
 			b.render(g, running_for, delta)

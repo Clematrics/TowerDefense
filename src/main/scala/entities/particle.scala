@@ -21,9 +21,9 @@ class Particle(me: MovingEnemy, t: Tower) extends Entity {
     }
 
 	override def render(g: Graphics2D) = {
-        g.setColor(Color.PINK)
-        g.setStroke(new BasicStroke(10))
+        RenderLayers.flyingEntities.setColor(Color.PINK)
+        RenderLayers.flyingEntities.setStroke(new BasicStroke(10))
         val sp = pos.toScreenPosition
-        g.drawOval(sp.x - 5, sp.y - 5, 10, 10)
+        RenderLayers.flyingEntities.drawOval(sp.x - 5, sp.y - 5, 10, 10)
     }
 }

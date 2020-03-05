@@ -78,17 +78,17 @@ class AttackPhase extends View { outer =>
 	  * @param delta
 	  */
 	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
-		g.drawImage(Game.map.mapImg, new AffineTransform(6, 0, 0, 6, 0, 0), null)
+		RenderLayers.background.drawImage(Game.map.mapImg, new AffineTransform(6, 0, 0, 6, 0, 0), null)
 
 		if (debugMode) {
-			g.drawImage(Game.map.mapLayout, new AffineTransform(24, 0, 0, 24, 0, 0), null)
+			RenderLayers.background.drawImage(Game.map.mapLayout, new AffineTransform(24, 0, 0, 24, 0, 0), null)
 			for(cp <- Game.map.checkpoints) {
 				val stroke = new BasicStroke(2)
-				g.setStroke(stroke)
-				g.setColor(new Color(255, 0, 255, 255))
+				RenderLayers.debug.setStroke(stroke)
+				RenderLayers.debug.setColor(new Color(255, 0, 255, 255))
 				val spa = cp.a.toScreenPosition
 				val spb = cp.b.toScreenPosition
-				g.drawLine(spa.x, spa.y, spb.x, spb.y)
+				RenderLayers.debug.drawLine(spa.x, spa.y, spb.x, spb.y)
 			}
 		}
 
@@ -100,14 +100,14 @@ class AttackPhase extends View { outer =>
 			b.render(g, running_for, delta)
 		}
 
-		g.setColor(Color.BLACK)
-		g.fillRect(1220, 100, 40, 600)
-		g.setColor(Color.RED)
-		g.fillRect(1220, 100 + ((100 - Game.health) * 600 / 100), 40, Game.health * 600 / 100)
+		RenderLayers.userInterface.setColor(Color.BLACK)
+		RenderLayers.userInterface.fillRect(1220, 100, 40, 600)
+		RenderLayers.userInterface.setColor(Color.RED)
+		RenderLayers.userInterface.fillRect(1220, 100 + ((100 - Game.health) * 600 / 100), 40, Game.health * 600 / 100)
 
 		if (debugMode) {
-			g.setColor(Color.PINK)
-			g.drawString(f"$time%.1f ms", 0, 30)
+			RenderLayers.debug.setColor(Color.PINK)
+			RenderLayers.debug.drawString(f"$time%.1f ms", 0, 30)
 		}
 	}
 }

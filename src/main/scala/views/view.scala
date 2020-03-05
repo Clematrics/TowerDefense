@@ -3,8 +3,8 @@ import scala.swing.Publisher
 import scala.swing.event.KeyTyped
 
 /**
-	* Abstract class representing a level of the game
-	*/
+  * Abstract class representing a level of the game
+  */
 abstract class View extends Publisher {
 	var debugMode = false
 	reactions += {

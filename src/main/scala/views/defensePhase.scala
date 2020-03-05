@@ -87,17 +87,17 @@ class DefensePhase extends View { outer =>
 	)
 
 	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
-		g.drawImage(Game.map.mapImg, new AffineTransform(6, 0, 0, 6, 0, 0), null)
+		RenderLayers.background.drawImage(Game.map.mapImg, new AffineTransform(6, 0, 0, 6, 0, 0), null)
 
 		if (debugMode) {
-			g.drawImage(Game.map.mapLayout, new AffineTransform(24, 0, 0, 24, 0, 0), null)
+			RenderLayers.background.drawImage(Game.map.mapLayout, new AffineTransform(24, 0, 0, 24, 0, 0), null)
 			for(cp <- Game.map.checkpoints) {
 				val stroke = new BasicStroke(2)
-				g.setStroke(stroke)
-				g.setColor(new Color(255, 0, 255, 255))
+				RenderLayers.debug.setStroke(stroke)
+				RenderLayers.debug.setColor(new Color(255, 0, 255, 255))
 				val spa = cp.a.toScreenPosition
 				val spb = cp.b.toScreenPosition
-				g.drawLine(spa.x, spa.y, spb.x, spb.y)
+				RenderLayers.debug.drawLine(spa.x, spa.y, spb.x, spb.y)
 			}
 		}
 
@@ -112,19 +112,19 @@ class DefensePhase extends View { outer =>
 			}
 			else {
 				val stroke = new BasicStroke(8)
-				g.setStroke(stroke)
-				g.setColor(Color.RED)
+				RenderLayers.userInterface.setStroke(stroke)
+				RenderLayers.userInterface.setColor(Color.RED)
 				val x = mousePos.x.toInt * 24
 				val y = mousePos.y.toInt * 24
-				g.drawLine(x, y, x + 24, y + 24)
-				g.drawLine(x + 24, y, x, y + 24)
+				RenderLayers.userInterface.drawLine(x, y, x + 24, y + 24)
+				RenderLayers.userInterface.drawLine(x + 24, y, x, y + 24)
 			}
 		}
 
 		val gold = SpriteLoader.fromString(f"Gold : ${Game.gold}", 120, 30)
-		g.drawImage(gold, new AffineTransform(1, 0, 0, 1, 1160, 90), null)
+		RenderLayers.userInterface.drawImage(gold, new AffineTransform(1, 0, 0, 1, 1160, 90), null)
 		val exp = SpriteLoader.fromString(f"Exp : ${Game.experience}", 120, 30)
-		g.drawImage(exp, new AffineTransform(1, 0, 0, 1, 1160, 180), null)
+		RenderLayers.userInterface.drawImage(exp, new AffineTransform(1, 0, 0, 1, 1160, 180), null)
 
 		for(b <- buttons) {
 			b.render(g, running_for, delta)
