@@ -19,7 +19,7 @@ object GamePanel extends Panel {
 		case Tick(t, d) =>
 			running_for = t
 			delta       = d
-			lvl.tick(t, d)
+			view.tick(t, d)
 			repaint()
 		case KeyTyped(_, 'f', _, _) =>
 			displayFramerate = !displayFramerate
@@ -28,8 +28,8 @@ object GamePanel extends Panel {
 
 	val ps = List(mouse.moves, mouse.clicks, keys)
 
-	var lvl: View = new MainMenu
-	lvl.listenTo(ps: _*)
+	var view: View = new MainMenu
+	view.listenTo(ps: _*)
 
 	var running_for = 0.0
 	var delta       = 0.0
@@ -40,16 +40,20 @@ object GamePanel extends Panel {
 	listenTo(timer)
 
 	def changeView(levelName: String) {
-		lvl.deafTo(ps: _*)
+		view.deafTo(ps: _*)
 		val constr = Class.forName(levelName).getConstructor()
-		lvl = constr.newInstance().asInstanceOf[View]
+		view = constr.newInstance().asInstanceOf[View]
 		repaint()
-		new Delay(50, () => lvl.listenTo(ps: _*)) { run = true }
+		new Delay(50, () => view.listenTo(ps: _*)) { run = true }
 	}
 
 	override def paintComponent(g: Graphics2D) {
 		super.paintComponent(g)
-		lvl.render(g, running_for, delta)
+
+		RenderLayers.prepareRendering
+		view.render(g, running_for, delta)
+		RenderLayers.closeRendering
+		RenderLayers.mergeLayers(g)
 
 		// frame per second display
 		if (displayFramerate) {
@@ -59,5 +63,9 @@ object GamePanel extends Panel {
 
 		// for smoother rendering, according to https://stackoverflow.com/questions/35436094/scala-swing-performance-depends-on-events
 		Toolkit.getDefaultToolkit().sync()
+	}
+
+	def quit(): Unit = {
+		TowerDefense.quit
 	}
 }

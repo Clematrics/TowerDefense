@@ -9,7 +9,7 @@ import java.awt.geom.AffineTransform
   */
 trait LivingEnemy extends Enemy {
 	var lifePoints = 100
-	
+
 	def isAlive(): Boolean = {
 		return lifePoints >= 0
 	}
@@ -73,7 +73,7 @@ class SphereEnemy extends MovingEnemy with LivingEnemy {
 
 	def getGold(): Int = {
 		return 5 // Constant reward
-	} 
+	}
 
 	override def render(g: Graphics2D): Unit = {
 		val sPos = pos.toScreenPosition
@@ -97,7 +97,7 @@ class ProtoEnemy extends MovingEnemy with LivingEnemy {
 
 	def getGold(): Int = {
 		return scala.util.Random.nextInt(15) // Random reward
-	} 
+	}
 
 	override def render(g: Graphics2D): Unit = {
 		val s:Image = SpriteLoader.fromResource("pion.png")

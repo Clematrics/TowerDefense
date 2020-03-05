@@ -24,7 +24,7 @@ class MainMenu extends View { outer =>
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front   = SpriteLoader.fromString("quit & take a break", 800, 69)
 			action = () => {
-				TowerDefense.quit
+				GamePanel.quit
 			}
 		}
 	)
