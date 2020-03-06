@@ -9,12 +9,12 @@ object TowerDefense extends SimpleSwingApplication {
 		contents = GamePanel
 		resizable = false
 		
-		peer.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE)
+		//peer.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE) Si jamais on voulait demander la confirmation
 
     override def closeOperation() = {
-      peer.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE)
+      //peer.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE)
       GamePanel.quit
-      close      
+      //close      
     }
  	}
 }
