@@ -52,11 +52,6 @@ object GamePanel extends Panel {
 	override def paintComponent(g: Graphics2D) {
 		super.paintComponent(g)
 
-		if (Cst.windowWidth != size.width && Cst.windowHeight != size.height) {
-			Cst.windowWidth  = size.width
-			Cst.windowHeight = size.height
-		}
-
 		RenderLayers.prepareRendering
 
 		view.render(g, running_for, delta)

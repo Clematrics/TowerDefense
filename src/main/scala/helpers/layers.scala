@@ -135,17 +135,17 @@ object RenderLayers {
 		var offsetX = 0
 		var offsetY = 0
 
-		val rateX = Cst.windowWidth.toDouble  / finalImg.getWidth
-		val rateY = Cst.windowHeight.toDouble / finalImg.getHeight
+		val rateX = GamePanel.size.width.toDouble  / finalImg.getWidth
+		val rateY = GamePanel.size.height.toDouble / finalImg.getHeight
 		if (rateX>rateY){
 			W = (finalImg.getWidth  * rateY).toInt
 			H = (finalImg.getHeight * rateY).toInt
-			offsetX = (Cst.windowWidth - W) / 2
+			offsetX = (GamePanel.size.width - W) / 2
 		}
 		else{
 			W = (finalImg.getWidth  * rateX).toInt
 			H = (finalImg.getHeight * rateX).toInt
-			offsetY = (Cst.windowHeight - H) / 2
+			offsetY = (GamePanel.size.height - H) / 2
 		}
 
 		g.drawImage(finalImg, offsetX, offsetY, W, H, null)
