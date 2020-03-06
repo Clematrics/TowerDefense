@@ -28,11 +28,7 @@ abstract class Timer extends Publisher {
 			var running_for  = (current_time - start_time) / 1000000.0
 			var delta        = (current_time - last_tick_time) / 1000000.0
 			publish(Tick(running_for, delta))
-			print(".")
 			last_tick_time = current_time
-			if (!_run) {
-			  print("#")
-			}
 		}
 	}
 	
