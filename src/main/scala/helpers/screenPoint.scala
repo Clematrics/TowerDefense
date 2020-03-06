@@ -7,25 +7,9 @@ import java.awt.geom.Point2D
   * @param x
   * @param y
   */
-class ScreenPoint(xIn: Int, yIn: Int) extends Point2D {
-	var x: Int = xIn
-	var y: Int = yIn
-
+class ScreenPoint(xIn: Int, yIn: Int) extends Point(xIn, yIn) {
 	def this(p: Point) = {
 		this(p.getX.toInt, p.getY.toInt)
-	}
-
-	def getX(): Double = {
-		return x
-	}
-
-	def getY(): Double = {
-		return y
-	}
-
-	def setLocation(xx: Double, yy: Double): Unit = {
-		x = xx.toInt
-		y = yy.toInt
 	}
 
 	def toCellPoint(): CellPoint = {

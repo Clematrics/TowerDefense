@@ -9,7 +9,7 @@ class DefensePhase extends View { outer =>
 
 	reactions += {
 		case MouseMoved(_, point, _) =>
-			mouseCursorPosition = new ScreenPoint(point)
+			mouseCursorPosition = MouseHelper.fromMouse(point)
 		case MouseReleased(_, point, _, _, _) =>
 			val mousePos = mouseCursorPosition.toCellPoint
 			if (mousePos.x <= 45 - 1 && mousePos.y <= 30 - 1) {

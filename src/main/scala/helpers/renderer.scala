@@ -116,6 +116,26 @@ object Renderer {
 		debug                 .dispose
 	}
 
+
+	var w = 0
+	var h = 0
+	var offsetX = 0
+	var offsetY = 0
+	def computeAdjustments(): Unit = {
+		val rateX = GamePanel.size.width.toDouble  / Cst.layerResolutionWidth
+		val rateY = GamePanel.size.height.toDouble / Cst.layerResolutionHeight
+		if (rateX > rateY){
+			w = (Cst.layerResolutionWidth  * rateY).toInt
+			h = (Cst.layerResolutionHeight * rateY).toInt
+			offsetX = (GamePanel.size.width - w) / 2
+		}
+		else{
+			w = (Cst.layerResolutionWidth  * rateX).toInt
+			h = (Cst.layerResolutionHeight * rateX).toInt
+			offsetY = (GamePanel.size.height - h) / 2
+		}
+	}
+
 	def mergeLayers(g: Graphics2D) = {
 		val finalImg = new BufferedImage(Cst.layerResolutionWidth, Cst.layerResolutionHeight, BufferedImage.TYPE_INT_ARGB)
 		val finalG2 = finalImg.createGraphics
@@ -133,23 +153,7 @@ object Renderer {
 			finalG2.drawImage(            debugImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
 		finalG2.dispose
 
-		var w = 0
-		var h = 0
-		var offsetX = 0
-		var offsetY = 0
-
-		val rateX = GamePanel.size.width.toDouble  / finalImg.getWidth
-		val rateY = GamePanel.size.height.toDouble / finalImg.getHeight
-		if (rateX > rateY){
-			w = (finalImg.getWidth  * rateY).toInt
-			h = (finalImg.getHeight * rateY).toInt
-			offsetX = (GamePanel.size.width - w) / 2
-		}
-		else{
-			w = (finalImg.getWidth  * rateX).toInt
-			h = (finalImg.getHeight * rateX).toInt
-			offsetY = (GamePanel.size.height - h) / 2
-		}
+		computeAdjustments
 
 		g.drawImage(finalImg, offsetX, offsetY, w, h, null)
 	}

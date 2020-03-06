@@ -11,9 +11,9 @@ import scala.swing.event.MouseReleased
 abstract class View extends Publisher {
 	reactions += {
 		case MouseMoved(_, point, _) =>
-			for(b <- buttons) b.onMoved(point)
+			for(b <- buttons) b.onMoved(MouseHelper.fromMouse(point))
 		case MouseReleased(_, point, _, _, _) =>
-			for(b <- buttons) b.onRelease(point)
+			for(b <- buttons) b.onRelease(MouseHelper.fromMouse(point))
 		case KeyTyped(_, 'd', _, _) =>
 			Renderer.debugMode = !Renderer.debugMode
 	}
