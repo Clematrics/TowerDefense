@@ -39,7 +39,7 @@ trait MovingEnemy extends Enemy {
 	var targetedCellPoint: CellPoint = new CellPoint(0, 0)
 	var pos: CellPoint = new CellPoint(0, 0)
 
-	def tick(running_for: Double, delta: Double) : Unit = {
+	def tick(time: Double, delta: Double) : Unit = {
 		var cp = Game.map.checkpoints(targetedCheckpoint)
 		if (pos.distance(targetedCellPoint) <= speed) {
 			targetedCheckpoint = cp.next
@@ -75,7 +75,7 @@ class SphereEnemy extends MovingEnemy with LivingEnemy {
 		return 5 // Constant reward
 	}
 
-	def render(running_for: Double, delta: Double): Unit = {
+	def render(time: Double, delta: Double): Unit = {
 		val sPos = pos.toScreenPosition
 		Renderer.groundEntities.setColor(new Color(80, 20, 100, 255))
 		Renderer.groundEntities.fillOval(sPos.x - 40, sPos.y - 40, 80, 80)
@@ -99,7 +99,7 @@ class ProtoEnemy extends MovingEnemy with LivingEnemy {
 		return scala.util.Random.nextInt(15) // Random reward
 	}
 
-	def render(running_for: Double, delta: Double): Unit = {
+	def render(time: Double, delta: Double): Unit = {
 		val s:Image = SpriteLoader.fromResource("pion.png")
 		val sPos = pos.toScreenPosition
 		Renderer.groundEntities.drawImage(s, new AffineTransform(0.2, 0, 0, 0.2, sPos.x-40, sPos.y-40), null)

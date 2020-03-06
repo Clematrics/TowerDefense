@@ -8,7 +8,7 @@ class Particle(me: MovingEnemy, t: Tower) extends Entity {
     val speed = 0.2
     val dmg = 10
 
-    def tick(running_for: Double, delta: Double): Unit = {
+    def tick(time: Double, delta: Double): Unit = {
         val dist = pos.distance(target.pos)
         if (dist <= speed) {
             valid = false
@@ -20,7 +20,7 @@ class Particle(me: MovingEnemy, t: Tower) extends Entity {
 		pos += new CellPoint(dirx, diry) * speed
     }
 
-	def render(running_for: Double, delta: Double) = {
+	def render(time: Double, delta: Double) = {
         Renderer.flyingEntities.setColor(Color.PINK)
         Renderer.flyingEntities.setStroke(new BasicStroke(10))
         val sp = pos.toScreenPosition

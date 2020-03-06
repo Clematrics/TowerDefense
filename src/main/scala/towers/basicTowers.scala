@@ -15,10 +15,10 @@ class ProtoTower extends Tower {
 		return "Chess Tower"
 	}
 
-	def tick(running_for: Double, delta: Double) : Unit = {
+	def tick(time: Double, delta: Double) : Unit = {
 	}
 
-	def render(running_for: Double, delta: Double): Unit = {
+	def render(time: Double, delta: Double): Unit = {
 		val s:Image = SpriteLoader.fromResource("tour.png")
 		val sPos = pos.toScreenPosition
 		Renderer.groundEntities.drawImage(s, new AffineTransform(0.2, 0, 0, 0.2, sPos.x, sPos.y - 20), null)

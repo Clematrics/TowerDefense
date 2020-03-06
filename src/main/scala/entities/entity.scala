@@ -6,6 +6,6 @@ import java.awt.Graphics2D;
 	*/
 abstract class Entity {
 	var valid: Boolean = true
-	def tick(running_for: Double, delta: Double): Unit
-	def render(running_for: Double, delta: Double): Unit
+	def tick(time: Double, delta: Double): Unit
+	def render(time: Double, delta: Double): Unit
 }

@@ -7,8 +7,8 @@ class ArmedTower extends RadiusTower(6, 1000, 5) {
 		return "Armed Tower"
 	}
 
-	def tick(running_for: Double, delta: Double) : Unit = {
-		if (lastShot + reload < running_for) {
+	def tick(time: Double, delta: Double) : Unit = {
+		if (lastShot + reload < time) {
 			var enemiesNear : Array[Enemy] = Game.getEnemiesAround(pos, radius)
 
 			if (enemiesNear.length > 0) {
@@ -17,12 +17,12 @@ class ArmedTower extends RadiusTower(6, 1000, 5) {
 				if (!e.isAlive())
 					Game.gold += e.getGold()
 				Game.entities += new Particle(e.asInstanceOf[MovingEnemy], this)
-				lastShot = running_for
+				lastShot = time
 			}
 		}
 	}
 
-	def render(running_for: Double, delta: Double): Unit = {
+	def render(time: Double, delta: Double): Unit = {
 		val s:Image = SpriteLoader.fromResource("armedtour.png")
 		val sPos = pos.toScreenPosition
 		Renderer.groundEntities.drawImage(s, new AffineTransform(1, 0, 0, 1, sPos.x, sPos.y - 40), null)

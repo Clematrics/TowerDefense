@@ -8,23 +8,23 @@ import scala.collection.mutable.ArrayBuffer
 class MainMenu extends View { outer =>
 	buttons ++= ArrayBuffer(
 		new Button(new Point(640, 200), new Dimension(800, 160)) {
-			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
-			sprite_front   = SpriteLoader.fromString("play & prove yourself !", 800, 69)
+			spriteBack    = SpriteLoader.fromResource("menuButtonLarge.png")
+			spriteFront   = SpriteLoader.fromString("play & prove yourself !", 800, 69)
 			action = () => {
 				GamePanel.changeView("CampaignMenu")
 			}
 		},
 		new Button(new Point(640, 600), new Dimension(800, 160)) {
-			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
-			sprite_front   = SpriteLoader.fromString("quit & take a break", 800, 69)
+			spriteBack    = SpriteLoader.fromResource("menuButtonLarge.png")
+			spriteFront   = SpriteLoader.fromString("quit & take a break", 800, 69)
 			action = () => {
 				GamePanel.quit
 			}
 		}
 	)
 
-	def render(running_for: Double, delta: Double): Unit = {
+	def render(time: Double, delta: Double): Unit = {
 		for(b <- buttons)
-			b.render(running_for, delta)
+			b.render(time, delta)
 	}
 }

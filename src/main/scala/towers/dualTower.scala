@@ -9,8 +9,8 @@ class DualTower extends RadiusTower(0, 250, 20) {
 		return "Dual Tower"
 	}
 
-	def tick(running_for: Double, delta: Double) : Unit = {
-		if (lastShot + reload < running_for) {
+	def tick(time: Double, delta: Double) : Unit = {
+		if (lastShot + reload < time) {
 			var enemiesNear : Array[Enemy] = Game.getEnemiesWhere(e => Math.abs(e.pos.x-pos.x) < 1)
 
 			for (e <- enemiesNear) {
@@ -20,11 +20,11 @@ class DualTower extends RadiusTower(0, 250, 20) {
 			}
 
 			if (enemiesNear.length > 0)
-				lastShot = running_for
+				lastShot = time
 		}
 	}
 
-	def render(running_for: Double, delta: Double): Unit = {
+	def render(time: Double, delta: Double): Unit = {
 		val s:Image = SpriteLoader.fromResource("dualtour.png")
 		val sPos = pos.toScreenPosition
 

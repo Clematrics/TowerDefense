@@ -18,8 +18,8 @@ object GamePanel extends Panel {
 	listenTo(keys)
 	reactions += {
 		case Tick(t, d) =>
-			running_for = t
-			delta       = d
+			time  = t
+			delta = d
 			view.tick(t, d)
 			repaint()
 		case _: FocusLost => repaint()
@@ -30,8 +30,8 @@ object GamePanel extends Panel {
 	var view: View = new MainMenu
 	view.listenTo(ps: _*)
 
-	var running_for = 0.0
-	var delta       = 0.0
+	var time  = 0.0
+	var delta = 0.0
 	val timer = new Timer {
 		interval = 16
 		run = true
@@ -51,7 +51,7 @@ object GamePanel extends Panel {
 
 		Renderer.prepareRendering
 
-		view.render(running_for, delta)
+		view.render(time, delta)
 		// frame per second display
 		if (Renderer.debugMode) {
 			Renderer.debug.setColor(new Color(240, 0, 0))

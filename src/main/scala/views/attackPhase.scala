@@ -10,13 +10,13 @@ import scala.collection.mutable.ArrayBuffer
   */
 class AttackPhase extends View { outer =>
 	val r = scala.util.Random
-	var time = -5.0
+	var waveTime = -5.0
 	var wave: ArrayBuffer[Tuple3[Double, Int, String]] = ArrayBuffer(Game.map.wave: _*)
 
 	buttons ++= ArrayBuffer(
 		new Button(new Point(1200, 40), new Dimension(150, 60)) {
-			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
-			sprite_front   = SpriteLoader.fromString("nevermind", 150, 30)
+			spriteBack    = SpriteLoader.fromResource("menuButtonLarge.png")
+			spriteFront   = SpriteLoader.fromString("nevermind", 150, 30)
 			action = () => {
 				Game.reset
 				GamePanel.changeView("DefensePhase")
@@ -24,14 +24,14 @@ class AttackPhase extends View { outer =>
 		}
 	)
 
-	override def tick(running_for: Double, delta: Double): Unit = {
+	override def tick(time: Double, delta: Double): Unit = {
 		if (Game.health <= 0) {
 			GamePanel.changeView("LoseMenu")
 		}
 
-		time += delta
+		waveTime += delta
 
-		while (wave.length > 0 && wave.head._1 * 1000 <= time) {
+		while (wave.length > 0 && wave.head._1 * 1000 <= waveTime) {
 			val (t, i, name) = wave.head
 
 			val constr = Class.forName(name).getConstructor()
@@ -54,7 +54,7 @@ class AttackPhase extends View { outer =>
 		}
 
 		for (e <- Game.entities)
-			e.tick(running_for, delta)
+			e.tick(time, delta)
 
 		Game.entities = Game.entities.filter((p: Entity) => p.valid)
 
@@ -67,10 +67,10 @@ class AttackPhase extends View { outer =>
 	  * Rendering of the game, with the map and all entities
 	  *
 	  * @param g A Graphics2D object representing the drawing surface
-	  * @param running_for Total time the game has been running
+	  * @param time Total time the game has been running
 	  * @param delta
 	  */
-	def render(running_for: Double, delta: Double): Unit = {
+	def render(time: Double, delta: Double): Unit = {
 		Renderer.background.drawImage(Game.map.mapImg, new AffineTransform(6, 0, 0, 6, 0, 0), null)
 
 		if (Renderer.debugMode) {
@@ -86,11 +86,11 @@ class AttackPhase extends View { outer =>
 		}
 
 		for(e <- Game.entities) {
-			e.render(running_for, delta)
+			e.render(time, delta)
 		}
 
 		for(b <- buttons) {
-			b.render(running_for, delta)
+			b.render(time, delta)
 		}
 
 		Renderer.userInterface.setColor(Color.BLACK)
@@ -100,7 +100,7 @@ class AttackPhase extends View { outer =>
 
 		if (Renderer.debugMode) {
 			Renderer.debug.setColor(Color.PINK)
-			Renderer.debug.drawString(f"$time%.1f ms", 0, 30)
+			Renderer.debug.drawString(f"$waveTime%.1f ms", 0, 30)
 		}
 	}
 }
