@@ -70,7 +70,7 @@ class AttackPhase extends View { outer =>
 	  * @param running_for Total time the game has been running
 	  * @param delta
 	  */
-	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
+	def render(running_for: Double, delta: Double): Unit = {
 		Renderer.background.drawImage(Game.map.mapImg, new AffineTransform(6, 0, 0, 6, 0, 0), null)
 
 		if (Renderer.debugMode) {
@@ -86,11 +86,11 @@ class AttackPhase extends View { outer =>
 		}
 
 		for(e <- Game.entities) {
-			e.render(g)
+			e.render(running_for, delta)
 		}
 
 		for(b <- buttons) {
-			b.render(g, running_for, delta)
+			b.render(running_for, delta)
 		}
 
 		Renderer.userInterface.setColor(Color.BLACK)

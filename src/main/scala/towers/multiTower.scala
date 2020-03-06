@@ -23,7 +23,7 @@ class MultiTower extends RadiusTower(7, 2000, 20) {
 		}
 	}
 
-	override def render(g: Graphics2D): Unit = {
+	def render(running_for: Double, delta: Double): Unit = {
 		val s:Image = SpriteLoader.fromResource("multitour.png")
 		val sPos = pos.toScreenPosition
 		Renderer.groundEntities.drawImage(s, new AffineTransform(1, 0, 0, 1, sPos.x, sPos.y - 40), null)

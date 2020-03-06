@@ -24,7 +24,7 @@ class DualTower extends RadiusTower(0, 250, 20) {
 		}
 	}
 
-	override def render(g: Graphics2D): Unit = {
+	def render(running_for: Double, delta: Double): Unit = {
 		val s:Image = SpriteLoader.fromResource("dualtour.png")
 		val sPos = pos.toScreenPosition
 

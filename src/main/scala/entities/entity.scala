@@ -7,5 +7,5 @@ import java.awt.Graphics2D;
 abstract class Entity {
 	var valid: Boolean = true
 	def tick(running_for: Double, delta: Double): Unit
-	def render(g: Graphics2D): Unit = {}
+	def render(running_for: Double, delta: Double): Unit
 }

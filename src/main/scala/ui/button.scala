@@ -36,7 +36,7 @@ class Button(p: Point, d: Dimension) extends Reactor {
 	}
 
 	var action = () => {}
-	def render(g: Graphics2D, time: Double, delta: Double) = {
+	def render(time: Double, delta: Double) = {
 		if (sprite_back != null) {
 			val scaleX = size.getWidth / sprite_back.getWidth(null)
 			val scaleY = size.getHeight / sprite_back.getHeight(null)

@@ -54,11 +54,11 @@ class CampaignMenu extends View { outer =>
 	var campaignButtons = loadCampaignButtons()
 
 
-	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
+	def render(running_for: Double, delta: Double): Unit = {
 		val spriteTitle = SpriteLoader.fromString(campaign.name, 1280, 57)
 		Renderer.userInterface.drawImage(spriteTitle, new AffineTransform(1, 0, 0, 1, 640 - spriteTitle.getWidth(null) / 2, 0), null)
 		for(b <- buttons) {
-			b.render(g, running_for, delta)
+			b.render(running_for, delta)
 		}
 	}
 }

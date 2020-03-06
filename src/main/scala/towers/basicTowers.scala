@@ -18,7 +18,7 @@ class ProtoTower extends Tower {
 	def tick(running_for: Double, delta: Double) : Unit = {
 	}
 
-	override def render(g: Graphics2D): Unit = {
+	def render(running_for: Double, delta: Double): Unit = {
 		val s:Image = SpriteLoader.fromResource("tour.png")
 		val sPos = pos.toScreenPosition
 		Renderer.groundEntities.drawImage(s, new AffineTransform(0.2, 0, 0, 0.2, sPos.x, sPos.y - 20), null)

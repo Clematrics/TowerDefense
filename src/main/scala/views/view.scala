@@ -21,5 +21,5 @@ abstract class View extends Publisher {
 	var buttons: ArrayBuffer[Button] = ArrayBuffer()
 
 	def tick(running_for: Double, delta: Double) {}
-	def render(g: Graphics2D, running_for: Double, delta: Double)
+	def render(running_for: Double, delta: Double)
 }

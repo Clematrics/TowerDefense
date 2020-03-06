@@ -21,7 +21,7 @@ trait LivingEnemy extends Enemy {
 		}
 	}
 
-	def drawHealthBar(g: Graphics2D, p: ScreenPoint) = {
+	def drawHealthBar(p: ScreenPoint) = {
 		Renderer.userInterface.setColor(Color.BLACK)
 		Renderer.userInterface.fillRect(p.x - 51, p.y - 1, 102, 12)
 		Renderer.userInterface.setColor(Color.RED)
@@ -75,11 +75,11 @@ class SphereEnemy extends MovingEnemy with LivingEnemy {
 		return 5 // Constant reward
 	}
 
-	override def render(g: Graphics2D): Unit = {
+	def render(running_for: Double, delta: Double): Unit = {
 		val sPos = pos.toScreenPosition
 		Renderer.groundEntities.setColor(new Color(80, 20, 100, 255))
 		Renderer.groundEntities.fillOval(sPos.x - 40, sPos.y - 40, 80, 80)
-		drawHealthBar(g, sPos + new ScreenPoint(0, -60))
+		drawHealthBar(sPos + new ScreenPoint(0, -60))
 	}
 }
 
@@ -99,10 +99,10 @@ class ProtoEnemy extends MovingEnemy with LivingEnemy {
 		return scala.util.Random.nextInt(15) // Random reward
 	}
 
-	override def render(g: Graphics2D): Unit = {
+	def render(running_for: Double, delta: Double): Unit = {
 		val s:Image = SpriteLoader.fromResource("pion.png")
 		val sPos = pos.toScreenPosition
 		Renderer.groundEntities.drawImage(s, new AffineTransform(0.2, 0, 0, 0.2, sPos.x-40, sPos.y-40), null)
-		drawHealthBar(g, sPos + new ScreenPoint(0, -60))
+		drawHealthBar(sPos + new ScreenPoint(0, -60))
 	}
 }

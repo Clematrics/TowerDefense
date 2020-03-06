@@ -20,7 +20,7 @@ class Particle(me: MovingEnemy, t: Tower) extends Entity {
 		pos += new CellPoint(dirx, diry) * speed
     }
 
-	override def render(g: Graphics2D) = {
+	def render(running_for: Double, delta: Double) = {
         Renderer.flyingEntities.setColor(Color.PINK)
         Renderer.flyingEntities.setStroke(new BasicStroke(10))
         val sp = pos.toScreenPosition

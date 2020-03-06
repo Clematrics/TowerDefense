@@ -23,8 +23,8 @@ class MainMenu extends View { outer =>
 		}
 	)
 
-	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
+	def render(running_for: Double, delta: Double): Unit = {
 		for(b <- buttons)
-			b.render(g, running_for, delta)
+			b.render(running_for, delta)
 	}
 }

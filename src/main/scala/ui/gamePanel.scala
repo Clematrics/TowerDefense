@@ -51,7 +51,7 @@ object GamePanel extends Panel {
 
 		Renderer.prepareRendering
 
-		view.render(g, running_for, delta)
+		view.render(running_for, delta)
 		// frame per second display
 		if (Renderer.debugMode) {
 			Renderer.debug.setColor(new Color(240, 0, 0))

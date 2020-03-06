@@ -84,7 +84,7 @@ class DefensePhase extends View { outer =>
 		}
 	)
 
-	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
+	def render(running_for: Double, delta: Double): Unit = {
 		Renderer.background.drawImage(Game.map.mapImg, new AffineTransform(6, 0, 0, 6, 0, 0), null)
 
 		if (Renderer.debugMode) {
@@ -100,13 +100,13 @@ class DefensePhase extends View { outer =>
 		}
 
 		for (t <- Game.entities)
-			t.render(g)
+			t.render(running_for, delta)
 
 		val mousePos = mouseCursorPosition.toCellPoint
 		if (mousePos.x <= 45 - 1 && mousePos.y <= 30 - 1) {
 			if (Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == EmptyTowerCell && Game.gold >= towerToAdd.cost) {
 				towerToAdd.pos = mousePos
-				towerToAdd.render(g)
+				towerToAdd.render(running_for, delta)
 			}
 			else {
 				val stroke = new BasicStroke(8)
@@ -125,7 +125,7 @@ class DefensePhase extends View { outer =>
 		Renderer.userInterface.drawImage(exp, new AffineTransform(1, 0, 0, 1, 1160, 180), null)
 
 		for(b <- buttons) {
-			b.render(g, running_for, delta)
+			b.render(running_for, delta)
 		}
 	}
 }
