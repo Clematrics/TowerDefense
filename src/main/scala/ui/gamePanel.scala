@@ -14,7 +14,6 @@ object GamePanel extends Panel {
 	background = Color.BLACK
 	preferredSize = (Cst.windowWidth, Cst.windowHeight)
 	focusable = true
-	var displayFramerate = false
 
 	listenTo(keys)
 	reactions += {
@@ -23,8 +22,6 @@ object GamePanel extends Panel {
 			delta       = d
 			view.tick(t, d)
 			repaint()
-		case KeyTyped(_, 'f', _, _) =>
-			displayFramerate = !displayFramerate
 		case _: FocusLost => repaint()
 	}
 
@@ -56,7 +53,7 @@ object GamePanel extends Panel {
 
 		view.render(g, running_for, delta)
 		// frame per second display
-		if (displayFramerate) {
+		if (RenderLayers.debugMode) {
 			RenderLayers.debug.setColor(new Color(240, 0, 0))
 			RenderLayers.debug.drawString(f"$delta%.1f ms", 0, 10)
 		}

@@ -42,6 +42,8 @@ object RenderLayers {
 	var globalPostProcessing  : Graphics2D   = _
 	var debug                 : Graphics2D   = _
 
+	var debugMode: Boolean = true
+
 	resetRendering
 
 	def resetRendering(): Unit = {
@@ -127,27 +129,28 @@ object RenderLayers {
 		finalG2.drawImage(        userInterfaceImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
 		// finalG2.drawImage( primaryUserInterfaceImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
 		// finalG2.drawImage( globalPostProcessingImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
-		finalG2.drawImage(                debugImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		if (debugMode)
+			finalG2.drawImage(            debugImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
 		finalG2.dispose
 
-		var W = 0
-		var H = 0
+		var w = 0
+		var h = 0
 		var offsetX = 0
 		var offsetY = 0
 
 		val rateX = GamePanel.size.width.toDouble  / finalImg.getWidth
 		val rateY = GamePanel.size.height.toDouble / finalImg.getHeight
-		if (rateX>rateY){
-			W = (finalImg.getWidth  * rateY).toInt
-			H = (finalImg.getHeight * rateY).toInt
-			offsetX = (GamePanel.size.width - W) / 2
+		if (rateX > rateY){
+			w = (finalImg.getWidth  * rateY).toInt
+			h = (finalImg.getHeight * rateY).toInt
+			offsetX = (GamePanel.size.width - w) / 2
 		}
 		else{
-			W = (finalImg.getWidth  * rateX).toInt
-			H = (finalImg.getHeight * rateX).toInt
-			offsetY = (GamePanel.size.height - H) / 2
+			w = (finalImg.getWidth  * rateX).toInt
+			h = (finalImg.getHeight * rateX).toInt
+			offsetY = (GamePanel.size.height - h) / 2
 		}
 
-		g.drawImage(finalImg, offsetX, offsetY, W, H, null)
+		g.drawImage(finalImg, offsetX, offsetY, w, h, null)
 	}
 }

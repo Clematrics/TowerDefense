@@ -6,10 +6,9 @@ import scala.swing.event.KeyTyped
   * Abstract class representing a level of the game
   */
 abstract class View extends Publisher {
-	var debugMode = false
 	reactions += {
 		case KeyTyped(_, 'd', _, _) =>
-			debugMode = !debugMode
+			RenderLayers.debugMode = !RenderLayers.debugMode
 	}
 
 	def tick(running_for: Double, delta: Double) {}

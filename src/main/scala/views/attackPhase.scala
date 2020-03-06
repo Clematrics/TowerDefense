@@ -80,7 +80,7 @@ class AttackPhase extends View { outer =>
 	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
 		RenderLayers.background.drawImage(Game.map.mapImg, new AffineTransform(6, 0, 0, 6, 0, 0), null)
 
-		if (debugMode) {
+		if (RenderLayers.debugMode) {
 			RenderLayers.background.drawImage(Game.map.mapLayout, new AffineTransform(24, 0, 0, 24, 0, 0), null)
 			for(cp <- Game.map.checkpoints) {
 				val stroke = new BasicStroke(2)
@@ -105,7 +105,7 @@ class AttackPhase extends View { outer =>
 		RenderLayers.userInterface.setColor(Color.RED)
 		RenderLayers.userInterface.fillRect(1220, 100 + ((100 - Game.health) * 600 / 100), 40, Game.health * 600 / 100)
 
-		if (debugMode) {
+		if (RenderLayers.debugMode) {
 			RenderLayers.debug.setColor(Color.PINK)
 			RenderLayers.debug.drawString(f"$time%.1f ms", 0, 30)
 		}

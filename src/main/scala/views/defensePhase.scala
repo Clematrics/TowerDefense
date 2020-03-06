@@ -89,7 +89,7 @@ class DefensePhase extends View { outer =>
 	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
 		RenderLayers.background.drawImage(Game.map.mapImg, new AffineTransform(6, 0, 0, 6, 0, 0), null)
 
-		if (debugMode) {
+		if (RenderLayers.debugMode) {
 			RenderLayers.background.drawImage(Game.map.mapLayout, new AffineTransform(24, 0, 0, 24, 0, 0), null)
 			for(cp <- Game.map.checkpoints) {
 				val stroke = new BasicStroke(2)
