@@ -44,11 +44,9 @@ object RenderLayers {
 
 	resetRendering
 
-	def resetGraphics(): Unit = {
-
-	}
-
-	def resetRendering(width: Int, height: Int): Unit = {
+	def resetRendering(): Unit = {
+		val width  = Cst.layerResolutionWidth
+		val height = Cst.layerResolutionHeight
 		backgroundImg            = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 		// backgroundEffectsImg     = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 		groundEntitiesImg        = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
@@ -60,10 +58,6 @@ object RenderLayers {
 		// primaryUserInterfaceImg  = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 		// globalPostProcessingImg  = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 		debugImg                 = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
-	}
-
-	def resetRendering(): Unit = {
-		resetRendering(Cst.windowWidth, Cst.windowHeight)
 	}
 
 	def prepareRendering(): Unit = {
@@ -91,17 +85,19 @@ object RenderLayers {
 		// globalPostProcessing  setBackground(new Color(0, 0, 0, 0))
 		debug                 setBackground(new Color(0, 0, 0, 0))
 
-		background            clearRect(0, 0, Cst.windowWidth, Cst.windowHeight)
-		// backgroundEffects     clearRect(0, 0, Cst.windowWidth, Cst.windowHeight)
-		groundEntities        clearRect(0, 0, Cst.windowWidth, Cst.windowHeight)
-		// groundEntitiesEffects clearRect(0, 0, Cst.windowWidth, Cst.windowHeight)
-		flyingEntities        clearRect(0, 0, Cst.windowWidth, Cst.windowHeight)
-		// flyingEntitiesEffects clearRect(0, 0, Cst.windowWidth, Cst.windowHeight)
-		// postProcessing        clearRect(0, 0, Cst.windowWidth, Cst.windowHeight)
-		userInterface         clearRect(0, 0, Cst.windowWidth, Cst.windowHeight)
-		// primaryUserInterface  clearRect(0, 0, Cst.windowWidth, Cst.windowHeight)
-		// globalPostProcessing  clearRect(0, 0, Cst.windowWidth, Cst.windowHeight)
-		debug                 clearRect(0, 0, Cst.windowWidth, Cst.windowHeight)
+		val width  = Cst.layerResolutionWidth
+		val height = Cst.layerResolutionHeight
+		background            clearRect(0, 0, width, height)
+		// backgroundEffects     clearRect(0, 0, width, height)
+		groundEntities        clearRect(0, 0, width, height)
+		// groundEntitiesEffects clearRect(0, 0, width, height)
+		flyingEntities        clearRect(0, 0, width, height)
+		// flyingEntitiesEffects clearRect(0, 0, width, height)
+		// postProcessing        clearRect(0, 0, width, height)
+		userInterface         clearRect(0, 0, width, height)
+		// primaryUserInterface  clearRect(0, 0, width, height)
+		// globalPostProcessing  clearRect(0, 0, width, height)
+		debug                 clearRect(0, 0, width, height)
 	}
 
 	def closeRendering(): Unit = {
@@ -119,16 +115,39 @@ object RenderLayers {
 	}
 
 	def mergeLayers(g: Graphics2D) = {
-		g.drawImage(           backgroundImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
-		// g.drawImage(    backgroundEffectsImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
-		g.drawImage(       groundEntitiesImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
-		// g.drawImage(groundEntitiesEffectsImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
-		g.drawImage(       flyingEntitiesImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
-		// g.drawImage(flyingEntitiesEffectsImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
-		// g.drawImage(       postProcessingImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
-		g.drawImage(        userInterfaceImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
-		// g.drawImage( primaryUserInterfaceImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
-		// g.drawImage( globalPostProcessingImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
-		g.drawImage(                debugImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		val finalImg = new BufferedImage(Cst.layerResolutionWidth, Cst.layerResolutionHeight, BufferedImage.TYPE_INT_ARGB)
+		val finalG2 = finalImg.createGraphics
+		finalG2.drawImage(           backgroundImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		// finalG2.drawImage(    backgroundEffectsImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		finalG2.drawImage(       groundEntitiesImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		// finalG2.drawImage(groundEntitiesEffectsImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		finalG2.drawImage(       flyingEntitiesImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		// finalG2.drawImage(flyingEntitiesEffectsImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		// finalG2.drawImage(       postProcessingImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		finalG2.drawImage(        userInterfaceImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		// finalG2.drawImage( primaryUserInterfaceImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		// finalG2.drawImage( globalPostProcessingImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		finalG2.drawImage(                debugImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		finalG2.dispose
+
+		var W = 0
+		var H = 0
+		var offsetX = 0
+		var offsetY = 0
+
+		val rateX = Cst.windowWidth.toDouble  / finalImg.getWidth
+		val rateY = Cst.windowHeight.toDouble / finalImg.getHeight
+		if (rateX>rateY){
+			W = (finalImg.getWidth  * rateY).toInt
+			H = (finalImg.getHeight * rateY).toInt
+			offsetX = (Cst.windowWidth - W) / 2
+		}
+		else{
+			W = (finalImg.getWidth  * rateX).toInt
+			H = (finalImg.getHeight * rateX).toInt
+			offsetY = (Cst.windowHeight - H) / 2
+		}
+
+		g.drawImage(finalImg, offsetX, offsetY, W, H, null)
 	}
 }

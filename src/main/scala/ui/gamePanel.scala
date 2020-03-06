@@ -3,14 +3,16 @@ import scala.swing.Swing.pair2Dimension
 import java.awt.{Color, Graphics2D, Toolkit}
 import scala.swing.event.FocusLost
 import scala.swing.event.KeyTyped
+import java.awt.event.ComponentAdapter
+import java.awt.event.ComponentEvent
 
 /**
   * GamePanel is the main component of this application. It hosts all the objects and menus
   * used during the execution.
   */
 object GamePanel extends Panel {
-	background = Color.black
-	preferredSize = (1280, 720)
+	background = Color.BLACK
+	preferredSize = (Cst.windowWidth, Cst.windowHeight)
 	focusable = true
 	var displayFramerate = false
 
@@ -49,6 +51,12 @@ object GamePanel extends Panel {
 
 	override def paintComponent(g: Graphics2D) {
 		super.paintComponent(g)
+
+		if (Cst.windowWidth != size.width && Cst.windowHeight != size.height) {
+			Cst.windowWidth  = size.width
+			Cst.windowHeight = size.height
+		}
+
 		RenderLayers.prepareRendering
 
 		view.render(g, running_for, delta)
