@@ -11,7 +11,6 @@ object TowerDefense extends SimpleSwingApplication {
 	def top = new MainFrame { frame =>
 		title = "Tower Def[ENS]e"
 		contents = GamePanel
-		resizable = false
 		centerOnScreen
 
 		//peer.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE) Si jamais on voulait demander la confirmation
