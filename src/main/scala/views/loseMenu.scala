@@ -1,17 +1,10 @@
 import scala.swing.event._
 import java.awt.{Color, Dimension, Graphics2D, Point}
 import java.awt.geom.AffineTransform
-import scala.collection.mutable._
+import scala.collection.mutable.ArrayBuffer
 
 class LoseMenu extends View { outer =>
-	reactions += {
-		case MouseMoved(_, point, _) =>
-			for(b <- buttons) b.onMoved(point)
-		case MouseReleased(_, point, _, _, _) =>
-			for(b <- buttons) b.onRelease(point)
-	}
-
-	val buttons : List[Button] = List(
+	buttons ++= ArrayBuffer(
 		new Button(new Point(640, 420), new Dimension(800, 160)) {
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front   = SpriteLoader.fromString("Retry", 800, 69)

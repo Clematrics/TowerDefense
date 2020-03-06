@@ -1,18 +1,12 @@
 import scala.swing.event._
 import java.awt.{Dimension, Graphics2D, Point}
+import scala.collection.mutable.ArrayBuffer
 
 /**
   * This class handles the startup menu of this application.
   */
 class MainMenu extends View { outer =>
-	reactions += {
-		case MouseMoved(_, point, _) =>
-			for(b <- buttons) b.onMoved(point)
-		case MouseReleased(_, point, _, _, _) =>
-			for(b <- buttons) b.onRelease(point)
-	}
-
-	val buttons : List[Button] = List(
+	buttons ++= ArrayBuffer(
 		new Button(new Point(640, 200), new Dimension(800, 160)) {
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front   = SpriteLoader.fromString("play & prove yourself !", 800, 69)

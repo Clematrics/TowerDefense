@@ -13,14 +13,7 @@ class AttackPhase extends View { outer =>
 	var time = -5.0
 	var wave: ArrayBuffer[Tuple3[Double, Int, String]] = ArrayBuffer(Game.map.wave: _*)
 
-	reactions += {
-		case MouseMoved(_, point, _) =>
-			for(b <- buttons) b.onMoved(point)
-		case MouseReleased(_, point, _, _, _) =>
-			for(b <- buttons) b.onRelease(point)
-	}
-
-	val buttons : List[Button] = List(
+	buttons ++= ArrayBuffer(
 		new Button(new Point(1200, 40), new Dimension(150, 60)) {
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front   = SpriteLoader.fromString("nevermind", 150, 30)

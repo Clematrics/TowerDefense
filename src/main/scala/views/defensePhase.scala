@@ -2,6 +2,7 @@ import scala.swing.event._
 import java.awt.{Color, Dimension, Graphics2D, Point}
 import java.awt.geom.AffineTransform
 import java.awt.BasicStroke
+import scala.collection.mutable.ArrayBuffer
 
 class DefensePhase extends View { outer =>
 	var mouseCursorPosition = new ScreenPoint(0, 0)
@@ -9,10 +10,7 @@ class DefensePhase extends View { outer =>
 	reactions += {
 		case MouseMoved(_, point, _) =>
 			mouseCursorPosition = new ScreenPoint(point)
-			for(b <- buttons) b.onMoved(point)
 		case MouseReleased(_, point, _, _, _) =>
-			for(b <- buttons) b.onRelease(point)
-
 			val mousePos = mouseCursorPosition.toCellPoint
 			if (mousePos.x <= 45 - 1 && mousePos.y <= 30 - 1) {
 				if (Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == EmptyTowerCell && Game.gold >= towerToAdd.cost) {
@@ -28,7 +26,7 @@ class DefensePhase extends View { outer =>
 
 	var towerToAdd: Tower = new ArmedTower
 
-	val buttons : List[Button] = List(
+	buttons ++= ArrayBuffer(
 		new Button(new Point(1215, 40), new Dimension(120, 60)) {
 			sprite_back    = SpriteLoader.fromResource("menuButtonLarge.png")
 			sprite_front   = SpriteLoader.fromString("Fight !", 120, 30)
