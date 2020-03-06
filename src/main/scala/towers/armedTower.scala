@@ -25,6 +25,6 @@ class ArmedTower extends RadiusTower(6, 1000, 5) {
 	override def render(g: Graphics2D): Unit = {
 		val s:Image = SpriteLoader.fromResource("armedtour.png")
 		val sPos = pos.toScreenPosition
-		RenderLayers.groundEntities.drawImage(s, new AffineTransform(1, 0, 0, 1, sPos.x, sPos.y - 40), null)
+		Renderer.groundEntities.drawImage(s, new AffineTransform(1, 0, 0, 1, sPos.x, sPos.y - 40), null)
 	}
 }

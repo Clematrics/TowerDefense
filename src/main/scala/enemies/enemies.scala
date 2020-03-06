@@ -22,10 +22,10 @@ trait LivingEnemy extends Enemy {
 	}
 
 	def drawHealthBar(g: Graphics2D, p: ScreenPoint) = {
-		RenderLayers.userInterface.setColor(Color.BLACK)
-		RenderLayers.userInterface.fillRect(p.x - 51, p.y - 1, 102, 12)
-		RenderLayers.userInterface.setColor(Color.RED)
-		RenderLayers.userInterface.fillRect(p.x - 50, p.y, lifePoints, 10)
+		Renderer.userInterface.setColor(Color.BLACK)
+		Renderer.userInterface.fillRect(p.x - 51, p.y - 1, 102, 12)
+		Renderer.userInterface.setColor(Color.RED)
+		Renderer.userInterface.fillRect(p.x - 50, p.y, lifePoints, 10)
 	}
 }
 
@@ -77,8 +77,8 @@ class SphereEnemy extends MovingEnemy with LivingEnemy {
 
 	override def render(g: Graphics2D): Unit = {
 		val sPos = pos.toScreenPosition
-		RenderLayers.groundEntities.setColor(new Color(80, 20, 100, 255))
-		RenderLayers.groundEntities.fillOval(sPos.x - 40, sPos.y - 40, 80, 80)
+		Renderer.groundEntities.setColor(new Color(80, 20, 100, 255))
+		Renderer.groundEntities.fillOval(sPos.x - 40, sPos.y - 40, 80, 80)
 		drawHealthBar(g, sPos + new ScreenPoint(0, -60))
 	}
 }
@@ -102,7 +102,7 @@ class ProtoEnemy extends MovingEnemy with LivingEnemy {
 	override def render(g: Graphics2D): Unit = {
 		val s:Image = SpriteLoader.fromResource("pion.png")
 		val sPos = pos.toScreenPosition
-		RenderLayers.groundEntities.drawImage(s, new AffineTransform(0.2, 0, 0, 0.2, sPos.x-40, sPos.y-40), null)
+		Renderer.groundEntities.drawImage(s, new AffineTransform(0.2, 0, 0, 0.2, sPos.x-40, sPos.y-40), null)
 		drawHealthBar(g, sPos + new ScreenPoint(0, -60))
 	}
 }

@@ -49,17 +49,17 @@ object GamePanel extends Panel {
 	override def paintComponent(g: Graphics2D) {
 		super.paintComponent(g)
 
-		RenderLayers.prepareRendering
+		Renderer.prepareRendering
 
 		view.render(g, running_for, delta)
 		// frame per second display
-		if (RenderLayers.debugMode) {
-			RenderLayers.debug.setColor(new Color(240, 0, 0))
-			RenderLayers.debug.drawString(f"$delta%.1f ms", 0, 10)
+		if (Renderer.debugMode) {
+			Renderer.debug.setColor(new Color(240, 0, 0))
+			Renderer.debug.drawString(f"$delta%.1f ms", 0, 10)
 		}
 
-		RenderLayers.closeRendering
-		RenderLayers.mergeLayers(g)
+		Renderer.closeRendering
+		Renderer.mergeLayers(g)
 
 		// for smoother rendering, according to https://stackoverflow.com/questions/35436094/scala-swing-performance-depends-on-events
 		Toolkit.getDefaultToolkit().sync()

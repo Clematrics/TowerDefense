@@ -85,17 +85,17 @@ class DefensePhase extends View { outer =>
 	)
 
 	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
-		RenderLayers.background.drawImage(Game.map.mapImg, new AffineTransform(6, 0, 0, 6, 0, 0), null)
+		Renderer.background.drawImage(Game.map.mapImg, new AffineTransform(6, 0, 0, 6, 0, 0), null)
 
-		if (RenderLayers.debugMode) {
-			RenderLayers.background.drawImage(Game.map.mapLayout, new AffineTransform(24, 0, 0, 24, 0, 0), null)
+		if (Renderer.debugMode) {
+			Renderer.background.drawImage(Game.map.mapLayout, new AffineTransform(24, 0, 0, 24, 0, 0), null)
 			for(cp <- Game.map.checkpoints) {
 				val stroke = new BasicStroke(2)
-				RenderLayers.debug.setStroke(stroke)
-				RenderLayers.debug.setColor(new Color(255, 0, 255, 255))
+				Renderer.debug.setStroke(stroke)
+				Renderer.debug.setColor(new Color(255, 0, 255, 255))
 				val spa = cp.a.toScreenPosition
 				val spb = cp.b.toScreenPosition
-				RenderLayers.debug.drawLine(spa.x, spa.y, spb.x, spb.y)
+				Renderer.debug.drawLine(spa.x, spa.y, spb.x, spb.y)
 			}
 		}
 
@@ -110,19 +110,19 @@ class DefensePhase extends View { outer =>
 			}
 			else {
 				val stroke = new BasicStroke(8)
-				RenderLayers.userInterface.setStroke(stroke)
-				RenderLayers.userInterface.setColor(Color.RED)
+				Renderer.userInterface.setStroke(stroke)
+				Renderer.userInterface.setColor(Color.RED)
 				val x = mousePos.x.toInt * 24
 				val y = mousePos.y.toInt * 24
-				RenderLayers.userInterface.drawLine(x, y, x + 24, y + 24)
-				RenderLayers.userInterface.drawLine(x + 24, y, x, y + 24)
+				Renderer.userInterface.drawLine(x, y, x + 24, y + 24)
+				Renderer.userInterface.drawLine(x + 24, y, x, y + 24)
 			}
 		}
 
 		val gold = SpriteLoader.fromString(f"Gold : ${Game.gold}", 120, 30)
-		RenderLayers.userInterface.drawImage(gold, new AffineTransform(1, 0, 0, 1, 1160, 90), null)
+		Renderer.userInterface.drawImage(gold, new AffineTransform(1, 0, 0, 1, 1160, 90), null)
 		val exp = SpriteLoader.fromString(f"Exp : ${Game.experience}", 120, 30)
-		RenderLayers.userInterface.drawImage(exp, new AffineTransform(1, 0, 0, 1, 1160, 180), null)
+		Renderer.userInterface.drawImage(exp, new AffineTransform(1, 0, 0, 1, 1160, 180), null)
 
 		for(b <- buttons) {
 			b.render(g, running_for, delta)

@@ -14,10 +14,10 @@ class LaserBeam(d: Double, me: MovingEnemy, t: Tower, c: Color) extends Entity {
     }
 
     override def render(g: Graphics2D) = {
-        RenderLayers.flyingEntities.setColor(clr)
-        RenderLayers.flyingEntities.setStroke(new BasicStroke(10))
+        Renderer.flyingEntities.setColor(clr)
+        Renderer.flyingEntities.setStroke(new BasicStroke(10))
         val sa = a.toScreenPosition
         val sb = b.toScreenPosition
-		RenderLayers.flyingEntities.drawLine(sa.x, sa.y, sb.x, sb.y)
+		Renderer.flyingEntities.drawLine(sa.x, sa.y, sb.x, sb.y)
     }
 }

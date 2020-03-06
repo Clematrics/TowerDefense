@@ -15,7 +15,7 @@ abstract class View extends Publisher {
 		case MouseReleased(_, point, _, _, _) =>
 			for(b <- buttons) b.onRelease(point)
 		case KeyTyped(_, 'd', _, _) =>
-			RenderLayers.debugMode = !RenderLayers.debugMode
+			Renderer.debugMode = !Renderer.debugMode
 	}
 
 	var buttons: ArrayBuffer[Button] = ArrayBuffer()

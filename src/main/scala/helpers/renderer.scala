@@ -17,7 +17,7 @@ import java.awt.Color
  * Layer 9 - GlobalPostProcessing  : global post processing
  */
 
-object RenderLayers {
+object Renderer {
 	private var backgroundImg            : BufferedImage = _
 	private var backgroundEffectsImg     : BufferedImage = _
 	private var groundEntitiesImg        : BufferedImage = _

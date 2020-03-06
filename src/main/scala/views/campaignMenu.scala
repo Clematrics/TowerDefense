@@ -56,7 +56,7 @@ class CampaignMenu extends View { outer =>
 
 	def render(g: Graphics2D, running_for: Double, delta: Double): Unit = {
 		val spriteTitle = SpriteLoader.fromString(campaign.name, 1280, 57)
-		RenderLayers.userInterface.drawImage(spriteTitle, new AffineTransform(1, 0, 0, 1, 640 - spriteTitle.getWidth(null) / 2, 0), null)
+		Renderer.userInterface.drawImage(spriteTitle, new AffineTransform(1, 0, 0, 1, 640 - spriteTitle.getWidth(null) / 2, 0), null)
 		for(b <- buttons) {
 			b.render(g, running_for, delta)
 		}

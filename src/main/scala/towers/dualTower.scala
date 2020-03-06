@@ -28,12 +28,12 @@ class DualTower extends RadiusTower(0, 250, 20) {
 		val s:Image = SpriteLoader.fromResource("dualtour.png")
 		val sPos = pos.toScreenPosition
 
-		RenderLayers.flyingEntities.setColor(Color.YELLOW)
-        RenderLayers.flyingEntities.setStroke(new BasicStroke(10))
+		Renderer.flyingEntities.setColor(Color.YELLOW)
+        Renderer.flyingEntities.setStroke(new BasicStroke(10))
         val sa = (pos - new CellPoint(0,8)).toScreenPosition
         val sb = (pos - new CellPoint(0,-8)).toScreenPosition
-		RenderLayers.groundEntities.drawImage(s, new AffineTransform(1, 0, 0, 1, sa.x, sa.y - 40), null)
-		RenderLayers.groundEntities.drawImage(s, new AffineTransform(1, 0, 0, 1, sb.x, sb.y - 40), null)
-		RenderLayers.flyingEntities.drawLine(sa.x+30, sa.y, sb.x+30, sb.y)
+		Renderer.groundEntities.drawImage(s, new AffineTransform(1, 0, 0, 1, sa.x, sa.y - 40), null)
+		Renderer.groundEntities.drawImage(s, new AffineTransform(1, 0, 0, 1, sb.x, sb.y - 40), null)
+		Renderer.flyingEntities.drawLine(sa.x+30, sa.y, sb.x+30, sb.y)
 	}
 }
