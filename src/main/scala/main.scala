@@ -8,5 +8,5 @@ object TowerDefense extends SimpleSwingApplication {
 		title = "Tower Def[ENS]e"
 		contents = GamePanel
 		resizable = false
-	}
+ 	}
 }

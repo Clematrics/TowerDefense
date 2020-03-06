@@ -66,6 +66,7 @@ object GamePanel extends Panel {
 	}
 
 	def quit(): Unit = {
+	  GamePanel.timer.run = false
 		TowerDefense.quit
 	}
 }
