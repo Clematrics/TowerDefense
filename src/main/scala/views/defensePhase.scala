@@ -91,11 +91,11 @@ class DefensePhase extends View { outer =>
 			Renderer.background.drawImage(Game.map.mapLayout, new AffineTransform(24, 0, 0, 24, 0, 0), null)
 			for(cp <- Game.map.checkpoints) {
 				val stroke = new BasicStroke(2)
-				Renderer.debug.setStroke(stroke)
-				Renderer.debug.setColor(new Color(255, 0, 255, 255))
+				Renderer.background.setStroke(stroke)
+				Renderer.background.setColor(new Color(255, 0, 255, 255))
 				val spa = cp.a.toScreenPosition
 				val spb = cp.b.toScreenPosition
-				Renderer.debug.drawLine(spa.x, spa.y, spb.x, spb.y)
+				Renderer.background.drawLine(spa.x, spa.y, spb.x, spb.y)
 			}
 		}
 
