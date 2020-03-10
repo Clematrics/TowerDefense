@@ -67,6 +67,7 @@ object SpriteLoader {
 				// has been displayed.
 				lineMeasurer.setPosition(paragraphStart);
 				while (lineMeasurer.getPosition() < paragraphEnd) {
+					// inspired from https://stackoverflow.com/questions/1120151/handling-n-in-linebreakmeasurer
 					val next = lineMeasurer.nextOffset(breakWidth)
 					var limit = next
 					if (limit <= str.length) {
@@ -96,6 +97,7 @@ object SpriteLoader {
 				var drawPosY = 0.0f
 				lineMeasurer.setPosition(paragraphStart);
 				while (lineMeasurer.getPosition() < paragraphEnd) {
+					// inspired from https://stackoverflow.com/questions/1120151/handling-n-in-linebreakmeasurer
 					val next = lineMeasurer.nextOffset(breakWidth)
 					var limit = next
 					if (limit <= str.length) {
