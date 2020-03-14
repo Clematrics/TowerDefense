@@ -7,10 +7,10 @@ object Cst {
     val windowWidth  = 1280
 	val windowHeight = 720
 
-	val layerResolutionWidth  = 1280
-	val layerResolutionHeight = 720
+	val layerResolutionWidth  = 640
+	val layerResolutionHeight = 360
 
     val mapWidth  = 45
     val mapHeight = 30
-    val cellSize  = 24
+    val cellSize  = 12
 }

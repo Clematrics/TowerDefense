@@ -2,6 +2,7 @@ package engine.helpers
 
 import java.awt.Point
 import java.awt.geom.Point2D
+import engine.Cst
 
 /**
   * ScreenPoint is a pair of Int representing a position on the screen, in pixels
@@ -15,7 +16,7 @@ class ScreenPoint(xIn: Int, yIn: Int) extends Point(xIn, yIn) {
 	}
 
 	def toCellPoint(): CellPoint = {
-		return new CellPoint(x / 24, y / 24)
+		return new CellPoint(x / Cst.cellSize, y / Cst.cellSize)
 	}
 
 	def +(p: ScreenPoint): ScreenPoint = {

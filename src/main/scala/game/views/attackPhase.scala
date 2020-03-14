@@ -19,9 +19,9 @@ class AttackPhase extends View { outer =>
 	var wave: ArrayBuffer[Tuple3[Double, Int, String]] = ArrayBuffer(Game.map.wave: _*)
 
 	buttons ++= ArrayBuffer(
-		new Button(new Point(1200, 40), new Dimension(150, 60)) {
+		new Button(new Point(600, 20), new Dimension(75, 30)) {
 			spriteBack    = SpriteLoader.fromResource("menuButtonLarge.png")
-			spriteFront   = SpriteLoader.fromString("nevermind", 150, 30)
+			spriteFront   = SpriteLoader.fromString("nevermind", 75, 15)
 			action = () => {
 				Game.reset
 				GamePanel.changeView("DefensePhase")
@@ -76,10 +76,10 @@ class AttackPhase extends View { outer =>
 	  * @param delta
 	  */
 	def render(time: Double, delta: Double): Unit = {
-		Renderer.background.drawImage(Game.map.mapImg, new AffineTransform(6, 0, 0, 6, 0, 0), null)
+		Renderer.background.drawImage(Game.map.mapImg, new AffineTransform(3, 0, 0, 3, 0, 0), null)
 
 		if (Renderer.debugMode) {
-			Renderer.background.drawImage(Game.map.mapLayout, new AffineTransform(24, 0, 0, 24, 0, 0), null)
+			Renderer.background.drawImage(Game.map.mapLayout, new AffineTransform(12, 0, 0, 12, 0, 0), null)
 			for(cp <- Game.map.checkpoints) {
 				val stroke = new BasicStroke(2)
 				Renderer.background.setStroke(stroke)
@@ -99,9 +99,9 @@ class AttackPhase extends View { outer =>
 		}
 
 		Renderer.userInterface.setColor(Color.BLACK)
-		Renderer.userInterface.fillRect(1220, 100, 40, 600)
+		Renderer.userInterface.fillRect(610, 50, 20, 300)
 		Renderer.userInterface.setColor(Color.RED)
-		Renderer.userInterface.fillRect(1220, 100 + ((100 - Game.health) * 600 / 100), 40, Game.health * 600 / 100)
+		Renderer.userInterface.fillRect(610, 50 + ((100 - Game.health) * 300 / 100), 20, Game.health * 300 / 100)
 
 		if (Renderer.debugMode) {
 			Renderer.debug.setColor(Color.PINK)

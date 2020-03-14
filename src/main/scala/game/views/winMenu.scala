@@ -13,9 +13,9 @@ import scala.collection.mutable._
   */
 class WinMenu extends View { outer =>
 	buttons ++= ArrayBuffer(
-		new Button(new Point(640, 420), new Dimension(800, 160)) {
+		new Button(new Point(320, 210), new Dimension(400, 80)) {
 			spriteBack    = SpriteLoader.fromResource("menuButtonLarge.png")
-			spriteFront   = SpriteLoader.fromString("Explode more monsters", 800, 69)
+			spriteFront   = SpriteLoader.fromString("Explode more monsters", 400, 35)
 			action = () => {
 				Game.reset
 				GamePanel.changeView("CampaignMenu")
@@ -24,8 +24,8 @@ class WinMenu extends View { outer =>
 	)
 
 	def render(time: Double, delta: Double): Unit = {
-		val winImg = SpriteLoader.fromString("You win!", 800, 69)
-		Renderer.userInterface.drawImage(winImg, new AffineTransform(1, 0, 0, 1, 640 - winImg.getWidth(null) / 2, 220), null)
+		val winImg = SpriteLoader.fromString("You win!", 400, 35)
+		Renderer.userInterface.drawImage(winImg, new AffineTransform(1, 0, 0, 1, 320 - winImg.getWidth(null) / 2, 110), null)
 
 		for(b <- buttons) {
 			b.render(time, delta)

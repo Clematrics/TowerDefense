@@ -36,6 +36,6 @@ class ProtoTower extends Tower {
 	def render(time: Double, delta: Double): Unit = {
 		val s:Image = SpriteLoader.fromResource("tour.png")
 		val sPos = pos.toScreenPosition
-		Renderer.groundEntities.drawImage(s, new AffineTransform(0.2, 0, 0, 0.2, sPos.x, sPos.y - 20), null)
+		Renderer.groundEntities.drawImage(s, new AffineTransform(0.1, 0, 0, 0.1, sPos.x, sPos.y - 10), null)
 	}
 }

@@ -30,11 +30,11 @@ class DualTower extends RadiusTower(0, 250, 20) {
 			}
 			//Computing the enemies' distance from the laser
 			val distABsq = Math.pow(posB.x - posA.x, 2) + Math.pow(posB.y - posA.y, 2)
-			var enemiesNear : Array[Enemy] = Game.getEnemiesWhere(e => 
-			{ 
+			var enemiesNear : Array[Enemy] = Game.getEnemiesWhere(e =>
+			{
 				val distAPsq = Math.pow(e.pos.x - posA.x, 2) + Math.pow(e.pos.y - posA.y, 2)
 				val scalarAPAB = (e.pos.x-posA.x)*(posB.x-posA.x) + (e.pos.y-posA.y)*(posB.y-posA.y)
-				val scalarBABP = (posA.x-posB.x)*(e.pos.x-posB.x) + (posA.y-posB.y)*(e.pos.y-posB.y) 
+				val scalarBABP = (posA.x-posB.x)*(e.pos.x-posB.x) + (posA.y-posB.y)*(e.pos.y-posB.y)
 				val delta = Math.sqrt(distAPsq - Math.pow(scalarAPAB,2) / distABsq)
 				delta < 1 && scalarAPAB > 0 && scalarBABP > 0
 			})
@@ -61,8 +61,8 @@ class DualTower extends RadiusTower(0, 250, 20) {
         Renderer.flyingEntities.setStroke(new BasicStroke(10))
         val sa = posA.toScreenPosition
         val sb = posB.toScreenPosition
-		Renderer.groundEntities.drawImage(s, new AffineTransform(1, 0, 0, 1, sa.x, sa.y - 40), null)
-		Renderer.groundEntities.drawImage(s, new AffineTransform(1, 0, 0, 1, sb.x, sb.y - 40), null)
-		Renderer.flyingEntities.drawLine(sa.x+30, sa.y, sb.x+30, sb.y)
+		Renderer.groundEntities.drawImage(s, new AffineTransform(0.5, 0, 0, 0.5, sa.x, sa.y - 20), null)
+		Renderer.groundEntities.drawImage(s, new AffineTransform(0.5, 0, 0, 0.5, sb.x, sb.y - 20), null)
+		Renderer.flyingEntities.drawLine(sa.x + 15, sa.y, sb.x + 15, sb.y)
 	}
 }

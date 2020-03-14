@@ -27,9 +27,9 @@ trait LivingEnemy extends Enemy {
 
 	def drawHealthBar(p: ScreenPoint) = {
 		Renderer.userInterface.setColor(Color.BLACK)
-		Renderer.userInterface.fillRect(p.x - 51, p.y - 1, 102, 12)
+		Renderer.userInterface.fillRect(p.x + 25 - lifePoints / 2, p.y, lifePoints / 2, 10)
 		Renderer.userInterface.setColor(Color.RED)
-		Renderer.userInterface.fillRect(p.x - 50, p.y, lifePoints, 10)
+		Renderer.userInterface.fillRect(p.x - 25, p.y, lifePoints /  2, 10)
 	}
 }
 
@@ -86,8 +86,8 @@ class SphereEnemy extends MovingEnemy with LivingEnemy {
 	def render(time: Double, delta: Double): Unit = {
 		val sPos = pos.toScreenPosition
 		Renderer.groundEntities.setColor(new Color(80, 20, 100, 255))
-		Renderer.groundEntities.fillOval(sPos.x - 40, sPos.y - 40, 80, 80)
-		drawHealthBar(sPos + new ScreenPoint(0, -60))
+		Renderer.groundEntities.fillOval(sPos.x - 20, sPos.y - 20, 40, 40)
+		drawHealthBar(sPos + new ScreenPoint(0, -30))
 	}
 }
 
@@ -114,7 +114,7 @@ class ProtoEnemy extends MovingEnemy with LivingEnemy {
 	def render(time: Double, delta: Double): Unit = {
 		val s:Image = SpriteLoader.fromResource("pion.png")
 		val sPos = pos.toScreenPosition
-		Renderer.groundEntities.drawImage(s, new AffineTransform(0.2, 0, 0, 0.2, sPos.x-40, sPos.y-40), null)
-		drawHealthBar(sPos + new ScreenPoint(0, -60))
+		Renderer.groundEntities.drawImage(s, new AffineTransform(0.1, 0, 0, 0.1, sPos.x - 20, sPos.y  - 20), null)
+		drawHealthBar(sPos + new ScreenPoint(0, -30))
 	}
 }

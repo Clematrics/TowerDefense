@@ -31,8 +31,8 @@ class Particle(me: MovingEnemy, t: Tower) extends Entity {
 
 	def render(time: Double, delta: Double) = {
         Renderer.flyingEntities.setColor(Color.PINK)
-        Renderer.flyingEntities.setStroke(new BasicStroke(10))
+        Renderer.flyingEntities.setStroke(new BasicStroke(5))
         val sp = pos.toScreenPosition
-        Renderer.flyingEntities.drawOval(sp.x - 5, sp.y - 5, 10, 10)
+        Renderer.flyingEntities.drawOval(sp.x - 2, sp.y - 2, 4, 4)
     }
 }

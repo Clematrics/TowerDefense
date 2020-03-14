@@ -5,6 +5,7 @@ import java.awt.Point
 import scala.io.Source
 import scala.collection.mutable._
 import scala.math.Ordering.IntOrdering
+import engine.Cst
 
 /**
   * A map parser to load maps at runtime from specially formatted files.
@@ -38,15 +39,15 @@ object MapLoader {
 		}
 		wave = wave.sortBy(_._1)
 
-		val map = Array.ofDim[CellType](45, 30)
+		val map = Array.ofDim[CellType](Cst.mapWidth, Cst.mapHeight)
 		val imgLayout = SpriteLoader.fromResource(str + "Layout.png")
 		val bi = new BufferedImage(imgLayout.getWidth(null), imgLayout.getHeight(null), BufferedImage.TYPE_INT_ARGB)
 		val g = bi.createGraphics
 		g.drawImage(imgLayout, 0, 0, null)
 		g.dispose
-		assert(imgLayout.getWidth(null) == 45 && imgLayout.getHeight(null) == 30)
-		for (i <- 0 until 45)
-			for (j <- 0 until 30)
+		assert(imgLayout.getWidth(null) == Cst.mapWidth && imgLayout.getHeight(null) == Cst.mapHeight)
+		for (i <- 0 until Cst.mapWidth)
+			for (j <- 0 until Cst.mapHeight)
 				bi.getRGB(i, j) match {
 					case 0xFF000000 => {
 						map(i)(j) = EmptyTowerCell

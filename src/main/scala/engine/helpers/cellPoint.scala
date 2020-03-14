@@ -2,6 +2,7 @@ package engine.helpers
 
 import java.awt.Point
 import java.awt.geom.Point2D
+import engine.Cst
 
 /**
   * CellPoint is a pair of Double to represent the position of an entity in the level
@@ -31,7 +32,7 @@ class CellPoint(xIn: Double, yIn: Double) extends Point2D {
 	}
 
 	def toScreenPosition(): ScreenPoint = {
-		return new ScreenPoint((x * 24).toInt, (y * 24).toInt)
+		return new ScreenPoint((x * Cst.cellSize).toInt, (y * Cst.cellSize).toInt)
 	}
 
 	def +(p: CellPoint): CellPoint = {
