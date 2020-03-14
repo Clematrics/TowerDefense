@@ -1,3 +1,6 @@
+/**
+ * This class manages fondamental properties and behaviour of animations
+ */
 abstract class Animation[T](dur: Double) {
 	private var _run: Boolean = true
 	def run = _run

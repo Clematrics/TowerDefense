@@ -1,6 +1,10 @@
 import java.awt._
 import java.awt.geom.{AffineTransform, Point2D}
 
+/**
+  * This class represents a tower able to shoot at
+  * several enemies at a time.
+  */
 class MultiTower extends RadiusTower(7, 2000, 20) {
 	cost = 40
 	def getName(): String = {

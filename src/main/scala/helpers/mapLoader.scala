@@ -4,6 +4,9 @@ import scala.io.Source
 import scala.collection.mutable._
 import scala.math.Ordering.IntOrdering
 
+/**
+  * A map parser to load maps at runtime from specially formatted files.
+  */
 object MapLoader {
 	def loadMap(str: String): Map = {
 		val stream = getClass.getResourceAsStream(str + ".dat")

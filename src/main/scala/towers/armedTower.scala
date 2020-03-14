@@ -1,6 +1,10 @@
 import java.awt._
 import java.awt.geom.{AffineTransform, Point2D}
 
+/**
+  * A tower shooting enemies
+  *
+  */
 class ArmedTower extends RadiusTower(6, 1000, 5) {
 	cost = 10
 	def getName(): String = {

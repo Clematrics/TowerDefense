@@ -1,6 +1,10 @@
 import java.awt._
 import java.awt.geom.{AffineTransform, Point2D}
 
+/**
+  * The laser tower can only target one enemy at a time.
+  *
+  */
 class LaserTower extends RadiusTower(6, 2000, 20) {
 	cost = 20
 

@@ -1,8 +1,8 @@
 /**
-  * 
+  * A sequence of worlds
   *
-  * @param str
-  * @param rnds
+  * @param str	Name of the campaign
+  * @param rnds	Number of rounds
   */
 class Campaign(str: String, rnds: List[Map]) {
 	var name    = str

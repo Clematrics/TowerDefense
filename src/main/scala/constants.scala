@@ -1,3 +1,6 @@
+/**
+  * This object contains the main metrics for the UI.
+  */
 object Cst {
     val windowWidth  = 1280
 	val windowHeight = 720

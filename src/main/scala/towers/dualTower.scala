@@ -1,6 +1,11 @@
 import java.awt._
 import java.awt.geom.{AffineTransform, Point2D}
 
+/**
+  * The DualTower is in fact two towers deploying a yellow laser between
+  * them in order to harm all enemies passing through it.
+  * 
+  */
 class DualTower extends RadiusTower(0, 250, 20) {
 	cost = 80
 	var added: Boolean = false

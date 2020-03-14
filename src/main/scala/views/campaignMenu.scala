@@ -3,6 +3,10 @@ import java.awt.{Dimension, Graphics2D, Point}
 import scala.collection.mutable.ArrayBuffer
 import java.awt.geom.AffineTransform
 
+/**
+  * The window to select a campaign.
+  *
+  */
 class CampaignMenu extends View { outer =>
 	val fixedButtons: ArrayBuffer[Button] = ArrayBuffer(
 		new Button(new Point(80, 40), new Dimension(150, 60)) {

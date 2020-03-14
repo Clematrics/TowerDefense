@@ -2,6 +2,14 @@ import java.awt.Graphics2D
 import java.awt.BasicStroke
 import java.awt.Color
 
+/**
+  * The Short during Laser entity.
+  *
+  * @param d	Instant in the timeline when this entity is created
+  * @param me	The targeted enemy
+  * @param t	Source tower
+  * @param c	Color of the laser
+  */
 class LaserBeam(d: Double, me: MovingEnemy, t: Tower, c: Color) extends Entity {
     var a: CellPoint = me.pos
     var b: CellPoint = t.pos

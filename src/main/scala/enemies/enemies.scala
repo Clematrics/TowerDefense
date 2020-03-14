@@ -60,6 +60,10 @@ trait MovingEnemy extends Enemy {
 	}
 }
 
+/**
+  * An enemy which absorb all light excepted red and blue. We can only see
+  * it as a purple sphere.
+  */
 class SphereEnemy extends MovingEnemy with LivingEnemy {
 	var gold:Int = 200
 
@@ -83,6 +87,10 @@ class SphereEnemy extends MovingEnemy with LivingEnemy {
 	}
 }
 
+/**
+  * The enemy designed for development purposes.
+  *
+  */
 class ProtoEnemy extends MovingEnemy with LivingEnemy {
 	speed = 0.02
 	var gold:Int = 500

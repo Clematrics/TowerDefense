@@ -1,5 +1,8 @@
 import java.awt.Point
 
+/**
+  * Computes mouse positions depending on the current dimensions of the screen.
+  */
 object MouseHelper {
 	def fromMouse(p: Point): ScreenPoint = {
 		Renderer.computeAdjustments

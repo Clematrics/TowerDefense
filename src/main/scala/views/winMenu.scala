@@ -3,6 +3,10 @@ import java.awt.{Color, Dimension, Graphics2D, Point}
 import java.awt.geom.AffineTransform
 import scala.collection.mutable._
 
+/**
+  * This window is visible when the player wins.
+  *
+  */
 class WinMenu extends View { outer =>
 	buttons ++= ArrayBuffer(
 		new Button(new Point(640, 420), new Dimension(800, 160)) {

@@ -5,18 +5,19 @@ import java.awt.Color
 
 /**
  * Rendering is done layer by layer
- * Layer 0 - Background            : background
- * Layer 1 - BackgroundEffects     : area of effects, background effects
- * Layer 2 - GroundEntities        : ground entities
- * Layer 3 - GroundEntitiesEffects : area of effects, middle effects
- * Layer 4 - FlyingEntities        : flying entities
- * Layer 5 - FlyingEntitiesEffects : area of effects, high altitude effects
- * Layer 6 - PostProcessing        : post processing
- * Layer 7 - UserInterface         : user interface
- * Layer 8 - PrimaryUserInterface  : primary user interface
- * Layer 9 - GlobalPostProcessing  : global post processing
+ * Layer 0  - Background            : background
+ * Layer 1* - BackgroundEffects     : area of effects, background effects
+ * Layer 2  - GroundEntities        : ground entities
+ * Layer 3* - GroundEntitiesEffects : area of effects, middle effects
+ * Layer 4  - FlyingEntities        : flying entities
+ * Layer 5* - FlyingEntitiesEffects : area of effects, high altitude effects
+ * Layer 6* - PostProcessing        : post processing
+ * Layer 7  - UserInterface         : user interface
+ * Layer 8* - PrimaryUserInterface  : primary user interface
+ * Layer 9* - GlobalPostProcessing  : global post processing
+ * ______________________________
+ * * Not currently in use
  */
-
 object Renderer {
 	private var backgroundImg            : BufferedImage = _
 	private var backgroundEffectsImg     : BufferedImage = _

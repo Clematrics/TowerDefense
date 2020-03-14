@@ -4,6 +4,10 @@ import java.awt.geom.AffineTransform
 import java.awt.BasicStroke
 import scala.collection.mutable.ArrayBuffer
 
+/**
+  * This class is the phase of the game where the player can buy
+  * and add towers to defend the place.
+  */
 class DefensePhase extends View { outer =>
 	var mouseCursorPosition = new ScreenPoint(0, 0)
 

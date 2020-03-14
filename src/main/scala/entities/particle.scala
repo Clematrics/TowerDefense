@@ -2,6 +2,12 @@ import java.awt.Graphics2D
 import java.awt.BasicStroke
 import java.awt.Color
 
+/**
+  * Entity embodying particles shot towards enemies.
+  *
+  * @param me	The targeted enemy
+  * @param t	Source tower
+  */
 class Particle(me: MovingEnemy, t: Tower) extends Entity {
     var target = me
     var pos = new CellPoint(t.pos)

@@ -4,8 +4,8 @@ import java.awt.geom.Point2D
 /**
   * CellPoint is a pair of Double to represent the position of an entity in the level
   *
-  * @param x
-  * @param y
+  * @param x Abscissa
+  * @param y Ordinate
   */
 class CellPoint(xIn: Double, yIn: Double) extends Point2D {
 	var x: Double = xIn

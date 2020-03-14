@@ -3,6 +3,10 @@ import java.awt.{Color, Dimension, Graphics2D, Point}
 import java.awt.geom.AffineTransform
 import scala.collection.mutable.ArrayBuffer
 
+/**
+  * The window to retry another game when the player loses.
+  *
+  */
 class LoseMenu extends View { outer =>
 	buttons ++= ArrayBuffer(
 		new Button(new Point(640, 420), new Dimension(800, 160)) {
