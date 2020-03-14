@@ -30,8 +30,9 @@ class DualTower extends RadiusTower(0, 250, 20) {
 			{ 
 				val distAPsq = Math.pow(e.pos.x - posA.x, 2) + Math.pow(e.pos.y - posA.y, 2)
 				val scalarAPAB = (e.pos.x-posA.x)*(posB.x-posA.x) + (e.pos.y-posA.y)*(posB.y-posA.y)
+				val scalarBABP = (posA.x-posB.x)*(e.pos.x-posB.x) + (posA.y-posB.y)*(e.pos.y-posB.y) 
 				val delta = Math.sqrt(distAPsq - Math.pow(scalarAPAB,2) / distABsq)
-				delta < 1  
+				delta < 1 && scalarAPAB > 0 && scalarBABP > 0
 			})
 
 			for (e <- enemiesNear) {
