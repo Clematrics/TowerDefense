@@ -12,14 +12,14 @@ import scala.collection.mutable.ArrayBuffer
 class MainMenu extends View { outer =>
 	buttons ++= ArrayBuffer(
 		new Button(new Point(320, 100), new Dimension(400, 80)) {
-			spriteBack    = SpriteLoader.fromResource("menuButtonLarge.png")
+			spriteBack    = SpriteLoader.fromResource("button400x80.png")
 			spriteFront   = SpriteLoader.fromString("play & prove yourself !", 400, 35)
 			action = () => {
 				GamePanel.changeView("CampaignMenu")
 			}
 		},
 		new Button(new Point(320, 300), new Dimension(400, 80)) {
-			spriteBack    = SpriteLoader.fromResource("menuButtonLarge.png")
+			spriteBack    = SpriteLoader.fromResource("button400x80.png")
 			spriteFront   = SpriteLoader.fromString("quit & take a break", 400, 35)
 			action = () => {
 				TowerDefense.quitGame
