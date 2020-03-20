@@ -26,7 +26,7 @@ class LaserBeam(d: Double, me: MovingEnemy, t: Tower, c: Color) extends Entity {
 
     def render(time: Double, delta: Double) = {
         Renderer.flyingEntities.setColor(clr)
-        Renderer.flyingEntities.setStroke(new BasicStroke(10))
+        Renderer.flyingEntities.setStroke(new BasicStroke(6))
         val sa = a.toScreenPosition
         val sb = b.toScreenPosition
 		Renderer.flyingEntities.drawLine(sa.x, sa.y, sb.x, sb.y)

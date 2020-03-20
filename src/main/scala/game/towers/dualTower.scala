@@ -58,7 +58,7 @@ class DualTower extends RadiusTower(0, 250, 20) {
 		val sPos = pos.toScreenPosition
 
 		Renderer.flyingEntities.setColor(Color.YELLOW)
-        Renderer.flyingEntities.setStroke(new BasicStroke(10))
+        Renderer.flyingEntities.setStroke(new BasicStroke(6))
         val sa = posA.toScreenPosition
         val sb = posB.toScreenPosition
 		Renderer.groundEntities.drawImage(s, new AffineTransform(0.5, 0, 0, 0.5, sa.x, sa.y - 20), null)
