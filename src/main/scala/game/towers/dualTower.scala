@@ -6,6 +6,26 @@ import java.awt._
 import java.awt.geom.{AffineTransform, Point2D}
 
 /**
+  * Helper class to select the positions of the towers in the entity
+  * DualTower.
+  */
+class HalfDualTower extends TowerCompound("DualTower", 2, 0.3) {
+	def getName(): String = {
+		return "Dual Tower"
+	}
+
+	def tick(time: Double, delta: Double) : Unit = {
+		
+	}
+
+	def render(time: Double, delta: Double): Unit = {
+		val s:Image = SpriteLoader.fromResource("dualtour.png")
+		val sPos = pos.toScreenPosition
+		Renderer.groundEntities.drawImage(s, new AffineTransform(0.5, 0, 0, 0.5, sPos.x, sPos.y - 20), null)
+	}
+}
+
+/**
   * The DualTower is in fact two towers deploying a yellow laser between
   * them in order to harm all enemies passing through it.
   * 
