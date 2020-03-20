@@ -23,19 +23,42 @@ class DefensePhase extends View { outer =>
 		case MouseReleased(_, point, _, _, _) =>
 			val mousePos = mouseCursorPosition.toCellPoint
 			if (mousePos.x <= Cst.mapWidth - 1 && mousePos.y <= Cst.mapHeight - 1) {
-				if (Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == EmptyTowerCell && Game.gold >= towerToAdd.cost) {
-					towerToAdd.pos = mousePos
-					Game.entities += towerToAdd
-					Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) = OccupiedTowerCell
-					Game.gold -= towerToAdd.cost
-					val towerName = towerToAdd.getClass.getName
-					towerToAdd = Class.forName(towerName).getConstructor().newInstance().asInstanceOf[Tower]
+				if (isCompound) {
+					//Compound tower currently being placed
+					if (Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == EmptyTowerCell && Game.gold >= towerToAdd.cost) {
+						towerToAdd.pos = mousePos
+						val comp = towerToAdd.asInstanceOf[TowerCompound]
+						compoundsBuffer += comp //add to buffer
+		
+						if (compoundsBuffer.length == comp.nb) {	//All positions specified, wa can add the tower itself
+							println("arrivé")
+							Game.entities += comp.makeTower(compoundsBuffer)
+							compoundsBuffer.clear
+							Game.gold -= towerToAdd.cost
+							isCompound = false						//In order to avoid to reset the flag in each case
+							towerToAdd = new ArmedTower				//Back to default
+						} else {
+							val towerName = towerToAdd.getClass.getName
+							towerToAdd = Class.forName(towerName).getConstructor().newInstance().asInstanceOf[Tower]
+						}
+					}
+				} else {
+					if (Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == EmptyTowerCell && Game.gold >= towerToAdd.cost) {
+						towerToAdd.pos = mousePos
+						Game.entities += towerToAdd
+						Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) = OccupiedTowerCell
+						Game.gold -= towerToAdd.cost
+						val towerName = towerToAdd.getClass.getName
+						towerToAdd = Class.forName(towerName).getConstructor().newInstance().asInstanceOf[Tower]
+					}
 				}
 			}
 	}
 
 	var towerToAdd: Tower = new ArmedTower
-
+	var compoundsBuffer: ArrayBuffer[TowerCompound] = ArrayBuffer()
+	var isCompound: Boolean = false
+	var dbg = false
 	buttons ++= ArrayBuffer(
 		new Button(new Point(605, 20), new Dimension(60, 30)) {
 			spriteBack    = SpriteLoader.fromResource("menuButtonLarge.png")
@@ -82,7 +105,8 @@ class DefensePhase extends View { outer =>
 			spriteFront   = SpriteLoader.fromString("Dual Tower", 60, 15)
 			spriteTooltip = SpriteLoader.tooltip("Cost : 80 Gold\nPower : 20\nTwo towers making a laser barrier")
 			action = () => {
-				towerToAdd = new DualTower
+				towerToAdd = new HalfDualTower
+				isCompound = true		//For the moment, we use a flag telling us if it's several towers
 			}
 		},
 		new Button(new Point(605, 380), new Dimension(60, 30)) {
@@ -111,6 +135,10 @@ class DefensePhase extends View { outer =>
 
 		for (t <- Game.entities)
 			t.render(time, delta)
+			
+		/*Buffered towers*/
+		for (c <- compoundsBuffer)
+			c.render(time, delta)
 
 		val mousePos = mouseCursorPosition.toCellPoint
 		if (mousePos.x <= Cst.mapWidth - 1 && mousePos.y <= Cst.mapHeight - 1) {

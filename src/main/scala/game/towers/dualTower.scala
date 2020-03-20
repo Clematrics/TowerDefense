@@ -5,11 +5,14 @@ import engine.helpers.CellPoint
 import java.awt._
 import java.awt.geom.{AffineTransform, Point2D}
 
+import scala.collection.mutable.ArrayBuffer
+
 /**
   * Helper class to select the positions of the towers in the entity
   * DualTower.
   */
 class HalfDualTower extends TowerCompound("DualTower", 2, 0.3) {
+	cost = 80
 	def getName(): String = {
 		return "Dual Tower"
 	}
@@ -23,6 +26,14 @@ class HalfDualTower extends TowerCompound("DualTower", 2, 0.3) {
 		val sPos = pos.toScreenPosition
 		Renderer.groundEntities.drawImage(s, new AffineTransform(0.5, 0, 0, 0.5, sPos.x, sPos.y - 20), null)
 	}
+	
+	override def makeTower(compounds: ArrayBuffer[TowerCompound]): Tower = {
+		println("bibop")
+		var r = new DualTower
+		r.posA = compounds(0).pos
+		r.posB = compounds(1).pos
+		r
+	}
 }
 
 /**
@@ -32,7 +43,6 @@ class HalfDualTower extends TowerCompound("DualTower", 2, 0.3) {
   */
 class DualTower extends RadiusTower(0, 250, 20) {
 	cost = 80
-	var added: Boolean = false
 
 	var posA: CellPoint = /*pos +*/new CellPoint(2,-4)
 	var posB: CellPoint = /*pos +*/ new CellPoint(-1,4)
@@ -43,11 +53,6 @@ class DualTower extends RadiusTower(0, 250, 20) {
 
 	def tick(time: Double, delta: Double) : Unit = {
 		if (lastShot + reload < time) {
-			if (!added) {
-				posA = pos + new CellPoint(3,-5)
-				posB = pos + new CellPoint(-2,6)
-				added = true
-			}
 			//Computing the enemies' distance from the laser
 			val distABsq = Math.pow(posB.x - posA.x, 2) + Math.pow(posB.y - posA.y, 2)
 			var enemiesNear : Array[Enemy] = Game.getEnemiesWhere(e =>
@@ -73,9 +78,7 @@ class DualTower extends RadiusTower(0, 250, 20) {
 	}
 
 	def render(time: Double, delta: Double): Unit = {
-	
 		val s:Image = SpriteLoader.fromResource("dualtour.png")
-		val sPos = pos.toScreenPosition
 
 		Renderer.flyingEntities.setColor(Color.YELLOW)
         Renderer.flyingEntities.setStroke(new BasicStroke(6))
