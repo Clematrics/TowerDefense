@@ -28,18 +28,19 @@ class DefensePhase extends View { outer =>
 					if (Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == EmptyTowerCell && Game.gold >= towerToAdd.cost) {
 						towerToAdd.pos = mousePos
 						val comp = towerToAdd.asInstanceOf[TowerCompound]
-						compoundsBuffer += comp //add to buffer
-		
-						if (compoundsBuffer.length == comp.nb) {	//All positions specified, wa can add the tower itself
-							println("arrivé")
-							Game.entities += comp.makeTower(compoundsBuffer)
-							compoundsBuffer.clear
-							Game.gold -= towerToAdd.cost
-							isCompound = false						//In order to avoid to reset the flag in each case
-							towerToAdd = new ArmedTower				//Back to default
-						} else {
-							val towerName = towerToAdd.getClass.getName
-							towerToAdd = Class.forName(towerName).getConstructor().newInstance().asInstanceOf[Tower]
+						if (comp.isValidDistance(compoundsBuffer, comp.pos)) {
+							compoundsBuffer += comp //add to buffer
+			
+							if (compoundsBuffer.length == comp.nb) {	//All positions specified, we can add the tower itself
+								Game.entities += comp.makeTower(compoundsBuffer)
+								compoundsBuffer.clear
+								Game.gold -= towerToAdd.cost
+								isCompound = false						//In order to avoid to reset the flag in each case
+								towerToAdd = new ArmedTower				//Back to default
+							} else {
+								val towerName = towerToAdd.getClass.getName
+								towerToAdd = Class.forName(towerName).getConstructor().newInstance().asInstanceOf[Tower]
+							}
 						}
 					}
 				} else {
@@ -142,7 +143,8 @@ class DefensePhase extends View { outer =>
 
 		val mousePos = mouseCursorPosition.toCellPoint
 		if (mousePos.x <= Cst.mapWidth - 1 && mousePos.y <= Cst.mapHeight - 1) {
-			if (Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == EmptyTowerCell && Game.gold >= towerToAdd.cost) {
+			if (Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == EmptyTowerCell && Game.gold >= towerToAdd.cost
+			&& (!isCompound || towerToAdd.asInstanceOf[TowerCompound].isValidDistance(compoundsBuffer, mousePos))) {
 				towerToAdd.pos = mousePos
 				towerToAdd.render(time, delta)
 			}

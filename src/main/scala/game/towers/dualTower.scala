@@ -11,7 +11,7 @@ import scala.collection.mutable.ArrayBuffer
   * Helper class to select the positions of the towers in the entity
   * DualTower.
   */
-class HalfDualTower extends TowerCompound("DualTower", 2, 0.3) {
+class HalfDualTower extends TowerCompound("DualTower", 2, 10) {
 	cost = 80
 	def getName(): String = {
 		return "Dual Tower"
@@ -28,7 +28,6 @@ class HalfDualTower extends TowerCompound("DualTower", 2, 0.3) {
 	}
 	
 	override def makeTower(compounds: ArrayBuffer[TowerCompound]): Tower = {
-		println("bibop")
 		var r = new DualTower
 		r.posA = compounds(0).pos
 		r.posB = compounds(1).pos
