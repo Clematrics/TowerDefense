@@ -27,9 +27,9 @@ trait LivingEnemy extends Enemy {
 
 	def drawHealthBar(p: ScreenPoint) = {
 		Renderer.userInterface.setColor(Color.BLACK)
-		Renderer.userInterface.fillRect(p.x + 25 - lifePoints / 2, p.y, lifePoints / 2, 10)
+		Renderer.userInterface.fillRect(p.x - 25, p.y, 50, 10)
 		Renderer.userInterface.setColor(Color.RED)
-		Renderer.userInterface.fillRect(p.x - 25, p.y, lifePoints /  2, 10)
+		Renderer.userInterface.fillRect(p.x - 24, p.y + 1, lifePoints /  2 - 2, 8)
 	}
 }
 
