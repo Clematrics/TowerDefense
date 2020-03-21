@@ -23,7 +23,7 @@ class DefensePhase extends View { outer =>
 		case MouseReleased(_, point, _, _, _) =>
 			val mousePos = mouseCursorPosition.toCellPoint
 			if (mousePos.x <= Cst.mapWidth - 1 && mousePos.y <= Cst.mapHeight - 1) {
-				if (isCompound) {
+				if (towerToAdd.isInstanceOf[TowerCompound]) {
 					//Compound tower currently being placed
 					if (Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == EmptyTowerCell && Game.gold >= towerToAdd.cost) {
 						towerToAdd.pos = mousePos
@@ -35,7 +35,6 @@ class DefensePhase extends View { outer =>
 								Game.entities += comp.makeTower(compoundsBuffer)
 								compoundsBuffer.clear
 								Game.gold -= towerToAdd.cost
-								isCompound = false						//In order to avoid to reset the flag in each case
 								towerToAdd = new ArmedTower				//Back to default
 							} else {
 								val towerName = towerToAdd.getClass.getName
@@ -58,8 +57,7 @@ class DefensePhase extends View { outer =>
 
 	var towerToAdd: Tower = new ArmedTower
 	var compoundsBuffer: ArrayBuffer[TowerCompound] = ArrayBuffer()
-	var isCompound: Boolean = false
-	var dbg = false
+
 	buttons ++= ArrayBuffer(
 		new Button(new Point(605, 20), new Dimension(60, 30)) {
 			spriteBack    = SpriteLoader.fromResource("menuButtonLarge.png")
@@ -107,7 +105,6 @@ class DefensePhase extends View { outer =>
 			spriteTooltip = SpriteLoader.tooltip("Cost : 80 Gold\nPower : 20\nTwo towers making a laser barrier")
 			action = () => {
 				towerToAdd = new HalfDualTower
-				isCompound = true		//For the moment, we use a flag telling us if it's several towers
 			}
 		},
 		new Button(new Point(605, 380), new Dimension(60, 30)) {
@@ -144,7 +141,7 @@ class DefensePhase extends View { outer =>
 		val mousePos = mouseCursorPosition.toCellPoint
 		if (mousePos.x <= Cst.mapWidth - 1 && mousePos.y <= Cst.mapHeight - 1) {
 			if (Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == EmptyTowerCell && Game.gold >= towerToAdd.cost
-			&& (!isCompound || towerToAdd.asInstanceOf[TowerCompound].isValidDistance(compoundsBuffer, mousePos))) {
+			&& (!towerToAdd.isInstanceOf[TowerCompound] || towerToAdd.asInstanceOf[TowerCompound].isValidDistance(compoundsBuffer, mousePos))) {
 				towerToAdd.pos = mousePos
 				towerToAdd.render(time, delta)
 			}
