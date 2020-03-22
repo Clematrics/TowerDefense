@@ -1,3 +1,5 @@
+import engine.map.Map
+
 /**
   * A sequence of worlds
   *

@@ -1,7 +1,8 @@
 import engine.core.Entity
 import engine.helpers.CellPoint
+import engine.map.Map
 
-import scala.collection.mutable._
+import scala.collection.mutable.ArrayBuffer
 
 /**
   * This object manages the status of the game : health of the player, money and

@@ -1,11 +1,12 @@
 import engine.loaders.SpriteLoader
+import engine.map.{Checkpoint, Map, CellType, Path, EmptyTowerCell}
+import engine.Cst
 
 import java.awt.image.BufferedImage
 import java.awt.Point
 import scala.io.Source
 import scala.collection.mutable._
 import scala.math.Ordering.IntOrdering
-import engine.Cst
 
 /**
   * A map parser to load maps at runtime from specially formatted files.

@@ -1,3 +1,5 @@
+package engine.map
+
 import java.awt.Image
 
 sealed trait CellType

@@ -2,6 +2,7 @@ import engine.core.{GamePanel, Renderer, View}
 import engine.helpers.{ScreenPoint}
 import engine.loaders.SpriteLoader
 import engine.interaction.{MouseHelper, Button}
+import engine.map.{EmptyTowerCell, OccupiedTowerCell}
 
 import scala.swing.event._
 import java.awt.{Color, Dimension, Graphics2D, Point}
@@ -30,7 +31,7 @@ class DefensePhase extends View { outer =>
 						val comp = towerToAdd.asInstanceOf[TowerCompound]
 						if (comp.isValidDistance(compoundsBuffer, comp.pos)) {
 							compoundsBuffer += comp //add to buffer
-			
+
 							if (compoundsBuffer.length == comp.nb) {	//All positions specified, we can add the tower itself
 								Game.entities += comp.makeTower(compoundsBuffer)
 								compoundsBuffer.clear
