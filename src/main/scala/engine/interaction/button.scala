@@ -46,12 +46,23 @@ class Button(var position: Point, var size: Dimension) extends Reactor {
 			Renderer.userInterface.drawImage(spriteBack, new AffineTransform(scaleX, 0, 0, scaleY, borderLeft, borderTop), null)
 		}
 		if (spriteFront != null) {
-			val offsetX = spriteFront.getWidth(null)  / 2
-			val offsetY = spriteFront.getHeight(null) / 2
-			Renderer.userInterface.drawImage(spriteFront, new AffineTransform(1, 0, 0, 1, position.x - offsetX, position.y - offsetY), null)
+			val hgt = spriteFront.getHeight(null)
+			var scale: Double = 1
+			var offsetX = 0
+			var offsetY = 0
+			
+			if (hgt > size.getHeight()) {
+				scale = size.getHeight / hgt
+				offsetX = (spriteFront.getWidth(null) * scale / 2).toInt
+				offsetY = (size.getHeight / 2).toInt
+			} else {
+				offsetX = spriteFront.getWidth(null) / 2
+				offsetY = hgt / 2
+			}
+			Renderer.userInterface.drawImage(spriteFront, new AffineTransform(scale, 0, 0, scale, position.x - offsetX, position.y - offsetY), null)
 		}
 		if (cursorInside && spriteTooltip != null) {
-			Renderer.userInterface.drawImage(spriteTooltip, new AffineTransform(1, 0, 0, 1, mousePosition.getX - spriteTooltip.getWidth(null), mousePosition.getY - spriteTooltip.getHeight(null)), null)
+			Renderer.userInterface.drawImage(spriteTooltip, new AffineTransform(0.7, 0, 0, 0.7, mousePosition.getX - spriteTooltip.getWidth(null), mousePosition.getY - spriteTooltip.getHeight(null)), null)
 		}
 	}
 }

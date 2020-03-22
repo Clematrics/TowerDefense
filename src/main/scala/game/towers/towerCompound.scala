@@ -6,7 +6,7 @@ import engine.helpers.{CellPoint, ScreenPoint}
   * positions.
   */
 abstract class TowerCompound(className: String, number: Int, maxDistFromLast: Double) extends Tower {
-	var name = className
+	var name = className //To be simplified here ^^^^^
 	var nb = number
 	var dist = maxDistFromLast
 	
