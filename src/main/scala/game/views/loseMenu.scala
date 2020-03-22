@@ -14,7 +14,7 @@ import scala.collection.mutable.ArrayBuffer
 class LoseMenu extends View { outer =>
 	buttons ++= ArrayBuffer(
 		new Button(new Point(320, 210), new Dimension(400, 80)) {
-			spriteBack    = SpriteLoader.fromResource("menuButtonLarge.png")
+			spriteBack    = SpriteLoader.fromResource("button400x80.png")
 			spriteFront   = SpriteLoader.fromString("Retry", 400, 35)
 			action = () => {
 				Game.reset

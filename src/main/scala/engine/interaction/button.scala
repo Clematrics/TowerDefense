@@ -50,7 +50,7 @@ class Button(var position: Point, var size: Dimension) extends Reactor {
 			var scale: Double = 1
 			var offsetX = 0
 			var offsetY = 0
-			
+
 			if (hgt > size.getHeight()) {
 				scale = size.getHeight / hgt
 				offsetX = (spriteFront.getWidth(null) * scale / 2).toInt
@@ -62,7 +62,7 @@ class Button(var position: Point, var size: Dimension) extends Reactor {
 			Renderer.userInterface.drawImage(spriteFront, new AffineTransform(scale, 0, 0, scale, position.x - offsetX, position.y - offsetY), null)
 		}
 		if (cursorInside && spriteTooltip != null) {
-			Renderer.userInterface.drawImage(spriteTooltip, new AffineTransform(0.7, 0, 0, 0.7, mousePosition.getX - spriteTooltip.getWidth(null), mousePosition.getY - spriteTooltip.getHeight(null)), null)
+			Renderer.primaryUserInterface.drawImage(spriteTooltip, new AffineTransform(1, 0, 0, 1, 0.0 max(mousePosition.getX - spriteTooltip.getWidth(null)), 0.0 max(mousePosition.getY - spriteTooltip.getHeight(null))), null)
 		}
 	}
 }

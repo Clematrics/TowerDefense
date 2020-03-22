@@ -62,7 +62,7 @@ object Renderer {
 		// flyingEntitiesEffectsImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 		// postProcessingImg        = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 		userInterfaceImg         = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
-		// primaryUserInterfaceImg  = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
+		primaryUserInterfaceImg  = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 		// globalPostProcessingImg  = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 		debugImg                 = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 	}
@@ -76,7 +76,7 @@ object Renderer {
 		// flyingEntitiesEffects = flyingEntitiesEffectsImg.createGraphics
 		// postProcessing        =        postProcessingImg.createGraphics
 		userInterface         =         userInterfaceImg.createGraphics
-		// primaryUserInterface  =  primaryUserInterfaceImg.createGraphics
+		primaryUserInterface  =  primaryUserInterfaceImg.createGraphics
 		// globalPostProcessing  =  globalPostProcessingImg.createGraphics
 		debug                 =                 debugImg.createGraphics
 
@@ -88,7 +88,7 @@ object Renderer {
 		// flyingEntitiesEffects setBackground(new Color(0, 0, 0, 0))
 		// postProcessing        setBackground(new Color(0, 0, 0, 0))
 		userInterface         setBackground(new Color(0, 0, 0, 0))
-		// primaryUserInterface  setBackground(new Color(0, 0, 0, 0))
+		primaryUserInterface  setBackground(new Color(0, 0, 0, 0))
 		// globalPostProcessing  setBackground(new Color(0, 0, 0, 0))
 		debug                 setBackground(new Color(0, 0, 0, 0))
 
@@ -102,7 +102,7 @@ object Renderer {
 		// flyingEntitiesEffects clearRect(0, 0, width, height)
 		// postProcessing        clearRect(0, 0, width, height)
 		userInterface         clearRect(0, 0, width, height)
-		// primaryUserInterface  clearRect(0, 0, width, height)
+		primaryUserInterface  clearRect(0, 0, width, height)
 		// globalPostProcessing  clearRect(0, 0, width, height)
 		debug                 clearRect(0, 0, width, height)
 	}
@@ -116,7 +116,7 @@ object Renderer {
 		// flyingEntitiesEffects .dispose
 		// postProcessing        .dispose
 		userInterface         .dispose
-		// primaryUserInterface  .dispose
+		primaryUserInterface  .dispose
 		// globalPostProcessing  .dispose
 		debug                 .dispose
 	}
@@ -152,7 +152,7 @@ object Renderer {
 		// finalG2.drawImage(flyingEntitiesEffectsImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
 		// finalG2.drawImage(       postProcessingImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
 		finalG2.drawImage(        userInterfaceImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
-		// finalG2.drawImage( primaryUserInterfaceImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		finalG2.drawImage( primaryUserInterfaceImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
 		// finalG2.drawImage( globalPostProcessingImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
 		if (debugMode)
 			finalG2.drawImage(            debugImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)

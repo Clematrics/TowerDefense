@@ -46,12 +46,12 @@ object SpriteLoader {
 	  * @param fontsize	      Size of the font
 	  * @return The buffered image containing the specified text
 	  */
-	def fromString(str: String, breakWidthIn: Int, fontsize: Int): Image = {
+	def fromString(str: String, breakWidthIn: Int, fontsize: Int, bold: Boolean = false): Image = {
 		val sig = f"fromString-{$str}-{$breakWidthIn}-{$fontsize}"
 		ResourcesManager.getImage(sig) match {
 			case Some(value) => value
 			case None =>
-				val font = Font.createFont(Font.TRUETYPE_FONT, getClass.getResourceAsStream("/Some Time Later.otf")).deriveFont(Font.PLAIN, fontsize)
+				val font = Font.createFont(Font.TRUETYPE_FONT, getClass.getResourceAsStream("/Some Time Later.otf")).deriveFont(if (bold) Font.BOLD else Font.PLAIN, fontsize)
 				val frc = new FontRenderContext(null, true, true)
 
 				// inspired from https://docs.oracle.com/javase/tutorial/2d/text/drawmulstring.html
@@ -134,7 +134,7 @@ object SpriteLoader {
 	  * @return	A buffered image with the text
 	  */
 	def tooltip(str: String): Image = {
-		val img = fromString(str, 150, 15)
+		val img = fromString(str, 200, 18)
 		val bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB)
 		val g = bi.getGraphics.asInstanceOf[Graphics2D]
 		g.setColor(new Color(128, 128, 128, 255))
