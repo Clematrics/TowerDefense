@@ -10,9 +10,9 @@ import engine.Cst
   * @param x Abscissa
   * @param y Ordinate
   */
-class CellPoint(xIn: Double, yIn: Double) extends Point2D {
-	var x: Double = xIn
-	var y: Double = yIn
+class CellPoint(var x: Double, var y: Double) extends Point2D {
+	// var x: Double = xIn
+	// var y: Double = yIn
 
 	def this(p: CellPoint) = {
 		this(p.x, p.y)
@@ -33,6 +33,27 @@ class CellPoint(xIn: Double, yIn: Double) extends Point2D {
 
 	def toScreenPosition(): ScreenPoint = {
 		return new ScreenPoint((x * Cst.cellSize).toInt, (y * Cst.cellSize).toInt)
+	}
+
+	def nearestMiddle(): CellPoint = {
+		return new CellPoint(x.floor + 0.5, y.floor + 0.5)
+	}
+
+	def neighborCells(): List[CellPoint] = {
+		return List(
+			new CellPoint(-1, -1),
+			new CellPoint(-1,  0),
+			new CellPoint(-1,  1),
+			new CellPoint( 0, -1),
+			new CellPoint( 0,  1),
+			new CellPoint( 1, -1),
+			new CellPoint( 1,  0),
+			new CellPoint( 1,  1)
+		).map(
+			_ + nearestMiddle()
+		).filter( c =>
+			0 < c.x && c.x < Cst.mapWidth && 0 < c.y && c.y < Cst.mapHeight
+		)
 	}
 
 	def +(p: CellPoint): CellPoint = {
@@ -58,9 +79,5 @@ class CellPoint(xIn: Double, yIn: Double) extends Point2D {
 
 	def /(p: CellPoint): CellPoint = {
 		return new CellPoint(x / p.x, y / p.y)
-	}
-
-	def apply(xIn: Double, yIn: Double): CellPoint = {
-		return new CellPoint(xIn, yIn)
 	}
 }

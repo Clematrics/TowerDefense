@@ -1,10 +1,11 @@
 import engine.core.Renderer
 import engine.helpers.{CellPoint, ScreenPoint}
 import engine.loaders.SpriteLoader
+import engine.Cst
 
-import java.awt._
 import scala.math.{cos, sin, atan}
 import java.awt.geom.AffineTransform
+import scala.collection.mutable.{ArrayBuffer, Map, PriorityQueue}
 
 /**
   * The MovingEnemy trait represents an enemy with a speed that can
@@ -34,5 +35,40 @@ trait MovingEnemy extends Enemy {
 		val dirx = (targetedCellPoint.x - pos.x) / dist
 		val diry = (targetedCellPoint.y - pos.y) / dist
 		pos += new CellPoint(dirx, diry) * speed
+	}
+
+	def aStar(start: CellPoint, end: CellPoint): List[CellPoint] = {
+		var queue = new PriorityQueue[(CellPoint, Double)]()( Ordering.by{ case (_, d) => d } )
+		val parents = Map[CellPoint, CellPoint]()
+		val scores = Map[CellPoint, Double](start -> 0).withDefaultValue(Double.PositiveInfinity)
+		queue += ((start, start.distance(end)))
+
+		while (!queue.isEmpty) {
+			val (current, _) = queue.dequeue()
+
+			// reached the end
+			if (current.nearestMiddle() == end.nearestMiddle()) {
+				val path = ArrayBuffer[CellPoint](end)
+				var cursor = end
+				while (cursor != start) {
+					path += cursor
+					cursor = parents(cursor)
+				}
+				return (path += start).reverse.toList
+			}
+
+			for (neighbor <- current.neighborCells.filter(c => Game.map.map(c.x.toInt)(c.y.toInt) == engine.map.Path)) {
+				val score = scores(current) + current.distance(neighbor)
+				if (score < scores(neighbor)) {
+					parents(neighbor) = current
+					scores(neighbor) = score
+					queue = queue.filter( p => p._1 != neighbor )
+					queue += ((neighbor, neighbor.distance(end)))
+				}
+			}
+		}
+
+		// should never arrive here
+		return List()
 	}
 }

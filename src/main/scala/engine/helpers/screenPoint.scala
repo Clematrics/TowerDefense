@@ -39,8 +39,4 @@ class ScreenPoint(xIn: Int, yIn: Int) extends Point(xIn, yIn) {
 	def /(p: ScreenPoint): ScreenPoint = {
 		return new ScreenPoint(x / p.x, y / p.y)
 	}
-
-	def apply(xIn: Int, yIn: Int): ScreenPoint = {
-		return new ScreenPoint(xIn, yIn)
-	}
 }
