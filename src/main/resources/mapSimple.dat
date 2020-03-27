@@ -8,6 +8,7 @@ mapSimple
 2 0 SphereEnemy
 4 0 SphereEnemy
 6 2 SphereEnemy
+6 2 FlyingEnemy
 8 2 SphereEnemy
 2 0 ProtoEnemy
 3 0 ProtoEnemy
