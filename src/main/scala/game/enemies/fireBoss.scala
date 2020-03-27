@@ -10,7 +10,7 @@ import java.awt._
   * as recovery, double life, etc.
   */
 class FireBoss extends MovingEnemy with LivingEnemy {
-	speed = 0.1
+	speed = 0.01
 	var gold:Int = 250
 	
 	/**
@@ -22,10 +22,10 @@ class FireBoss extends MovingEnemy with LivingEnemy {
 	}
 
 	def takeDamage(dmg: Int): Unit = {
-		if (armorPoints == 0) {
-			setLifePoints(lifePoints - dmg)
+		if (armorPoints <= 0) {
+			setLifePoints(lifePoints - (if (lifePoints <= 20) 1 else dmg))//Special resistance
 		} else {
-			armorPoints -= dmg
+			armorPoints -= dmg / 2 //Armor resistance
 		}
 	}
 
@@ -40,13 +40,20 @@ class FireBoss extends MovingEnemy with LivingEnemy {
 		Renderer.userInterface.fillRect(p.x - 49, p.y + 1, lifePoints / 2 + armorPoints / 2 - 2, 5)
 	}
 
+	val regenDelay: Double = 2000.0
 	var lastRegen: Double = 0.0
 
 	def render(time: Double, delta: Double): Unit = {
 		val s:Image = SpriteLoader.fromResource("anim/boss" + (time/300 % 12).toInt +".png")
 		val sPos = pos.toScreenPosition
 		//TODO : manage directions?
-		Renderer.groundEntities.drawImage(s, new AffineTransform(-0.4, 0, 0, 0.4, sPos.x + 35, sPos.y  - 15), null)
+		Renderer.groundEntities.drawImage(s, new AffineTransform(-0.4, 0, 0, 0.4, sPos.x + 80, sPos.y  - 40), null)
 		drawHealthBar(sPos + new ScreenPoint(0, -30))
+	
+		if (lifePoints < 75 && time - lastRegen > regenDelay) {
+			setLifePoints(lifePoints + 5)
+			lastRegen = time
+			speed = speed * 1.5
+		}
 	}
 }
