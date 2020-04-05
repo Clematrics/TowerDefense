@@ -10,7 +10,7 @@ import java.awt._
   */
 class ProtoEnemy extends MovingEnemy with LivingEnemy {
 	speed = 0.02
-	var gold:Int = 500
+	gold = 500
 
 	def getName(): String = {
 		return "Chess pawn"

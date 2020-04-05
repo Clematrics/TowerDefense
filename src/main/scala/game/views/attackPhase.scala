@@ -16,7 +16,7 @@ import scala.collection.mutable.ArrayBuffer
 class AttackPhase extends View { outer =>
 	val r = scala.util.Random
 	var waveTime = -5.0
-	var wave: ArrayBuffer[Tuple3[Double, Int, String]] = ArrayBuffer(Game.map.wave: _*)
+	var wave: ArrayBuffer[(Double, Int, String)] = ArrayBuffer(Game.map.wave: _*)
 
 	buttons ++= ArrayBuffer(
 		new Button(new Point(600, 20), new Dimension(75, 30)) {

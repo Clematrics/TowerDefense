@@ -65,8 +65,6 @@ class DualTower extends RadiusTower(0, 250, 20) {
 
 			for (e <- enemiesNear) {
 				e.takeDamage(pow)
-				if (!e.isAlive())
-					Game.gold += e.getGold()
 			}
 
 			if (enemiesNear.length > 0)

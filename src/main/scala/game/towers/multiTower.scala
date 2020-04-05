@@ -20,8 +20,6 @@ class MultiTower extends RadiusTower(7, 2000, 20) {
 
 			for (e <- enemiesNear) {
 				e.takeDamage(pow)
-				if (!e.isAlive())
-					Game.gold += e.getGold()
 				Game.entities += new LaserBeam(time, e.asInstanceOf[MovingEnemy], this, Color.MAGENTA)
 			}
 

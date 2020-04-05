@@ -21,8 +21,7 @@ class ArmedTower extends RadiusTower(6, 1000, 5) {
 			if (enemiesNear.length > 0) {
 				var e = enemiesNear(0)
 				e.takeDamage(pow)
-				if (!e.isAlive())
-					Game.gold += e.getGold()
+
 				Game.entities += new Particle(e.asInstanceOf[MovingEnemy], this)
 				lastShot = time
 			}

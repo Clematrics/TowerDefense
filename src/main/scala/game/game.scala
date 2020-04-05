@@ -43,8 +43,9 @@ object Game {
 
 	def reset(): Unit = {
 		health = maxHealth
-		gold = 100
-		experience = 0
+		/*We can earn money and gain experience, but when are we using them?*/
+		//gold = 100
+		//experience = 0
 		map = MapLoader.loadMap(Game.map.name)
 		entities = ArrayBuffer()
 	}

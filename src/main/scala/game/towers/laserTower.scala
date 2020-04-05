@@ -22,8 +22,6 @@ class LaserTower extends RadiusTower(6, 2000, 20) {
 			if (enemiesNear.length > 0) {
 				var e = enemiesNear(0)
 				e.takeDamage(pow)
-				if (!e.isAlive())
-					Game.gold += e.getGold()
 				Game.entities += new LaserBeam(time, e.asInstanceOf[MovingEnemy], this, Color.RED)
 				lastShot = time
 			}
