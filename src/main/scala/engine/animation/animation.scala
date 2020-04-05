@@ -1,7 +1,7 @@
 package engine.animation
 
 /**
- * This class manages fondamental properties and behaviour of animations
+ * This class manages fundamental properties and behaviour of animations
  */
 abstract class Animation[T](dur: Double) {
 	private var _run: Boolean = true

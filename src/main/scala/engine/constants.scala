@@ -5,10 +5,10 @@ package engine
   */
 object Cst {
     val windowWidth  = 1280
-	val windowHeight = 720
+	  val windowHeight = 720
 
-	val layerResolutionWidth  = 640
-	val layerResolutionHeight = 360
+	  val layerResolutionWidth  = 640
+	  val layerResolutionHeight = 360
 
     val mapWidth  = 45
     val mapHeight = 30

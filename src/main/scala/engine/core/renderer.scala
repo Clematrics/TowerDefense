@@ -47,7 +47,7 @@ object Renderer {
 	var globalPostProcessing  : Graphics2D   = _
 	var debug                 : Graphics2D   = _
 
-	var debugMode: Boolean = true
+	var debugMode: Boolean = false
 
 	resetRendering
 
