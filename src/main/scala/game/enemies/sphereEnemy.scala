@@ -10,7 +10,7 @@ import java.awt.geom.AffineTransform
   * it as a purple sphere.
   */
 class SphereEnemy extends MovingEnemy with LivingEnemy {
-	gold = 200
+	gold = 50
 
 	def getName(): String = {
 		return "High Dimensional Sphere"

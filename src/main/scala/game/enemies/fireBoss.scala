@@ -11,7 +11,7 @@ import java.awt._
   */
 class FireBoss extends MovingEnemy with LivingEnemy {
 	speed = 0.01
-	gold = 500
+	gold = 200
 	
 	/**
   	 * The extra protection for this enemy.
