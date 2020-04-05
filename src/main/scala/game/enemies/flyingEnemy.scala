@@ -11,6 +11,7 @@ import java.awt._
 class FlyingEnemy extends MovingEnemy with LivingEnemy {
 	speed = 0.1
   gold = 80
+	experience = 400
 
 	def getName(): String = {
 		return "Dragon"

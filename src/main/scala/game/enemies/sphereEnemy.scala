@@ -11,6 +11,7 @@ import java.awt.geom.AffineTransform
   */
 class SphereEnemy extends MovingEnemy with LivingEnemy {
 	gold = 50
+	experience = 200
 
 	def getName(): String = {
 		return "High Dimensional Sphere"

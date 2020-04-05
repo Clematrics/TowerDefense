@@ -101,7 +101,7 @@ class AttackPhase extends View { outer =>
 		Renderer.userInterface.setColor(Color.BLACK)
 		Renderer.userInterface.fillRect(610, 50, 20, 300)
 		Renderer.userInterface.setColor(Color.RED)
-		Renderer.userInterface.fillRect(610, 50 + ((100 - Game.health) * 300 / 100), 20, Game.health * 300 / 100)
+		Renderer.userInterface.fillRect(610, 50 + ((Game.maxHealth - Game.health) * 300 / Game.maxHealth), 20, Game.health * 300 / Game.maxHealth)
 
 		if (Renderer.debugMode) {
 			Renderer.debug.setColor(Color.PINK)

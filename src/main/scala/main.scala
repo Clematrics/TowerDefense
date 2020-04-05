@@ -15,6 +15,7 @@ object TowerDefense extends SimpleSwingApplication { td =>
 		contents = GamePanel
 		GamePanel.changeView("MainMenu")
 		centerOnScreen
+		Game.load()
 
 		//peer.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE) Si jamais on voulait demander la confirmation
 
@@ -25,6 +26,7 @@ object TowerDefense extends SimpleSwingApplication { td =>
 	}
 
 	def quitGame() = {
+		Game.save()
 		GamePanel.stop
 		quit
 	}

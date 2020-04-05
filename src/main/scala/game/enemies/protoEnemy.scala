@@ -11,6 +11,7 @@ import java.awt._
 class ProtoEnemy extends MovingEnemy with LivingEnemy {
 	speed = 0.02
 	gold = 20
+	experience = 100
 
 	def getName(): String = {
 		return "Chess pawn"

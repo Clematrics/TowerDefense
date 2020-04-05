@@ -1,8 +1,10 @@
 import engine.core.Entity
 import engine.helpers.CellPoint
 import engine.map.Map
+import java.io._
 
 import scala.collection.mutable.ArrayBuffer
+import scala.io.Source
 
 /**
   * This object manages the status of the game : health of the player, money and
@@ -48,5 +50,26 @@ object Game {
 		//experience = 0
 		map = MapLoader.loadMap(Game.map.name)
 		entities = ArrayBuffer()
+	}
+
+	def save(): Unit = {
+		val writer = new PrintWriter(new File("save.ini"))
+
+		writer.println(maxHealth)
+		writer.println(gold)
+		writer.println(experience)
+
+		writer.close()
+	}
+
+	def load(): Unit = {
+		val str = Source.fromFile("save.ini").getLines()
+
+		val nbs =	str.map(_.toInt).toArray
+
+		maxHealth = nbs(0)
+		health = maxHealth
+		gold = nbs(1)
+		experience = nbs(2)
 	}
 }
