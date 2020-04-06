@@ -48,12 +48,14 @@ class CampaignMenu extends View { outer =>
 
 		val arr: ArrayBuffer[Button] = new ArrayBuffer
 		for((map,i) <- campaign.rounds.view.zipWithIndex) {
-			arr += new Button(new Point(marginX + offsetX * (i % inARow), marginY + offsetY * (i / inARow)), new Dimension(75, 75)) {
-				spriteBack    = SpriteLoader.fromResource("menuButtonLarge.png")
-				spriteFront   = SpriteLoader.fromString(map.name, 75, 15)
-				action = () => {
-					Game.map = map
-					GamePanel.changeView("DefensePhase")
+			if (map.expNeeded <= Game.experience) {
+				arr += new Button(new Point(marginX + offsetX * (i % inARow), marginY + offsetY * (i / inARow)), new Dimension(75, 75)) {
+					spriteBack    = SpriteLoader.fromResource("menuButtonLarge.png")
+					spriteFront   = SpriteLoader.fromString(map.name, 75, 15)
+					action = () => {
+						Game.map = map
+						GamePanel.changeView("DefensePhase")
+					}
 				}
 			}
 		}

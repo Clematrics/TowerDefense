@@ -20,12 +20,14 @@ object MapLoader {
 		  * Parsing map
 		  *
 		  * First line is the map name
-		  * Second line contains the number N of checkpoints for monster
+			* Second line : needed EXP to unlock the map
+		  * 3rd line contains the number N of checkpoints for monster
 		  * N next lines are five integers, describing the coordinates of two points and the id of the following checkpoint
 		  * The next line contains the number M of mobs to spawn during the wave
 		  * M next lines are a double for the time of spawning, the checkpoint id for the location and finally the enemy's name
 		  */
 		val name = lines.next
+		val EXP = lines.next.toInt
 		val N = lines.next.toInt
 		val checkpoints: ArrayBuffer[Checkpoint] = ArrayBuffer()
 		for(i <- 0 until N) {
@@ -60,6 +62,6 @@ object MapLoader {
 
 		val img = SpriteLoader.fromResource(str + "Background.png")
 
-		return new Map(name, map, imgLayout, img, checkpoints.toArray, wave.toArray)
+		return new Map(name, EXP, map, imgLayout, img, checkpoints.toArray, wave.toArray)
 	}
 }

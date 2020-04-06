@@ -10,8 +10,9 @@ case object OccupiedTowerCell extends CellType
 /**
   * A map in a game of TowerDefense.
   */
-class Map(nameIn: String, mapIn: Array[Array[CellType]], mapLayoutIn: Image, mapImgIn: Image, checkpointsIn: Array[Checkpoint], waveIn: Array[Tuple3[Double, Int, String]]) {
+class Map(nameIn: String, exp: Int, mapIn: Array[Array[CellType]], mapLayoutIn: Image, mapImgIn: Image, checkpointsIn: Array[Checkpoint], waveIn: Array[Tuple3[Double, Int, String]]) {
 	val name = nameIn
+	val expNeeded = exp
 	var map = mapIn
 	var mapLayout = mapLayoutIn
 	var mapImg = mapImgIn

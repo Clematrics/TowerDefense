@@ -6,7 +6,7 @@ object Campaigns {
 	var campaigns = List(
 		new Campaign(
 			"The valley of prime numbers",
-			List(MapLoader.loadMap("map"), MapLoader.loadMap("mapSimple"))
+			List(MapLoader.loadMap("map"), MapLoader.loadMap("mapSimple"), MapLoader.loadMap("maze"))
 		),
 		new Campaign(
 			"The sea of differential equations",
