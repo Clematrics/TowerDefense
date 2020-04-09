@@ -19,7 +19,7 @@ import java.awt.Color
  * Layer 7  - UserInterface         : user interface
  * Layer 8* - PrimaryUserInterface  : primary user interface
  * Layer 9* - GlobalPostProcessing  : global post processing
- * ______________________________
+ * ____________________________
  * * Not currently in use
  */
 object Renderer {
@@ -35,6 +35,8 @@ object Renderer {
 	private var globalPostProcessingImg  : BufferedImage = _
 	private var debugImg                 : BufferedImage = _
 
+	private var textImg									 : BufferedImage = _
+
 	var background            : Graphics2D   = _
 	var backgroundEffects     : Graphics2D   = _
 	var groundEntities        : Graphics2D   = _
@@ -46,6 +48,8 @@ object Renderer {
 	var primaryUserInterface  : Graphics2D   = _
 	var globalPostProcessing  : Graphics2D   = _
 	var debug                 : Graphics2D   = _
+
+	var text                  : Graphics2D = _
 
 	var debugMode: Boolean = false
 
@@ -65,6 +69,7 @@ object Renderer {
 		primaryUserInterfaceImg  = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 		// globalPostProcessingImg  = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 		debugImg                 = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
+		textImg  					      =	new BufferedImage(width*engine.Cst.textLayerScaling, height*engine.Cst.textLayerScaling, BufferedImage.TYPE_INT_ARGB)
 	}
 
 	def prepareRendering(): Unit = {
@@ -80,6 +85,8 @@ object Renderer {
 		// globalPostProcessing  =  globalPostProcessingImg.createGraphics
 		debug                 =                 debugImg.createGraphics
 
+		text 									=									 textImg.createGraphics
+
 		background            setBackground(new Color(0, 0, 0, 0))
 		// backgroundEffects     setBackground(new Color(0, 0, 0, 0))
 		groundEntities        setBackground(new Color(0, 0, 0, 0))
@@ -91,6 +98,7 @@ object Renderer {
 		primaryUserInterface  setBackground(new Color(0, 0, 0, 0))
 		// globalPostProcessing  setBackground(new Color(0, 0, 0, 0))
 		debug                 setBackground(new Color(0, 0, 0, 0))
+		text                  setBackground new Color(0, 0, 0, 0)
 
 		val width  = Cst.layerResolutionWidth
 		val height = Cst.layerResolutionHeight
@@ -105,6 +113,7 @@ object Renderer {
 		primaryUserInterface  clearRect(0, 0, width, height)
 		// globalPostProcessing  clearRect(0, 0, width, height)
 		debug                 clearRect(0, 0, width, height)
+		text                  clearRect(0, 0, width * engine.Cst.textLayerScaling, height * engine.Cst.textLayerScaling)
 	}
 
 	def closeRendering(): Unit = {
@@ -119,6 +128,7 @@ object Renderer {
 		primaryUserInterface  .dispose
 		// globalPostProcessing  .dispose
 		debug                 .dispose
+		text.dispose
 	}
 
 
@@ -161,5 +171,6 @@ object Renderer {
 		computeAdjustments
 
 		g.drawImage(finalImg, offsetX, offsetY, w, h, null)
+		g.drawImage(textImg, offsetX, offsetY, w, h, null)
 	}
 }

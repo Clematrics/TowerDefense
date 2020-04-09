@@ -134,7 +134,7 @@ object SpriteLoader {
 	  * @return	A buffered image with the text
 	  */
 	def tooltip(str: String): Image = {
-		val img = fromString(str, 200, 18)
+		val img = fromString(str, 200 * engine.Cst.textLayerScaling, 60)
 		val bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB)
 		val g = bi.getGraphics.asInstanceOf[Graphics2D]
 		g.setColor(new Color(128, 128, 128, 255))

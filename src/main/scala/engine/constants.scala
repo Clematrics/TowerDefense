@@ -9,6 +9,7 @@ object Cst {
 
 	  val layerResolutionWidth  = 640
 	  val layerResolutionHeight = 360
+    val textLayerScaling = 4
 
     val mapWidth  = 45
     val mapHeight = 30

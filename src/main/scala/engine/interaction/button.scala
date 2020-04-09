@@ -62,7 +62,9 @@ class Button(var position: Point, var size: Dimension) extends Reactor {
 			Renderer.userInterface.drawImage(spriteFront, new AffineTransform(scale, 0, 0, scale, position.x - offsetX, position.y - offsetY), null)
 		}
 		if (cursorInside && spriteTooltip != null) {
-			Renderer.primaryUserInterface.drawImage(spriteTooltip, new AffineTransform(1, 0, 0, 1, 0.0 max(mousePosition.getX - spriteTooltip.getWidth(null)), 0.0 max(mousePosition.getY - spriteTooltip.getHeight(null))), null)
+			Renderer.text.drawImage(spriteTooltip, new AffineTransform(1, 0, 0, 1,
+				engine.Cst.textLayerScaling*(0.0 max(mousePosition.getX - spriteTooltip.getWidth(null)/engine.Cst.textLayerScaling)),
+				engine.Cst.textLayerScaling*(0.0 max(mousePosition.getY - spriteTooltip.getHeight(null)/engine.Cst.textLayerScaling))), null)
 		}
 	}
 }
