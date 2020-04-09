@@ -13,6 +13,8 @@ import scala.collection.mutable
   * freezes all enemies nearby.
   */
 class ThunderTower extends RadiusTower(5, 10000, 1) {
+  cost = 500
+  
   def getName(): String = {
     return "Thunder Tower"
   }
@@ -34,6 +36,8 @@ class ThunderTower extends RadiusTower(5, 10000, 1) {
         for (e <- enemiesNear) {
           e.speed = speeds(e)
         }
+
+
       }) { run = true }
     }
   }
