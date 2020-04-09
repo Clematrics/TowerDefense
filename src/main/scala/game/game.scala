@@ -63,13 +63,18 @@ object Game {
 	}
 
 	def load(): Unit = {
-		val str = Source.fromFile("save.ini").getLines()
+		try {
+			val str = Source.fromFile("save.ini").getLines()
 
-		val nbs =	str.map(_.toInt).toArray
+			val nbs =	str.map(_.toInt).toArray
 
-		maxHealth = nbs(0)
-		health = maxHealth
-		gold = nbs(1)
-		experience = nbs(2)
+			maxHealth = nbs(0)
+			health = maxHealth
+			gold = nbs(1)
+			experience = nbs(2)
+		}
+		catch {
+			case _ : java.io.FileNotFoundException => ()
+		}
 	}
 }
