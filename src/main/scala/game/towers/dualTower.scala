@@ -26,7 +26,7 @@ class HalfDualTower extends TowerCompound("DualTower", 2, 10) {
 		val sPos = pos.toScreenPosition
 		Renderer.groundEntities.drawImage(s, new AffineTransform(0.5, 0, 0, 0.5, sPos.x, sPos.y - 20), null)
 	}
-	
+
 	override def makeTower(compounds: ArrayBuffer[TowerCompound]): Tower = {
 		var r = new DualTower
 		r.posA = compounds(0).pos

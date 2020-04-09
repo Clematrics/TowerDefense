@@ -9,9 +9,9 @@ abstract class TowerCompound(className: String, number: Int, maxDistFromLast: Do
 	var name = className //To be simplified here ^^^^^
 	var nb = number
 	var dist = maxDistFromLast
-	
+
 	def makeTower(compounds: ArrayBuffer[TowerCompound]): Tower
-	
+
 	def isValidDistance(compounds: ArrayBuffer[TowerCompound], curPos: CellPoint): Boolean = {
 		var valid = true
 		for (t <- compounds) {

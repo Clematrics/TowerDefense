@@ -10,10 +10,10 @@ import java.awt._
   * as recovery, double life, etc.
   */
 class FireBoss extends MovingEnemy with LivingEnemy {
-	speed = 0.01
+	speed = 0.6
 	gold = 200
 	experience = 1000
-	
+
 	/**
   	 * The extra protection for this enemy.
   	 */

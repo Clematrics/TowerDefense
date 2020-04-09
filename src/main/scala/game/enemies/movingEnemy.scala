@@ -12,14 +12,14 @@ import scala.collection.mutable.{ArrayBuffer, Map, PriorityQueue}
   * move across the board.
   */
 trait MovingEnemy extends Enemy {
-	var speed: Double = 0.04
+	var speed: Double = 2.4
 	var targetedCheckpoint: Int = -2
 	var targetedCellPoint: CellPoint = new CellPoint(0, 0)
 	var pos: CellPoint = new CellPoint(0, 0)
 
 	def tick(time: Double, delta: Double) : Unit = {
 		var cp = Game.map.checkpoints(targetedCheckpoint)
-		if (pos.distance(targetedCellPoint) <= speed) {
+		if (pos.distance(targetedCellPoint) <= speed * (delta / 1000)) {
 			targetedCheckpoint = cp.next
 			if (targetedCheckpoint == -1) {
 				Game.health = (Game.health - 20) max 0
@@ -34,7 +34,7 @@ trait MovingEnemy extends Enemy {
 		val dist = pos.distance(targetedCellPoint)
 		val dirx = (targetedCellPoint.x - pos.x) / dist
 		val diry = (targetedCellPoint.y - pos.y) / dist
-		pos += new CellPoint(dirx, diry) * speed
+		pos += new CellPoint(dirx, diry) * speed * (delta / 1000)
 	}
 
 	def aStar(start: CellPoint, end: CellPoint): List[CellPoint] = {

@@ -9,8 +9,8 @@ import java.awt._
   *
   */
 class FlyingEnemy extends MovingEnemy with LivingEnemy {
-	speed = 0.1
-  gold = 80
+	speed = 6.0
+	gold = 80
 	experience = 400
 
 	def getName(): String = {
