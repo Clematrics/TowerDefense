@@ -112,9 +112,9 @@ class DefensePhase extends View { outer =>
 		new Button(new Point(620, 280), new Dimension(30, 30)) {
 			spriteBack    = SpriteLoader.fromResource("menuButtonLarge.png")
 			spriteFront   = SpriteLoader.fromResource("thundertour.png")
-			spriteTooltip = SpriteLoader.tooltip("TODO")
+			spriteTooltip = SpriteLoader.tooltip("Thunder Tower\nCost : 500 Gold\nFreezes enemies around during 5 seconds")
 			action = () => {
-				towerToAdd = new HalfDualTower
+				towerToAdd = new ThunderTower
 			}
 		},
 		new Button(new Point(605, 320), new Dimension(60, 30)) {

@@ -9,6 +9,8 @@ object Cst {
 
 	  val layerResolutionWidth  = 640
 	  val layerResolutionHeight = 360
+
+    // Possibly adjusted to match the native resolution of the screen.
     val textLayerScaling = 4
 
     val mapWidth  = 45
