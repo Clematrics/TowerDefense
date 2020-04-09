@@ -36,7 +36,10 @@ class CellPoint(var x: Double, var y: Double) extends Point2D {
 	}
 
 	def nearestMiddle(): CellPoint = {
-		return new CellPoint(x.floor + 0.5, y.floor + 0.5)
+		// take into account points that are outside of the map
+		val nearestX = 0.5 max (x.floor + 0.5) min (Cst.mapWidth - 0.5)
+		val nearestY = 0.5 max (y.floor + 0.5) min (Cst.mapHeight - 0.5)
+		return new CellPoint(nearestX, nearestY)
 	}
 
 	def neighborCells(): List[CellPoint] = {

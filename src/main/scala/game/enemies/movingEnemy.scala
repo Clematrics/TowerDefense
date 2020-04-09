@@ -19,6 +19,7 @@ trait MovingEnemy extends Enemy {
 
 	def tick(time: Double, delta: Double) : Unit = {
 		var cp = Game.map.checkpoints(targetedCheckpoint)
+		val l = aStar(pos, targetedCellPoint)
 		if (pos.distance(targetedCellPoint) <= speed * (delta / 1000)) {
 			targetedCheckpoint = cp.next
 			if (targetedCheckpoint == -1) {
@@ -38,7 +39,7 @@ trait MovingEnemy extends Enemy {
 	}
 
 	def aStar(start: CellPoint, end: CellPoint): List[CellPoint] = {
-		var queue = new PriorityQueue[(CellPoint, Double)]()( Ordering.by{ case (_, d) => d } )
+		var queue = new PriorityQueue[(CellPoint, Double)]()( Ordering.by{ case (_, d) => d } ).reverse
 		val parents = Map[CellPoint, CellPoint]()
 		val scores = Map[CellPoint, Double](start -> 0).withDefaultValue(Double.PositiveInfinity)
 		queue += ((start, start.distance(end)))
@@ -49,7 +50,7 @@ trait MovingEnemy extends Enemy {
 			// reached the end
 			if (current.nearestMiddle() == end.nearestMiddle()) {
 				val path = ArrayBuffer[CellPoint](end)
-				var cursor = end
+				var cursor = current
 				while (cursor != start) {
 					path += cursor
 					cursor = parents(cursor)
