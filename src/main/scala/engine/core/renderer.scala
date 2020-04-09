@@ -35,7 +35,7 @@ object Renderer {
 	private var globalPostProcessingImg  : BufferedImage = _
 	private var debugImg                 : BufferedImage = _
 
-	private var textImg									 : BufferedImage = _
+	private var textImg                  : BufferedImage = _
 
 	var background            : Graphics2D   = _
 	var backgroundEffects     : Graphics2D   = _
@@ -49,7 +49,7 @@ object Renderer {
 	var globalPostProcessing  : Graphics2D   = _
 	var debug                 : Graphics2D   = _
 
-	var text                  : Graphics2D = _
+	var text                  : Graphics2D   = _
 
 	var debugMode: Boolean = false
 
@@ -69,7 +69,7 @@ object Renderer {
 		primaryUserInterfaceImg  = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 		// globalPostProcessingImg  = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 		debugImg                 = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
-		textImg  					      =	new BufferedImage(width*engine.Cst.textLayerScaling, height*engine.Cst.textLayerScaling, BufferedImage.TYPE_INT_ARGB)
+		textImg                  = new BufferedImage(width * engine.Cst.textLayerScaling, height * engine.Cst.textLayerScaling, BufferedImage.TYPE_INT_ARGB)
 	}
 
 	def prepareRendering(): Unit = {
@@ -85,7 +85,7 @@ object Renderer {
 		// globalPostProcessing  =  globalPostProcessingImg.createGraphics
 		debug                 =                 debugImg.createGraphics
 
-		text 									=									 textImg.createGraphics
+		text                  =                  textImg.createGraphics
 
 		background            setBackground(new Color(0, 0, 0, 0))
 		// backgroundEffects     setBackground(new Color(0, 0, 0, 0))
@@ -128,7 +128,7 @@ object Renderer {
 		primaryUserInterface  .dispose
 		// globalPostProcessing  .dispose
 		debug                 .dispose
-		text.dispose
+		text                  .dispose
 	}
 
 
@@ -153,20 +153,20 @@ object Renderer {
 
 	def mergeLayers(g: Graphics2D) = {
 		val finalImg = new BufferedImage(Cst.layerResolutionWidth, Cst.layerResolutionHeight, BufferedImage.TYPE_INT_ARGB)
-		val finalG2 = finalImg.createGraphics
-		finalG2.drawImage(           backgroundImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
-		// finalG2.drawImage(    backgroundEffectsImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
-		finalG2.drawImage(       groundEntitiesImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
-		// finalG2.drawImage(groundEntitiesEffectsImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
-		finalG2.drawImage(       flyingEntitiesImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
-		// finalG2.drawImage(flyingEntitiesEffectsImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
-		// finalG2.drawImage(       postProcessingImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
-		finalG2.drawImage(        userInterfaceImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
-		finalG2.drawImage( primaryUserInterfaceImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
-		// finalG2.drawImage( globalPostProcessingImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		val finalG2D = finalImg.createGraphics
+		finalG2D.drawImage(           backgroundImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		// finalG2D.drawImage(    backgroundEffectsImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		finalG2D.drawImage(       groundEntitiesImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		// finalG2D.drawImage(groundEntitiesEffectsImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		finalG2D.drawImage(       flyingEntitiesImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		// finalG2D.drawImage(flyingEntitiesEffectsImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		// finalG2D.drawImage(       postProcessingImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		finalG2D.drawImage(        userInterfaceImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		finalG2D.drawImage( primaryUserInterfaceImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		// finalG2D.drawImage( globalPostProcessingImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
 		if (debugMode)
-			finalG2.drawImage(            debugImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
-		finalG2.dispose
+			finalG2D.drawImage(            debugImg, new AffineTransform(1, 0, 0, 1, 0, 0), null)
+		finalG2D.dispose
 
 		computeAdjustments
 

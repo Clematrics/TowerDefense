@@ -51,7 +51,7 @@ class AttackPhase extends View { outer =>
 
 				//Random choice of the target on the portal segment for destination
 				val cpp = Game.map.checkpoints(cp.next)
-				menemy.targetedCellPoint = new CellPoint(cpp.a.x + r.nextFloat * (cpp.b.x - cpp.a.x), cpp.a.y + r.nextFloat * (cpp.b.y - cpp.a.y))
+				menemy.targetedPos = new CellPoint(cpp.a.x + r.nextFloat * (cpp.b.x - cpp.a.x), cpp.a.y + r.nextFloat * (cpp.b.y - cpp.a.y))
 			}
 
 			Game.entities += enemy.asInstanceOf[Entity]

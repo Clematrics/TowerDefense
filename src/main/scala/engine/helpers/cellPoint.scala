@@ -11,9 +11,6 @@ import engine.Cst
   * @param y Ordinate
   */
 class CellPoint(var x: Double, var y: Double) extends Point2D {
-	// var x: Double = xIn
-	// var y: Double = yIn
-
 	def this(p: CellPoint) = {
 		this(p.x, p.y)
 	}
@@ -82,5 +79,9 @@ class CellPoint(var x: Double, var y: Double) extends Point2D {
 
 	def /(p: CellPoint): CellPoint = {
 		return new CellPoint(x / p.x, y / p.y)
+	}
+
+	def /(z: Double): CellPoint = {
+		return new CellPoint(x / z, y / z)
 	}
 }
