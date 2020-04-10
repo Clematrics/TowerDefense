@@ -3,6 +3,7 @@ import engine.helpers.{CellPoint, ScreenPoint}
 import engine.loaders.SpriteLoader
 import engine.Cst
 
+import scala.util.control.Breaks._
 import scala.math.{cos, sin, atan}
 import scala.collection.mutable.{ArrayBuffer, Map, PriorityQueue}
 import java.awt.geom.AffineTransform
@@ -18,50 +19,47 @@ trait MovingEnemy extends Enemy {
 	var targetedPos: CellPoint = new CellPoint(0, 0)
 	var pos: CellPoint = new CellPoint(0, 0)
 
-	// the path is the set of points the enemy needs to pass by.
+	// the path is the set of points describing the trajectory of the enemy.
 	var path = ArrayBuffer[CellPoint]()
-	var pathPlanned = false
+	var reachedGoal = false
 
 	def tick(time: Double, delta: Double) : Unit = {
-		if (!pathPlanned) {
-			pathPlanned = true
-			var tempPos = pos
-			var tempPath = ArrayBuffer[CellPoint]()
-			while (targetedCheckpoint != -1) {
-				var cp = Game.map.checkpoints(targetedCheckpoint)
-				val r = scala.util.Random
-				var targetedPos = cp.a + new CellPoint(r.nextFloat, r.nextFloat) * (cp.b - cp.a)
-				tempPath ++= aStar(tempPos, targetedPos).tail
-				tempPos = targetedPos
-				targetedCheckpoint = cp.next
-			}
-			path = smoothPath(pos +: tempPath).tail // the current pos is added for smoothing and then removed
-		}
-
 		if (path.isEmpty) {
-			Game.health = (Game.health - 20) max 0
-			valid = false
-			return
-		}
-
-		val toTravel = speed * delta / 1000
-		var distanceTraveled = 0.0
-		while (distanceTraveled < toTravel && path.nonEmpty) {
-			val d = pos.distance(path.head)
-			if (toTravel < distanceTraveled + d) {
-				val dirx = (path.head.x - pos.x) / d
-				val diry = (path.head.y - pos.y) / d
-				pos += new CellPoint(dirx, diry) * (toTravel - distanceTraveled)
-				distanceTraveled = toTravel
+			println("Chemin vide")
+			printf("TargetedPoint is %d\n", targetedCheckpoint)
+			if (reachedGoal && pos.distance(targetedPos) < 0.1) { // no walls around blocking the path, so the enemy has reached the goal
+				Game.health = (Game.health - 20) max 0
+				valid = false
+				return
 			}
 			else {
-				pos = path.remove(0)
-				distanceTraveled += d
+				val wallsAround = Game.entities.filter(_.isInstanceOf[WallTower]).map(_.asInstanceOf[WallTower]).filter(_.pos.distance(pos) <= 1.5)
+				if (wallsAround.nonEmpty)
+					wallsAround.head.damage(1)
+				else
+					println("Recomputing path")
+					computePath()
+			}
+		} else {
+			val toTravel = speed * delta / 1000
+			var distanceTraveled = 0.0
+			while (distanceTraveled < toTravel && path.nonEmpty) {
+				val d = pos.distance(path.head)
+				if (toTravel < distanceTraveled + d) {
+					val dirx = (path.head.x - pos.x) / d
+					val diry = (path.head.y - pos.y) / d
+					pos += new CellPoint(dirx, diry) * (toTravel - distanceTraveled)
+					distanceTraveled = toTravel
+				}
+				else {
+					pos = path.remove(0)
+					distanceTraveled += d
+				}
 			}
 		}
 	}
 
-	def aStar(start: CellPoint, end: CellPoint): ArrayBuffer[CellPoint] = {
+	def aStar(start: CellPoint, end: CellPoint): (ArrayBuffer[CellPoint], Boolean) = {
 		var queue = new PriorityQueue[(CellPoint, Double)]()( Ordering.by{ case (_, d) => d } ).reverse
 		val parents = Map[CellPoint, CellPoint]()
 		val scores = Map[CellPoint, Double](start -> 0).withDefaultValue(Double.PositiveInfinity)
@@ -74,14 +72,22 @@ trait MovingEnemy extends Enemy {
 			if (current.nearestMiddle() == end.nearestMiddle()) {
 				val path = ArrayBuffer[CellPoint](end)
 				var cursor = current
+				var isFullyFound = true
 				while (cursor != start) {
-					path += cursor
+					if (Game.map.map(cursor.x.toInt)(cursor.y.toInt) == engine.map.Wall) {
+						path.clear()
+						isFullyFound = false
+					}
+					else {
+						path += cursor
+					}
 					cursor = parents(cursor)
 				}
-				return (path += start).reverse
+				printf("Found from %f, %f to %f, %f\n", start.x, start.y, end.x, end.y)
+				return ((path += start).reverse, isFullyFound)
 			}
 
-			for (neighbor <- current.neighborCells.filter(c => Game.map.map(c.x.toInt)(c.y.toInt) == engine.map.Path)) {
+			for (neighbor <- current.neighborCells.filter(c => Game.map.map(c.x.toInt)(c.y.toInt) == engine.map.Path || Game.map.map(c.x.toInt)(c.y.toInt) == engine.map.Wall)) {
 				val score = scores(current) + current.distance(neighbor)
 				if (score < scores(neighbor)) {
 					parents(neighbor) = current
@@ -92,9 +98,19 @@ trait MovingEnemy extends Enemy {
 			}
 		}
 
-		// should never arrive here
+		// no path found from start to end, walls can obstruct the way
 		println("Warning, no path exists")
-		return ArrayBuffer(start, end)
+		return (ArrayBuffer(start, end), false)
+		// val nearest = scores.maxBy(_._2)._1
+		// val furthest = scores.minBy(_._2)._1
+		// val path = ArrayBuffer[CellPoint]()
+		// var cursor = nearest
+		// printf("Not found ; max is (%f, %f) ; min is (%f, %f) ; from (%f, %f) to (%f, %f)\n", nearest.x, nearest.y, furthest.x, furthest.y, start.x, start.y, nearest.x, nearest.y)
+		// while (cursor != start) {
+		// 	path += cursor
+		// 	cursor = parents(cursor)
+		// }
+		// return ((path += start).reverse, false)
 	}
 
 	def smoothPath(p : ArrayBuffer[CellPoint]) : ArrayBuffer[CellPoint] = {
@@ -113,6 +129,32 @@ trait MovingEnemy extends Enemy {
 		}
 
 		return p2
+	}
+
+	def computePath() : Unit = {
+		if (reachedGoal) {
+			println("Already have a path")
+			return
+		}
+		println("Computing path")
+		var tempPos = pos
+		var tempPath = ArrayBuffer[CellPoint]()
+		breakable ({ while (targetedCheckpoint != -1 || !reachedGoal) {
+			var cp = Game.map.checkpoints(targetedCheckpoint)
+			var tempTargetedPos = cp.randomPoint()
+			val (pathFound, found) = aStar(tempPos, tempTargetedPos)
+			tempPath ++= pathFound.tail
+			if (found) {
+				tempPos = targetedPos
+				targetedCheckpoint = cp.next
+				targetedPos = tempTargetedPos
+				if (cp.next == -1)
+					reachedGoal = true
+			}
+			else
+				break()
+		}})
+		path = smoothPath(pos +: tempPath).tail // the current pos is added for smoothing and then removed
 	}
 
 	def render(time: Double, delta: Double): Unit = {

@@ -11,4 +11,9 @@ class Checkpoint(seq: Int*) {
 	val a = new CellPoint(aX, aY)
 	val b = new CellPoint(bX, bY)
 	val next: Int = n
+
+	def randomPoint() : CellPoint = {
+		val r = scala.util.Random
+		return a + (b - a) * r.nextDouble
+	}
 }

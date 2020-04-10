@@ -4,6 +4,7 @@ import java.awt.Image
 
 sealed trait CellType
 case object Path extends CellType
+case object Wall extends CellType
 case object EmptyTowerCell extends CellType
 case object OccupiedTowerCell extends CellType
 

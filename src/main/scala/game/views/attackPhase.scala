@@ -46,12 +46,14 @@ class AttackPhase extends View { outer =>
 				val menemy = enemy.asInstanceOf[MovingEnemy]
 				//Random choice of the target on the portal segment for spawn location
 				val cp = Game.map.checkpoints(i)
-				menemy.pos = new CellPoint(cp.a.x + r.nextFloat * (cp.b.x - cp.a.x), cp.a.y + r.nextFloat * (cp.b.y - cp.a.y))
+				menemy.pos = cp.randomPoint()
 				menemy.targetedCheckpoint = cp.next
 
 				//Random choice of the target on the portal segment for destination
 				val cpp = Game.map.checkpoints(cp.next)
-				menemy.targetedPos = new CellPoint(cpp.a.x + r.nextFloat * (cpp.b.x - cpp.a.x), cpp.a.y + r.nextFloat * (cpp.b.y - cpp.a.y))
+				menemy.targetedPos = cpp.randomPoint()
+
+				menemy.computePath()
 			}
 
 			Game.entities += enemy.asInstanceOf[Entity]
