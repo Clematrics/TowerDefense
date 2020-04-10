@@ -29,7 +29,7 @@ class FlyingEnemy extends MovingEnemy with LivingEnemy {
 		val s:Image = SpriteLoader.fromResource("anim/dragon" + (time/100 % 11).toInt +".png")
 		val sPos = pos.toScreenPosition
 		//TODO : manage directions?
-		Renderer.groundEntities.drawImage(s, new AffineTransform(-0.4, 0, 0, 0.4, sPos.x + 35, sPos.y  - 15), null)
+		Renderer.flyingEntities.drawImage(s, new AffineTransform(-0.4, 0, 0, 0.4, sPos.x + 35, sPos.y  - 15), null)
 		drawHealthBar(sPos + new ScreenPoint(0, -30))
 	}
 }
