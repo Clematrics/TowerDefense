@@ -15,7 +15,8 @@ import engine.Cst
   * This class is the phase of the game where the player can buy
   * and add towers to defend the place.
   */
-class DefensePhase extends View { outer =>
+class DefensePhase extends View {
+	outer =>
 	var mouseCursorPosition = new ScreenPoint(0, 0)
 
 	reactions += {
@@ -32,11 +33,11 @@ class DefensePhase extends View { outer =>
 						if (comp.isValidDistance(compoundsBuffer, comp.pos)) {
 							compoundsBuffer += comp //add to buffer
 
-							if (compoundsBuffer.length == comp.nb) {	//All positions specified, we can add the tower itself
+							if (compoundsBuffer.length == comp.nb) { //All positions specified, we can add the tower itself
 								Game.entities += comp.makeTower(compoundsBuffer)
 								compoundsBuffer.clear
 								Game.gold -= towerToAdd.cost
-								towerToAdd = new ArmedTower				//Back to default
+								towerToAdd = new ArmedTower //Back to default
 							} else {
 								val towerName = towerToAdd.getClass.getName
 								towerToAdd = Class.forName(towerName).getConstructor().newInstance().asInstanceOf[Tower]
@@ -44,9 +45,9 @@ class DefensePhase extends View { outer =>
 						}
 					}
 				} else {
-					if ((Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == EmptyTowerCell && !towerToAdd.isInstanceOf[WallTower])
-					 || (Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == Path && towerToAdd.isInstanceOf[WallTower])
-					 && Game.gold >= towerToAdd.cost) {
+					if (((Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == EmptyTowerCell && !towerToAdd.isInstanceOf[WallTower])
+					  || (Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == Path && towerToAdd.isInstanceOf[WallTower])
+					  ) && Game.gold >= towerToAdd.cost) {
 						towerToAdd.pos = mousePos
 						Game.entities += towerToAdd
 						if (towerToAdd.isInstanceOf[WallTower])
@@ -66,15 +67,15 @@ class DefensePhase extends View { outer =>
 
 	buttons ++= ArrayBuffer(
 		new Button(new Point(605, 20), new Dimension(60, 30)) {
-			spriteBack    = SpriteLoader.fromResource("menuButtonLarge.png")
-			spriteFront   = SpriteLoader.fromString("Fight !", 60, 15)
+			spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
+			spriteFront = SpriteLoader.fromString("Fight !", 60, 15)
 			action = () => {
 				GamePanel.changeView("AttackPhase")
 			}
 		},
 		new Button(new Point(585, 140), new Dimension(30, 30)) {
-			spriteBack    = SpriteLoader.fromResource("menuButtonLarge.png")
-			spriteFront   = SpriteLoader.fromResource("armedtour.png")
+			spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
+			spriteFront = SpriteLoader.fromResource("armedtour.png")
 			spriteTooltip = SpriteLoader.tooltip("Blaster Tower\nCost : 10 Gold\nRadius : 6\nReload time : 1s\nPower : 5\nA tower that shoots balls")
 			action = () => {
 				towerToAdd = new ArmedTower
@@ -82,56 +83,56 @@ class DefensePhase extends View { outer =>
 		},
 		new Button(new Point(585, 175), new Dimension(30, 30)) {
 			listenTo(outer)
-			spriteBack    = SpriteLoader.fromResource("menuButtonLarge.png")
-			spriteFront   = SpriteLoader.fromResource("lasertour.png")
+			spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
+			spriteFront = SpriteLoader.fromResource("lasertour.png")
 			spriteTooltip = SpriteLoader.tooltip("Laser Tower\nCost : 20 Gold\nRadius : 6\nReload time : 2s\nPower : 20\nLAAASEERSS!")
 			action = () => {
 				towerToAdd = new LaserTower
 			}
 		},
 		new Button(new Point(585, 210), new Dimension(30, 30)) {
-			spriteBack    = SpriteLoader.fromResource("menuButtonLarge.png")
-			spriteFront   = SpriteLoader.fromResource("tour.png")
+			spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
+			spriteFront = SpriteLoader.fromResource("tour.png")
 			spriteTooltip = SpriteLoader.tooltip("Chess Tower\nCost : 15 Gold\nA noob tower that does nothing else than watching its enemies in the eyes")
 			action = () => {
 				towerToAdd = new ProtoTower
 			}
 		},
 		new Button(new Point(585, 245), new Dimension(30, 30)) {
-			spriteBack    = SpriteLoader.fromResource("menuButtonLarge.png")
-			spriteFront   = SpriteLoader.fromResource("multitour.png")
+			spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
+			spriteFront = SpriteLoader.fromResource("multitour.png")
 			spriteTooltip = SpriteLoader.tooltip("Multi Tower\nCost : 40 Gold\nRadius : 7\nReload time : 2s\nPower : 20\nCan shoot multiple enemies at the same time")
 			action = () => {
 				towerToAdd = new MultiTower
 			}
 		},
 		new Button(new Point(585, 280), new Dimension(30, 30)) {
-			spriteBack    = SpriteLoader.fromResource("menuButtonLarge.png")
-			spriteFront   = SpriteLoader.fromResource("dualtour.png")
+			spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
+			spriteFront = SpriteLoader.fromResource("dualtour.png")
 			spriteTooltip = SpriteLoader.tooltip("Dual Tower\nCost : 80 Gold\nPower : 20\nTwo towers making a laser barrier")
 			action = () => {
 				towerToAdd = new HalfDualTower
 			}
 		},
 		new Button(new Point(620, 245), new Dimension(30, 30)) {
-			spriteBack    = SpriteLoader.fromResource("menuButtonLarge.png")
-			spriteFront   = SpriteLoader.fromResource("wall.png")
+			spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
+			spriteFront = SpriteLoader.fromResource("wall.png")
 			spriteTooltip = SpriteLoader.tooltip("Wall Tower\nCost : 50 Gold\nA destructable wall that will block enemies")
 			action = () => {
 				towerToAdd = new WallTower
 			}
 		},
 		new Button(new Point(620, 280), new Dimension(30, 30)) {
-			spriteBack    = SpriteLoader.fromResource("menuButtonLarge.png")
-			spriteFront   = SpriteLoader.fromResource("thundertour.png")
+			spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
+			spriteFront = SpriteLoader.fromResource("thundertour.png")
 			spriteTooltip = SpriteLoader.tooltip("Thunder Tower\nCost : 500 Gold\nFreezes enemies around during 5 seconds")
 			action = () => {
 				towerToAdd = new ThunderTower
 			}
 		},
 		new Button(new Point(605, 320), new Dimension(60, 30)) {
-			spriteBack    = SpriteLoader.fromResource("menuButtonLargeVar.png")
-			spriteFront   = SpriteLoader.fromString("Go back", 60, 15)
+			spriteBack = SpriteLoader.fromResource("menuButtonLargeVar.png")
+			spriteFront = SpriteLoader.fromString("Go back", 60, 15)
 			action = () => {
 				GamePanel.changeView("CampaignMenu")
 			}
@@ -143,7 +144,7 @@ class DefensePhase extends View { outer =>
 
 		if (Renderer.debugMode) {
 			Renderer.background.drawImage(Game.map.mapLayout, new AffineTransform(12, 0, 0, 12, 0, 0), null)
-			for(cp <- Game.map.checkpoints) {
+			for (cp <- Game.map.checkpoints) {
 				val stroke = new BasicStroke(1)
 				Renderer.background.setStroke(stroke)
 				Renderer.background.setColor(new Color(255, 0, 255, 255))
@@ -163,9 +164,9 @@ class DefensePhase extends View { outer =>
 		val mousePos = mouseCursorPosition.toCellPoint
 		if (mousePos.x <= Cst.mapWidth - 1 && mousePos.y <= Cst.mapHeight - 1) {
 			if ((Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == EmptyTowerCell && !towerToAdd.isInstanceOf[WallTower])
-			 || (Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == Path && towerToAdd.isInstanceOf[WallTower])
-			 && Game.gold >= towerToAdd.cost
-			 && (!towerToAdd.isInstanceOf[TowerCompound] || towerToAdd.asInstanceOf[TowerCompound].isValidDistance(compoundsBuffer, mousePos))) {
+			  || (Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == Path && towerToAdd.isInstanceOf[WallTower])
+			  && Game.gold >= towerToAdd.cost
+			  && (!towerToAdd.isInstanceOf[TowerCompound] || towerToAdd.asInstanceOf[TowerCompound].isValidDistance(compoundsBuffer, mousePos))) {
 				towerToAdd.pos = mousePos
 				towerToAdd.render(time, delta)
 			}
@@ -185,7 +186,7 @@ class DefensePhase extends View { outer =>
 		val exp = SpriteLoader.fromString(f"Exp : ${Game.experience}", 60, 15)
 		Renderer.userInterface.drawImage(exp, new AffineTransform(1, 0, 0, 1, 580, 90), null)
 
-		for(b <- buttons) {
+		for (b <- buttons) {
 			b.render(time, delta)
 		}
 	}
