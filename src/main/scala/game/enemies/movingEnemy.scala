@@ -4,8 +4,9 @@ import engine.loaders.SpriteLoader
 import engine.Cst
 
 import scala.math.{cos, sin, atan}
-import java.awt.geom.AffineTransform
 import scala.collection.mutable.{ArrayBuffer, Map, PriorityQueue}
+import java.awt.geom.AffineTransform
+import java.awt.Color
 
 /**
   * The MovingEnemy trait represents an enemy with a speed that can
@@ -112,5 +113,14 @@ trait MovingEnemy extends Enemy {
 		}
 
 		return p2
+	}
+
+	def render(time: Double, delta: Double): Unit = {
+		if (Renderer.debugMode) {
+			val xArr = path.map(_.toScreenPosition.x).toArray
+			val yArr = path.map(_.toScreenPosition.y).toArray
+			Renderer.debug.setColor(Color.RED)
+			Renderer.debug.drawPolyline(xArr, yArr, path.size)
+		}
 	}
 }

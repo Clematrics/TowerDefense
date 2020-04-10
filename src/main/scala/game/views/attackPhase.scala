@@ -76,8 +76,6 @@ class AttackPhase extends View { outer =>
 	  * @param delta
 	  */
 	def render(time: Double, delta: Double): Unit = {
-		Renderer.background.drawImage(Game.map.mapImg, new AffineTransform(3, 0, 0, 3, 0, 0), null)
-
 		if (Renderer.debugMode) {
 			Renderer.background.drawImage(Game.map.mapLayout, new AffineTransform(12, 0, 0, 12, 0, 0), null)
 			for(cp <- Game.map.checkpoints) {
@@ -88,6 +86,9 @@ class AttackPhase extends View { outer =>
 				val spb = cp.b.toScreenPosition
 				Renderer.background.drawLine(spa.x, spa.y, spb.x, spb.y)
 			}
+		}
+		else {
+			Renderer.background.drawImage(Game.map.mapImg, new AffineTransform(3, 0, 0, 3, 0, 0), null)
 		}
 
 		for(e <- Game.entities) {

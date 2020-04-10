@@ -25,7 +25,8 @@ class ProtoEnemy extends MovingEnemy with LivingEnemy {
 		return scala.util.Random.nextInt(15) // Random reward
 	}
 
-	def render(time: Double, delta: Double): Unit = {
+	override def render(time: Double, delta: Double): Unit = {
+		super[MovingEnemy].render(time, delta)
 		val s:Image = SpriteLoader.fromResource("pion.png")
 		val sPos = pos.toScreenPosition
 		Renderer.groundEntities.drawImage(s, new AffineTransform(0.1, 0, 0, 0.1, sPos.x - 20, sPos.y  - 20), null)

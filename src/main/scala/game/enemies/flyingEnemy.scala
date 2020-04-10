@@ -25,7 +25,8 @@ class FlyingEnemy extends MovingEnemy with LivingEnemy {
 		return gold
 	}
 
-	def render(time: Double, delta: Double): Unit = {
+	override def render(time: Double, delta: Double): Unit = {
+		super[MovingEnemy].render(time, delta)
 		val s:Image = SpriteLoader.fromResource("anim/dragon" + (time/100 % 11).toInt +".png")
 		val sPos = pos.toScreenPosition
 		//TODO : manage directions?

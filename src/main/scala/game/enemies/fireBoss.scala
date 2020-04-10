@@ -44,13 +44,14 @@ class FireBoss extends MovingEnemy with LivingEnemy {
 	val regenDelay: Double = 2000.0
 	var lastRegen: Double = 0.0
 
-	def render(time: Double, delta: Double): Unit = {
+	override def render(time: Double, delta: Double): Unit = {
+		super[MovingEnemy].render(time, delta)
 		val s:Image = SpriteLoader.fromResource("anim/boss" + (time/300 % 12).toInt +".png")
 		val sPos = pos.toScreenPosition
 		//TODO : manage directions?
 		Renderer.groundEntities.drawImage(s, new AffineTransform(-0.4, 0, 0, 0.4, sPos.x + 80, sPos.y  - 40), null)
 		drawHealthBar(sPos + new ScreenPoint(0, -30))
-	
+
 		if (lifePoints < 75 && time - lastRegen > regenDelay) {
 			setLifePoints(lifePoints + 5)
 			lastRegen = time
