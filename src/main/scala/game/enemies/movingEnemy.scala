@@ -25,8 +25,6 @@ trait MovingEnemy extends Enemy {
 
 	def tick(time: Double, delta: Double) : Unit = {
 		if (path.isEmpty) {
-			println("Chemin vide")
-			printf("TargetedPoint is %d\n", targetedCheckpoint)
 			if (reachedGoal && pos.distance(targetedPos) < 0.1) { // no walls around blocking the path, so the enemy has reached the goal
 				Game.health = (Game.health - 20) max 0
 				valid = false
@@ -37,7 +35,6 @@ trait MovingEnemy extends Enemy {
 				if (wallsAround.nonEmpty)
 					wallsAround.head.damage(1)
 				else
-					println("Recomputing path")
 					computePath()
 			}
 		} else {
@@ -83,7 +80,6 @@ trait MovingEnemy extends Enemy {
 					}
 					cursor = parents(cursor)
 				}
-				printf("Found from %f, %f to %f, %f\n", start.x, start.y, end.x, end.y)
 				return ((path += start).reverse, isFullyFound)
 			}
 
@@ -98,19 +94,9 @@ trait MovingEnemy extends Enemy {
 			}
 		}
 
-		// no path found from start to end, walls can obstruct the way
-		println("Warning, no path exists")
+		// no path found from start to end, the map layout is incorrect
+		println("Warning, no path exists. Map layout incorrect")
 		return (ArrayBuffer(start, end), false)
-		// val nearest = scores.maxBy(_._2)._1
-		// val furthest = scores.minBy(_._2)._1
-		// val path = ArrayBuffer[CellPoint]()
-		// var cursor = nearest
-		// printf("Not found ; max is (%f, %f) ; min is (%f, %f) ; from (%f, %f) to (%f, %f)\n", nearest.x, nearest.y, furthest.x, furthest.y, start.x, start.y, nearest.x, nearest.y)
-		// while (cursor != start) {
-		// 	path += cursor
-		// 	cursor = parents(cursor)
-		// }
-		// return ((path += start).reverse, false)
 	}
 
 	def smoothPath(p : ArrayBuffer[CellPoint]) : ArrayBuffer[CellPoint] = {
@@ -120,7 +106,8 @@ trait MovingEnemy extends Enemy {
 		for (step <- 1 to 10) {
 			for (i <- 1 until p.size - 1) {
 				val newpos = (p1(i - 1) + p1(i + 1)) / 2.0
-				if (Game.map.map(newpos.x.toInt)(newpos.y.toInt) == engine.map.Path)
+				if (Game.map.map(newpos.x.toInt)(newpos.y.toInt) == engine.map.Path
+				 || Game.map.map(newpos.x.toInt)(newpos.y.toInt) == engine.map.Wall)
 					p2(i) = newpos
 			}
 			val temp = p1
@@ -133,10 +120,8 @@ trait MovingEnemy extends Enemy {
 
 	def computePath() : Unit = {
 		if (reachedGoal) {
-			println("Already have a path")
 			return
 		}
-		println("Computing path")
 		var tempPos = pos
 		var tempPath = ArrayBuffer[CellPoint]()
 		breakable ({ while (targetedCheckpoint != -1 || !reachedGoal) {

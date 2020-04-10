@@ -19,8 +19,6 @@ class WallTower extends Tower {
 	def tick(time: Double, delta: Double): Unit = {
 		if (life <= 0) {
 			Game.map.map(pos.x.toInt)(pos.y.toInt) = engine.map.Path
-			println("Wall destroyed")
-			println("Computing path from tower")
 			Game.entities.filter(_.isInstanceOf[MovingEnemy]).foreach(_.asInstanceOf[MovingEnemy].computePath)
 			valid = false
 		}
