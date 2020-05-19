@@ -1,9 +1,10 @@
-import engine.core.{GamePanel, Renderer, View}
+import engine.core.{GamePanel, View}
 import engine.loaders.SpriteLoader
 import engine.interaction.Button
 
-import scala.swing.event._
-import java.awt.{Dimension, Graphics2D, Point}
+//import scala.swing.event._
+import java.awt.{Dimension, Point}
+
 import scala.collection.mutable.ArrayBuffer
 
 /**
@@ -15,6 +16,7 @@ class MainMenu extends View { outer =>
 			spriteBack    = SpriteLoader.fromResource("button400x80.png")
 			spriteFront   = SpriteLoader.fromString("play & prove yourself !", 400, 35)
 			action = () => {
+				TowerDefense.sendMessage("Going to Campaign Menu")
 				GamePanel.changeView("CampaignMenu")
 			}
 		},
