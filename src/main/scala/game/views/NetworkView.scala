@@ -9,6 +9,9 @@ import engine.loaders.SpriteLoader
 import scala.collection.mutable.ArrayBuffer
 
 class NetworkView extends View { outer =>
+	TowerDefense.connect
+	var pseudo: String = "Player"
+
 	buttons = ArrayBuffer(
 		new Button(new Point(40, 20), new Dimension(75, 30)) {
 			spriteBack    = SpriteLoader.fromResource("menuButtonLarge.png")
@@ -19,7 +22,7 @@ class NetworkView extends View { outer =>
 		}
 	)
 
-	TowerDefense.sendMessage("Test on multicast")
+	TowerDefense.sendMessage(pseudo, "Test on multicast")
 
 	override def render(time: Double, delta: Double): Unit = {
 		for(b <- buttons) {

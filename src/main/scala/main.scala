@@ -37,9 +37,7 @@ object TowerDefense extends SimpleSwingApplication { td =>
 	var socket: MulticastSocket = new MulticastSocket(9999)
 	var group: InetAddress = InetAddress.getByName("224.0.0.1")
 	val bufSize: Int = 2048
-	var pseudo: String = "Player"
-	socket.joinGroup(group)
-	var running: Boolean = true
+	var running: Boolean = false
 
 	val backgroundThread = new Thread {
 		override def run: Unit = {
@@ -72,19 +70,25 @@ object TowerDefense extends SimpleSwingApplication { td =>
 		}
 	}
 
-	backgroundThread.start()
+	def connect(): Unit = {
+		if (!running) {
+			running = true
+			socket.joinGroup(group)
+			backgroundThread.start()
+		}
+	}
 
 	/**
 	  * Send a message to the other player
 	  * @param text
 	  */
-	def sendMessage(text: String): Unit = {
+	def sendMessage(name: String, text: String): Unit = {
 		var packet: DatagramPacket = null
 		val stream: ByteArrayOutputStream = new ByteArrayOutputStream
 
 		// Protocol signature
 		stream.write(Array[Byte](127, -128, 127), 0, 3)
-		val ps = pseudo.getBytes
+		val ps = name.getBytes
 		stream.write(Array[Byte](ps.length.toByte), 0, 1)
 		stream.write(ps, 0, ps.length)
 		val msg = text.getBytes
