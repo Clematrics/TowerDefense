@@ -8,8 +8,8 @@ import java.awt.Dimension
 import java.net.{InetAddress, _}
 import java.io._
 import java.util
-import java.util.Arrays
-
+import java.io.DataOutputStream
+import java.nio.ByteBuffer
 import scala.io._
 
 /**
@@ -35,13 +35,13 @@ object TowerDefense extends SimpleSwingApplication { td =>
 	  * ServerSocket object to receive and send messages
 	  */
 	var socket: MulticastSocket = new MulticastSocket(9999)
-	var group: InetAddress = InetAddress.getByName("224.0.0.1")
+	var group: InetAddress = InetAddress.getByName("239.0.0.1")
 	val bufSize: Int = 2048
 	var running: Boolean = false
+	var callback: (String, String) => Unit = null
 
 	val backgroundThread = new Thread {
 		override def run: Unit = {
-
 			var packet: DatagramPacket = null
 
 			println("Server launched on port " + socket.getLocalPort().toString)
@@ -52,16 +52,11 @@ object TowerDefense extends SimpleSwingApplication { td =>
 					socket.receive(packet)
 					val array: Array[Byte] = packet.getData
 					if (isTDProtocol(array)) {
-						val len: Int = array(3).toInt
-						val ps: Array[Byte] = util.Arrays.copyOfRange(array, 4, 4 + len)
-						val msg: Array[Byte] = util.Arrays.copyOfRange(array, 4 + len, array.length - (4 + len + 1))
-						println(new String(ps) + " : " + new String(msg))
-					}
-					else {
-						val hostname: String = packet.getAddress.getHostName
-						println(hostname + " : " + new String(array))
-					}
+						val len: Int = ByteBuffer.wrap(util.Arrays.copyOfRange(array, 3, 7)).getInt
+						val msg: Array[Byte] = util.Arrays.copyOfRange(array, 7, math.min(array.length,7 + len))
 
+						callback(packet.getAddress().getHostAddress, new String(msg))
+					}
 				} catch {
 					case e: IOException => println("Ending server.")
 					case e: InterruptedException => println("Ending server.")
@@ -70,8 +65,13 @@ object TowerDefense extends SimpleSwingApplication { td =>
 		}
 	}
 
-	def connect(): Unit = {
+	/**
+	  * Starts the network service
+	  * @param fCallback The function to be called on receiving a message.
+	  */
+	def connect(fCallback: (String, String) => Unit): Unit = {
 		if (!running) {
+			callback = fCallback
 			running = true
 			socket.joinGroup(group)
 			backgroundThread.start()
@@ -82,15 +82,14 @@ object TowerDefense extends SimpleSwingApplication { td =>
 	  * Send a message to the other player
 	  * @param text
 	  */
-	def sendMessage(name: String, text: String): Unit = {
+	def sendMessage(text: String): Unit = {
 		var packet: DatagramPacket = null
 		val stream: ByteArrayOutputStream = new ByteArrayOutputStream
 
+		val dos = new DataOutputStream(stream)
 		// Protocol signature
 		stream.write(Array[Byte](127, -128, 127), 0, 3)
-		val ps = name.getBytes
-		stream.write(Array[Byte](ps.length.toByte), 0, 1)
-		stream.write(ps, 0, ps.length)
+		dos.writeInt(text.length)
 		val msg = text.getBytes
 		stream.write(msg, 0, msg.length)
 		val array = stream.toByteArray
@@ -101,8 +100,10 @@ object TowerDefense extends SimpleSwingApplication { td =>
 	}
 
 	/**
-	  * Checks if datagram matches the game protocol
-	  *
+	  * Checks if the packet matches the game protocol
+	  * The TowerDef[ENS]e protocol :
+	  * Offset				 0  1  2    3  4  5  6    7 ... (7+L-1)
+	  * Data	Magic number 7F 80 7F | text length L | text
 	  * @param packet
 	  * @return
 	  */
