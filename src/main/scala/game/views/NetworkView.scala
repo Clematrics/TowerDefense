@@ -2,7 +2,9 @@ import java.awt.geom.AffineTransform
 import java.awt.{Dimension, Point}
 import java.net.{InetAddress, NetworkInterface}
 
+import engine.core.GamePanel.{ps, view}
 import engine.core.{GamePanel, Renderer, View}
+import engine.helpers.Delay
 import engine.interaction.Button
 import engine.loaders.SpriteLoader
 
@@ -18,6 +20,11 @@ class NetworkView extends View {
 	  * The tokens are randomly generated integers stored as strings
 	  */
 	var myToken: String = scala.util.Random.nextInt().toString
+
+	/**
+	  * The longest the list have been, to know where to put the next button (naive, but sufficient).
+	  */
+	var lastAdded: Int = 0
 
 	TowerDefense.connect(onReceive, myToken)
 	sendHello()
@@ -38,6 +45,7 @@ class NetworkView extends View {
 			case "Hello" => 2
 			case "Fight" => 3
 			case "Bye" => 2
+			case "Confirm" => 3
 		}
 	}
 
@@ -55,6 +63,8 @@ class NetworkView extends View {
 					receiveHello(from, command(1))
 				case "Fight" =>
 					receiveProposition(command(1), command(2))
+				case "Confirm" =>
+					receiveConfirmation(command(1), command(2))
 				case "Bye" =>
 					receiveBye(command(1))
 			}
@@ -81,7 +91,34 @@ class NetworkView extends View {
 	}
 
 	/**
-	  * Send a 'Fight' message
+	  * In case of a 'Confirm' message
+	  * Syntax : Confirm (from) (to)
+	  * This message can only be received if we sent a 'Fight' message earlier.
+	  *
+	  * @param from The token of the player who wants to play
+	  * @param to   The player he wants to play with
+	  */
+	def receiveConfirmation(from: String, to: String) = {
+		if (to == myToken) {
+			println(s"Going to play with $from, because he just confirmed")
+			/**
+			  * Todo : Go to play a game
+			  */
+		}
+	}
+
+	/**
+	  * Confirms the player wants to play with (from)
+	  * Syntax : Confirm (from) (to)
+	  *
+	  * @param from
+	  */
+	def sendConfirmation(from: String): Unit = {
+		TowerDefense.sendMessage(s"Confirm $myToken $from")
+	}
+
+	/**
+	  * In case of a 'Fight' message
 	  * Syntax : Fight (from) (to)
 	  *
 	  * @param from The token of the player who wants to play
@@ -89,7 +126,17 @@ class NetworkView extends View {
 	  */
 	def receiveProposition(from: String, to: String) = {
 		if (to == myToken) {
-			println(s"Received from $from")
+			val idx = players.indexOf(from)
+			if (idx >= 0) {
+				buttons(idx + 1).spriteBack = SpriteLoader.fromResource("menuButtonLargeG.png")
+				buttons(idx + 1).action = () => {
+					sendConfirmation(from)
+					/**
+					  * TODO : Going to play with this player (from)
+					  */
+					println(s"I agreed to play with the player $from !")
+				}
+			}
 		}
 	}
 
@@ -126,7 +173,7 @@ class NetworkView extends View {
 	def addPlayer(addr: String, token: String): Unit = {
 		players.synchronized {
 			if (!players.contains(token)) {
-				val l = players.length
+				val l = lastAdded
 				val x = (l % 3) * 200 + 80
 				val y = (l / 3) * 50 + 100
 				buttons += new Button(new Point(x, y), new Dimension(200, 30)) {
@@ -137,7 +184,8 @@ class NetworkView extends View {
 					}
 				}
 				players += token
-				sendHello
+				lastAdded = players.length max lastAdded
+				new Delay(1000, () => sendHello) { run = true }
 			}
 		}
 	}

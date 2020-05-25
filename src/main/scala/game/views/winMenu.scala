@@ -11,11 +11,12 @@ import scala.collection.mutable._
   * This window is visible when the player wins.
   *
   */
-class WinMenu extends View { outer =>
+class WinMenu extends View {
+	outer =>
 	buttons ++= ArrayBuffer(
 		new Button(new Point(320, 210), new Dimension(400, 80)) {
-			spriteBack    = SpriteLoader.fromResource("button400x80.png")
-			spriteFront   = SpriteLoader.fromString("Explode more monsters", 400, 35)
+			spriteBack = SpriteLoader.fromResource("button400x80.png")
+			spriteFront = SpriteLoader.fromString("Explode more monsters", 400, 35)
 			action = () => {
 				Game.reset
 				GamePanel.changeView("CampaignMenu")
@@ -25,9 +26,9 @@ class WinMenu extends View { outer =>
 
 	def render(time: Double, delta: Double): Unit = {
 		val winImg = SpriteLoader.fromString("You win!", 400, 35)
-		Renderer.userInterface.drawImage(winImg, new AffineTransform(1, 0, 0, 1, 320 - winImg.getWidth(null) / 2, 110), null)
+		Renderer.drawOnTextLayerCentered(winImg, 320, 110)
 
-		for(b <- buttons) {
+		for (b <- buttons) {
 			b.render(time, delta)
 		}
 	}
