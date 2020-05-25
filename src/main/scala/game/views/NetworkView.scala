@@ -149,8 +149,9 @@ class NetworkView extends View {
 		}
 	}
 
+	val spriteTitle = SpriteLoader.fromString("Players in the local area network", 640, 28)
+
 	override def render(time: Double, delta: Double): Unit = {
-		val spriteTitle = SpriteLoader.fromString("Players in the local area network", 640, 28)
 		Renderer.userInterface.drawImage(spriteTitle,
 			new AffineTransform(1, 0, 0, 1,
 				320 - spriteTitle.getWidth(null) / 2, 0), null)
