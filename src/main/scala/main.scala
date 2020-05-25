@@ -15,7 +15,8 @@ import scala.io._
 /**
   * Entry point for TowerDefense application.
   */
-object TowerDefense extends SimpleSwingApplication { td =>
+object TowerDefense extends SimpleSwingApplication {
+	td =>
 	def top = new MainFrame {
 		title = "Tower Def[ENS]e"
 		contents = GamePanel
@@ -34,52 +35,73 @@ object TowerDefense extends SimpleSwingApplication { td =>
 	/**
 	  * ServerSocket object to receive and send messages
 	  */
-	var socket: MulticastSocket = new MulticastSocket(9999)
-	var group: InetAddress = InetAddress.getByName("239.0.0.1")
+	var socket: MulticastSocket = null
+	var group: InetAddress = null
 	val bufSize: Int = 2048
 	var running: Boolean = false
 	var callback: (String, String) => Unit = null
 
-	val backgroundThread = new Thread {
-		override def run: Unit = {
-			var packet: DatagramPacket = null
+	var backgroundThread: Thread = null
 
-			println("Server launched on port " + socket.getLocalPort().toString)
+	var connexionToken: String = ""
 
-			while (running) {
-				try {
-					packet = new DatagramPacket(new Array[Byte](bufSize), bufSize)
-					socket.receive(packet)
-					val array: Array[Byte] = packet.getData
-					if (isTDProtocol(array)) {
-						val len: Int = ByteBuffer.wrap(util.Arrays.copyOfRange(array, 3, 7)).getInt
-						val msg: Array[Byte] = util.Arrays.copyOfRange(array, 7, math.min(array.length,7 + len))
+	/**
+	  * Starts the network service
+	  *
+	  * @param fCallback The function to be called on receiving a message.
+	  */
+	def connect(fCallback: (String, String) => Unit, token: String): Unit = {
+		if (!running) {
+			socket = new MulticastSocket(9999)
+			group = InetAddress.getByName("239.0.0.1")
+			callback = fCallback
+			running = true
+			try {
+				socket.joinGroup(group)
+				backgroundThread = new Thread {
+					override def run: Unit = {
+						var packet: DatagramPacket = null
 
-						callback(packet.getAddress().getHostAddress, new String(msg))
+						println("Server launched on port " + socket.getLocalPort().toString)
+
+						while (running) {
+							try {
+								packet = new DatagramPacket(new Array[Byte](bufSize), bufSize)
+								socket.receive(packet)
+								val array: Array[Byte] = packet.getData
+								if (isTDProtocol(array)) {
+									val len: Int = ByteBuffer.wrap(util.Arrays.copyOfRange(array, 3, 7)).getInt
+									val msg: Array[Byte] = util.Arrays.copyOfRange(array, 7, math.min(array.length, 7 + len))
+
+									callback(packet.getAddress().getHostAddress, new String(msg))
+								}
+							} catch {
+								case e: IOException => println("Ending server.")
+								case e: InterruptedException => println("Ending server.")
+							}
+						}
 					}
-				} catch {
-					case e: IOException => println("Ending server.")
-					case e: InterruptedException => println("Ending server.")
 				}
+				backgroundThread.start()
+				connexionToken = token
+			} catch {
+				case s: SocketException => println("Connexion error")
+					running = false
 			}
 		}
 	}
 
-	/**
-	  * Starts the network service
-	  * @param fCallback The function to be called on receiving a message.
-	  */
-	def connect(fCallback: (String, String) => Unit): Unit = {
-		if (!running) {
-			callback = fCallback
-			running = true
-			socket.joinGroup(group)
-			backgroundThread.start()
+	def disconnect: Unit = {
+		if (running) {
+			sendMessage(s"Bye $connexionToken")
+			running = false
+			socket.close
 		}
 	}
 
 	/**
 	  * Send a message to the other player
+	  *
 	  * @param text
 	  */
 	def sendMessage(text: String): Unit = {
@@ -104,6 +126,7 @@ object TowerDefense extends SimpleSwingApplication { td =>
 	  * The TowerDef[ENS]e protocol :
 	  * Offset				 0  1  2    3  4  5  6    7 ... (7+L-1)
 	  * Data	Magic number 7F 80 7F | text length L | text
+	  *
 	  * @param packet
 	  * @return
 	  */
@@ -112,8 +135,7 @@ object TowerDefense extends SimpleSwingApplication { td =>
 	def quitGame() = {
 		Game.save
 		GamePanel.stop
-		running = false
-		socket.close
+		disconnect
 		quit
 	}
 }

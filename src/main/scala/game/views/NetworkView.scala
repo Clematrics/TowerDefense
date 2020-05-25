@@ -19,19 +19,19 @@ class NetworkView extends View {
 	  */
 	var myToken: String = scala.util.Random.nextInt().toString
 
+	TowerDefense.connect(onReceive, myToken)
+	sendHello()
+
 	buttons = ArrayBuffer(
 		new Button(new Point(40, 20), new Dimension(75, 30)) {
 			spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
 			spriteFront = SpriteLoader.fromString("go back", 75, 15)
 			action = () => {
-				sendBye
+				TowerDefense.disconnect
 				GamePanel.changeView("MainMenu")
 			}
 		}
 	)
-
-	TowerDefense.connect(onReceive)
-	sendHello()
 
 	def getArgsNumber(command: String): Int = {
 		command match {
@@ -67,7 +67,7 @@ class NetworkView extends View {
 	  * @param from  Address of sender
 	  * @param token Unique token to make sure it is not our echo
 	  */
-	def receiveHello(from: String, token: String):Unit = {
+	def receiveHello(from: String, token: String): Unit = {
 		if (token != myToken) {
 			addPlayer(from, token)
 		}
@@ -113,16 +113,9 @@ class NetworkView extends View {
 			val idx = players.indexOf(from)
 			if (idx >= 0) {
 				players.remove(idx)
-				buttons.remove(idx)
+				buttons.remove(1 + idx)
 			}
 		}
-	}
-
-	/**
-	  * Sends a 'Bye' message.
-	  */
-	def sendBye(): Unit = {
-		TowerDefense.sendMessage(s"Bye $myToken")
 	}
 
 	/**
@@ -136,9 +129,9 @@ class NetworkView extends View {
 				val l = players.length
 				val x = (l % 3) * 200 + 80
 				val y = (l / 3) * 50 + 100
-				buttons += new Button(new Point(x, y), new Dimension(100, 30)) {
+				buttons += new Button(new Point(x, y), new Dimension(200, 30)) {
 					spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
-					spriteFront = SpriteLoader.fromString(s"Player #$token from $addr", 200, 15)
+					spriteFront = SpriteLoader.fromString(s"Player #${shortenToken(token)}", 200, 15)
 					action = () => {
 						sendProposition(token)
 					}
@@ -150,11 +143,19 @@ class NetworkView extends View {
 	}
 
 	val spriteTitle = SpriteLoader.fromString("Players in the local area network", 640, 28)
+	val spriteToken = SpriteLoader.fromString(s"You are player ${shortenToken(myToken)}", 150, 15)
+
+	def shortenToken(token: String): String = {
+		if (token.length < 4) {
+			token
+		} else {
+			token.substring(0, 2) + token.substring(token.length - 2, token.length)
+		}
+	}
 
 	override def render(time: Double, delta: Double): Unit = {
-		Renderer.userInterface.drawImage(spriteTitle,
-			new AffineTransform(1, 0, 0, 1,
-				320 - spriteTitle.getWidth(null) / 2, 0), null)
+		Renderer.drawOnTextLayerCentered(spriteTitle, 320, 0)
+		Renderer.drawOnTextLayerCentered(spriteToken, 320, 25)
 
 		for (b <- buttons) {
 			b.render(time, delta)

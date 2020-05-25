@@ -44,6 +44,7 @@ object GamePanel extends Panel {
 
 	def changeView(levelName: String) {
 		view.deafTo(ps: _*)
+
 		val constr = Class.forName(levelName).getConstructor()
 		view = constr.newInstance().asInstanceOf[View]
 		repaint()
