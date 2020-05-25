@@ -1,11 +1,9 @@
 package engine.core
 
 import engine.Cst
-
-import java.awt.image.BufferedImage
-import java.awt.Graphics2D
+import java.awt.image.{BufferedImage, ImageObserver}
+import java.awt.{Color, Graphics2D, Image}
 import java.awt.geom.AffineTransform
-import java.awt.Color
 
 /**
  * Rendering is done layer by layer
@@ -54,6 +52,18 @@ object Renderer {
 	var debugMode: Boolean = false
 
 	resetRendering
+
+	def drawOnTextLayer(img: Image, m02:Double, m12: Double): Unit = {
+		Renderer.text.drawImage(img, new AffineTransform(1, 0, 0, 1,
+			Cst.textLayerScaling * m02,
+			Cst.textLayerScaling * m12), null)
+	}
+
+	def drawOnTextLayerCentered(img: Image, m02:Double, m12: Double): Unit = {
+		Renderer.text.drawImage(img, new AffineTransform(1, 0, 0, 1,
+			Cst.textLayerScaling * m02 - img.getWidth(null) / 2,
+			Cst.textLayerScaling * m12), null)
+	}
 
 	def resetRendering(): Unit = {
 		val width  = Cst.layerResolutionWidth
