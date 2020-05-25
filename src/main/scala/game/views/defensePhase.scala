@@ -73,7 +73,7 @@ class DefensePhase extends View {
 				GamePanel.changeView("AttackPhase")
 			}
 		},
-		new Button(new Point(585, 140), new Dimension(30, 30)) {
+		new Button(new Point(585, 140), new Dimension(30, 30), false) {
 			spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
 			spriteFront = SpriteLoader.fromResource("armedtour.png")
 			spriteTooltip = SpriteLoader.tooltip("Blaster Tower\nCost : 10 Gold\nRadius : 6\nReload time : 1s\nPower : 5\nA tower that shoots balls")
@@ -81,7 +81,7 @@ class DefensePhase extends View {
 				towerToAdd = new ArmedTower
 			}
 		},
-		new Button(new Point(585, 175), new Dimension(30, 30)) {
+		new Button(new Point(585, 175), new Dimension(30, 30), false) {
 			listenTo(outer)
 			spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
 			spriteFront = SpriteLoader.fromResource("lasertour.png")
@@ -90,7 +90,7 @@ class DefensePhase extends View {
 				towerToAdd = new LaserTower
 			}
 		},
-		new Button(new Point(585, 210), new Dimension(30, 30)) {
+		new Button(new Point(585, 210), new Dimension(30, 30), false) {
 			spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
 			spriteFront = SpriteLoader.fromResource("tour.png")
 			spriteTooltip = SpriteLoader.tooltip("Chess Tower\nCost : 15 Gold\nA noob tower that does nothing else than watching its enemies in the eyes")
@@ -98,7 +98,7 @@ class DefensePhase extends View {
 				towerToAdd = new ProtoTower
 			}
 		},
-		new Button(new Point(585, 245), new Dimension(30, 30)) {
+		new Button(new Point(585, 245), new Dimension(30, 30), false) {
 			spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
 			spriteFront = SpriteLoader.fromResource("multitour.png")
 			spriteTooltip = SpriteLoader.tooltip("Multi Tower\nCost : 40 Gold\nRadius : 7\nReload time : 2s\nPower : 20\nCan shoot multiple enemies at the same time")
@@ -106,7 +106,7 @@ class DefensePhase extends View {
 				towerToAdd = new MultiTower
 			}
 		},
-		new Button(new Point(585, 280), new Dimension(30, 30)) {
+		new Button(new Point(585, 280), new Dimension(30, 30), false) {
 			spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
 			spriteFront = SpriteLoader.fromResource("dualtour.png")
 			spriteTooltip = SpriteLoader.tooltip("Dual Tower\nCost : 80 Gold\nPower : 20\nTwo towers making a laser barrier")
@@ -114,7 +114,7 @@ class DefensePhase extends View {
 				towerToAdd = new HalfDualTower
 			}
 		},
-		new Button(new Point(620, 245), new Dimension(30, 30)) {
+		new Button(new Point(620, 245), new Dimension(30, 30), false) {
 			spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
 			spriteFront = SpriteLoader.fromResource("wall.png")
 			spriteTooltip = SpriteLoader.tooltip("Wall Tower\nCost : 50 Gold\nA destructable wall that will block enemies")
@@ -122,7 +122,7 @@ class DefensePhase extends View {
 				towerToAdd = new WallTower
 			}
 		},
-		new Button(new Point(620, 280), new Dimension(30, 30)) {
+		new Button(new Point(620, 280), new Dimension(30, 30), false) {
 			spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
 			spriteFront = SpriteLoader.fromResource("thundertour.png")
 			spriteTooltip = SpriteLoader.tooltip("Thunder Tower\nCost : 500 Gold\nFreezes enemies around during 5 seconds")
@@ -182,9 +182,9 @@ class DefensePhase extends View {
 		}
 
 		val gold = SpriteLoader.fromString(f"Gold : ${Game.gold}", 60, 15)
-		Renderer.userInterface.drawImage(gold, new AffineTransform(1, 0, 0, 1, 580, 45), null)
+		Renderer.drawOnTextLayer(gold,  560, 45)
 		val exp = SpriteLoader.fromString(f"Exp : ${Game.experience}", 60, 15)
-		Renderer.userInterface.drawImage(exp, new AffineTransform(1, 0, 0, 1, 580, 90), null)
+		Renderer.drawOnTextLayer(exp, 560,  80)
 
 		for (b <- buttons) {
 			b.render(time, delta)

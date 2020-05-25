@@ -37,16 +37,31 @@ object SpriteLoader {
 	}
 
 	/**
+	  * Draws a string and returns it as a BufferedImage object, scaling in order to render
+	  * it on the Text surface.
+	  *
+	  * @param str          The string to draw
+	  * @param breakWidthIn Width of the area before breaking the line
+	  * @param fontsize     Size of the font
+	  * @return The buffered image containing the specified text
+	  */
+	def fromString(str: String, breakWidthIn: Int, fontsize: Int, bold: Boolean = false): Image = {
+		val breakWidthIn2 = breakWidthIn * engine.Cst.textLayerScaling
+		val fontsize2 = fontsize * engine.Cst.textLayerScaling
+		nativeFromString(str, breakWidthIn2, fontsize2, bold)
+	}
+
+	/**
 	  * Draws a string and returns it as a BufferedImage object.
 	  *
 	  * Inspired from https://stackoverflow.com/questions/8281886/stretch-a-jlabel-text/8282330#8282330
 	  *
-	  * @param str		      The string to draw
-	  * @param breakWidthIn   Width of the area before breaking the line
-	  * @param fontsize	      Size of the font
+	  * @param str          The string to draw
+	  * @param breakWidthIn Width of the area before breaking the line
+	  * @param fontsize     Size of the font
 	  * @return The buffered image containing the specified text
 	  */
-	def fromString(str: String, breakWidthIn: Int, fontsize: Int, bold: Boolean = false): Image = {
+	def nativeFromString(str: String, breakWidthIn: Int, fontsize: Int, bold: Boolean = false): Image = {
 		val sig = f"fromString-{$str}-{$breakWidthIn}-{$fontsize}"
 		ResourcesManager.getImage(sig) match {
 			case Some(value) => value
@@ -57,15 +72,15 @@ object SpriteLoader {
 				// inspired from https://docs.oracle.com/javase/tutorial/2d/text/drawmulstring.html
 				val attrString = new AttributedString(str)
 				attrString.addAttribute(TextAttribute.FONT, font)
-				val paragraph  = attrString.getIterator
+				val paragraph = attrString.getIterator
 				val paragraphStart = paragraph.getBeginIndex()
 				val paragraphEnd = paragraph.getEndIndex()
 				val lineMeasurer = new LineBreakMeasurer(paragraph, frc)
 
 				// Set break width to width of Component.
 				val breakWidth = breakWidthIn.toFloat
-				var width      = 0.0f
-				var height     = 0.0f
+				var width = 0.0f
+				var height = 0.0f
 
 				// Get lines from until the entire paragraph
 				// has been displayed.
@@ -75,13 +90,15 @@ object SpriteLoader {
 					val next = lineMeasurer.nextOffset(breakWidth)
 					var limit = next
 					if (limit <= str.length) {
-						breakable { for (i <- lineMeasurer.getPosition until next) {
-							val c = str.charAt(i)
-							if (c == '\n') {
-								limit = i + 1
-								break
+						breakable {
+							for (i <- lineMeasurer.getPosition until next) {
+								val c = str.charAt(i)
+								if (c == '\n') {
+									limit = i + 1
+									break
+								}
 							}
-						} }
+						}
 					}
 
 					val layout = lineMeasurer.nextLayout(breakWidth, limit, false)
@@ -105,13 +122,15 @@ object SpriteLoader {
 					val next = lineMeasurer.nextOffset(breakWidth)
 					var limit = next
 					if (limit <= str.length) {
-						breakable { for (i <- lineMeasurer.getPosition until next) {
-							val c = str.charAt(i)
-							if (c == '\n') {
-								limit = i + 1
-								break
+						breakable {
+							for (i <- lineMeasurer.getPosition until next) {
+								val c = str.charAt(i)
+								if (c == '\n') {
+									limit = i + 1
+									break
+								}
 							}
-						} }
+						}
 					}
 
 					val layout = lineMeasurer.nextLayout(breakWidth, limit, false)
@@ -131,10 +150,10 @@ object SpriteLoader {
 	  * Draws a help message
 	  *
 	  * @param str The text of the tip
-	  * @return	A buffered image with the text
+	  * @return A buffered image with the text
 	  */
 	def tooltip(str: String): Image = {
-		val img = fromString(str, 200 * engine.Cst.textLayerScaling, 60)
+		val img = fromString(str, 200, 20)
 		val bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB)
 		val g = bi.getGraphics.asInstanceOf[Graphics2D]
 		g.setColor(new Color(128, 128, 128, 255))

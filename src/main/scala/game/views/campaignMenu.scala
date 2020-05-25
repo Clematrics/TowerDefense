@@ -4,8 +4,11 @@ import engine.interaction.Button
 
 import scala.swing.event._
 import java.awt.{Dimension, Graphics2D, Point}
+
 import scala.collection.mutable.ArrayBuffer
 import java.awt.geom.AffineTransform
+
+import engine.Cst
 
 /**
   * The window to select a campaign.
@@ -61,12 +64,13 @@ class CampaignMenu extends View { outer =>
 		}
 		buttons = fixedButtons ++ arr
 	}
-	var campaignButtons = loadCampaignButtons()
 
+	var campaignButtons = loadCampaignButtons()
 
 	def render(time: Double, delta: Double): Unit = {
 		val spriteTitle = SpriteLoader.fromString(campaign.name, 640, 28)
-		Renderer.userInterface.drawImage(spriteTitle, new AffineTransform(1, 0, 0, 1, 320 - spriteTitle.getWidth(null) / 2, 0), null)
+		Renderer.drawOnTextLayerCentered(spriteTitle,
+				320, 0)
 		for(b <- buttons) {
 			b.render(time, delta)
 		}

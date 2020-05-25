@@ -32,6 +32,13 @@ class MainMenu extends View { outer =>
 			action = () => {
 				TowerDefense.quitGame
 			}
+		},
+		new Button(new Point(600, 340), new Dimension(70, 30)) {
+			spriteBack    = SpriteLoader.fromResource("menuButtonLargeVar.png")
+			spriteFront   = SpriteLoader.fromString("About", 50, 15)
+			action = () => {
+				GamePanel.changeView("CreditsView")
+			}
 		}
 	)
 
