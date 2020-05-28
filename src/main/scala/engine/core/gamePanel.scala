@@ -42,6 +42,10 @@ object GamePanel extends Panel {
 	}
 	listenTo(timer)
 
+	/**
+	  * Instantiates the specified class while setting it visible.
+	  * @param levelName Name of the class inheriting View.
+	  */
 	def changeView(levelName: String) {
 		view.deafTo(ps: _*)
 
@@ -51,6 +55,10 @@ object GamePanel extends Panel {
 		new Delay(50, () => view.listenTo(ps: _*)) { run = true }
 	}
 
+	/**
+	  * The main rendering function
+	  * @param g Drawing surface
+	  */
 	override def paintComponent(g: Graphics2D) {
 		super.paintComponent(g)
 

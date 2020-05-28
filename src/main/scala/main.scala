@@ -36,19 +36,46 @@ object TowerDefense extends SimpleSwingApplication {
 	  * ServerSocket object to receive and send messages
 	  */
 	var socket: MulticastSocket = null
+
+	/**
+	  * The address we communicate with (usually multicast addresses 224.0.0.1 or 239.0.0.1)
+	  */
 	var group: InetAddress = null
+
+	/**
+	  * The maximum length of a message implementing TowerDef[ENS]e Protocol.
+	  */
 	val bufSize: Int = 2048
+
+	/**
+	  * This field allows us to stop gracefully the background thread listening to
+	  * incoming messages, when we quit the Network area.
+	  */
 	var running: Boolean = false
+
+	/**
+	  * This (variable) value represents the function to call on the event of receiving
+	  * a message implementing TowerDef[ENS]e Protocol.
+	  */
 	var callback: (String, String) => Unit = null
 
+	/**
+	  * The listening thread.
+	  */
 	var backgroundThread: Thread = null
 
+	/**
+	  * Unique identifier generated each time the user goes in the Network section of the game.
+	  * Useful when we must send a 'Bye' message with our ID.
+	  */
 	var connexionToken: String = ""
 
 	/**
 	  * Starts the network service
 	  *
-	  * @param fCallback The function to be called on receiving a message.
+	  * @param fCallback The function to be called on receiving a message. This
+	  *                  function is of the form Callback(Ip address, Message),
+	  *                  both String parameters.
 	  */
 	def connect(fCallback: (String, String) => Unit, token: String): Unit = {
 		if (!running) {
@@ -91,6 +118,10 @@ object TowerDefense extends SimpleSwingApplication {
 		}
 	}
 
+	/**
+	  * Stops communications with the network. Sends a 'Bye' message in order to tell
+	  * the other connected players that we quit.
+	  */
 	def disconnect: Unit = {
 		if (running) {
 			sendMessage(s"Bye $connexionToken")
@@ -132,7 +163,11 @@ object TowerDefense extends SimpleSwingApplication {
 	  */
 	def isTDProtocol(packet: Array[Byte]): Boolean = packet(0) == 127 && packet(1) == -128 && packet(2) == 127
 
-	def quitGame() = {
+	/**
+	  * This procedure is called whenever we have to stop the game (window closing or
+	  * exit button)
+	  */
+	def quitGame(): Unit = {
 		Game.save
 		GamePanel.stop
 		disconnect
