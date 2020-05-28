@@ -33,6 +33,7 @@ class NetworkView extends View {
 		new Button(new Point(40, 20), new Dimension(75, 30)) {
 			spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
 			spriteFront = SpriteLoader.fromString("go back", 75, 15)
+			spriteTooltip = SpriteLoader.tooltip("Disconnect from the network")
 			action = () => {
 				TowerDefense.disconnect
 				GamePanel.changeView("MainMenu")
@@ -129,6 +130,7 @@ class NetworkView extends View {
 			val idx = players.indexOf(from)
 			if (idx >= 0) {
 				buttons(idx + 1).spriteBack = SpriteLoader.fromResource("menuButtonLargeG.png")
+				buttons(idx + 1).spriteTooltip = SpriteLoader.tooltip("Fight now")
 				buttons(idx + 1).action = () => {
 					sendConfirmation(from)
 					/**
@@ -179,6 +181,7 @@ class NetworkView extends View {
 				buttons += new Button(new Point(x, y), new Dimension(200, 30)) {
 					spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
 					spriteFront = SpriteLoader.fromString(s"Player #${shortenToken(token)}", 200, 15)
+					spriteTooltip = SpriteLoader.tooltip(s"From $addr\nSend an invitation")
 					action = () => {
 						sendProposition(token)
 					}
