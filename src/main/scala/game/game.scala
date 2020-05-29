@@ -17,9 +17,12 @@ object Game {
 	var gold = 100
 	var multiplayerGold = 1000
 	var experience = 0
+	var token = 0
 
 	var map: Map = null
+	var opponentMap: Map = null
 	var entities: ArrayBuffer[Entity] = ArrayBuffer()
+	var opponentEntities: ArrayBuffer[Entity] = ArrayBuffer()
 
 	/**
 	  * This function finds all enemies near the specified position and within the
@@ -49,8 +52,10 @@ object Game {
 		/*We can earn money and gain experience, but when are we using them?*/
 		//gold = 100
 		//experience = 0
+		multiplayerGold = 1000
 		map = MapLoader.loadMap(Game.map.name)
 		entities = ArrayBuffer()
+		opponentEntities = ArrayBuffer()
 	}
 
 	def save(): Unit = {

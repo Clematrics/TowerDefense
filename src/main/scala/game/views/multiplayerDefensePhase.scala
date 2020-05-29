@@ -3,6 +3,7 @@ import engine.helpers.{ScreenPoint}
 import engine.loaders.SpriteLoader
 import engine.interaction.{MouseHelper, Button}
 import engine.map.{Path, Wall, EmptyTowerCell, OccupiedTowerCell}
+import engine.core.Entity
 
 import scala.swing.event._
 import java.awt.{Color, Dimension, Graphics2D, Point}
@@ -11,14 +12,49 @@ import java.awt.BasicStroke
 import scala.collection.mutable.ArrayBuffer
 import engine.Cst
 import scala.swing.Reactions
+import engine.helpers.CellPoint
 
 /**
   * This class is the phase of the game where the player can buy
   * and add towers to defend the place.
   */
 class MultiplayerDefensePhase extends View { outer =>
-	var mouseCursorPosition = new ScreenPoint(0, 0)
+	var ready = false
+	var opponentReady = false
+	TowerDefense.callback = onReceive
 
+	def onReceive(from: String, message: String): Unit = {
+		val command: Array[String] = message.split(" ")
+		val otherToken = command(0).toInt
+		if (otherToken != Game.token) {
+			command(1) match {
+				case "Tower" =>
+					val towerName = command(2)
+					val x = command(3).toDouble
+					val y = command(4).toDouble
+					val tower = Class.forName(towerName).getConstructor().newInstance().asInstanceOf[Tower]
+
+					tower.pos = new CellPoint(x, y)
+					Game.opponentEntities += tower
+					if (tower.isInstanceOf[WallTower])
+					Game.map.map(x.toInt)(y.toInt) = Wall
+					else
+					Game.map.map(x.toInt)(y.toInt) = OccupiedTowerCell
+
+				case "End" =>
+					opponentReady = true
+					moveNextPhaseIfReady()
+			}
+		}
+	}
+
+	def moveNextPhaseIfReady(): Unit = {
+		if (opponentReady && ready) {
+			GamePanel.changeView("MultiplayerAttackPhase")
+		}
+	}
+
+	var mouseCursorPosition = new ScreenPoint(0, 0)
 	val mouseMovedReaction : Reactions.Reaction = {
 		case MouseMoved(_, point, _) =>
 			mouseCursorPosition = MouseHelper.fromMouse(point)
@@ -27,39 +63,20 @@ class MultiplayerDefensePhase extends View { outer =>
 		case MouseReleased(_, point, _, _, _) =>
 			val mousePos = mouseCursorPosition.toCellPoint
 			if (mousePos.x <= (Cst.mapWidth / 2) - 1 && mousePos.y <= Cst.mapHeight - 1) {
-				if (towerToAdd.isInstanceOf[TowerCompound]) {
-					//Compound tower currently being placed
-					if (Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == EmptyTowerCell && Game.gold >= towerToAdd.cost) {
-						towerToAdd.pos = mousePos
-						val comp = towerToAdd.asInstanceOf[TowerCompound]
-						if (comp.isValidDistance(compoundsBuffer, comp.pos)) {
-							compoundsBuffer += comp //add to buffer
-
-							if (compoundsBuffer.length == comp.nb) { //All positions specified, we can add the tower itself
-								Game.entities += comp.makeTower(compoundsBuffer)
-								compoundsBuffer.clear
-								Game.gold -= towerToAdd.cost
-								towerToAdd = new ArmedTower //Back to default
-							} else {
-								val towerName = towerToAdd.getClass.getName
-								towerToAdd = Class.forName(towerName).getConstructor().newInstance().asInstanceOf[Tower]
-							}
-						}
-					}
-				} else {
-					if (((Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == EmptyTowerCell && !towerToAdd.isInstanceOf[WallTower])
-					  || (Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == Path && towerToAdd.isInstanceOf[WallTower])
-					  ) && Game.gold >= towerToAdd.cost) {
-						towerToAdd.pos = mousePos
-						Game.entities += towerToAdd
-						if (towerToAdd.isInstanceOf[WallTower])
-							Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) = Wall
-						else
-							Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) = OccupiedTowerCell
-						Game.gold -= towerToAdd.cost
-						val towerName = towerToAdd.getClass.getName
-						towerToAdd = Class.forName(towerName).getConstructor().newInstance().asInstanceOf[Tower]
-					}
+				if (((Game.opponentMap.map(mousePos.x.toInt)(mousePos.y.toInt) == EmptyTowerCell && !towerToAdd.isInstanceOf[WallTower])
+					|| (Game.opponentMap.map(mousePos.x.toInt)(mousePos.y.toInt) == Path && towerToAdd.isInstanceOf[WallTower])
+					) && Game.multiplayerGold >= towerToAdd.cost) {
+					towerToAdd.pos = mousePos
+					Game.entities += towerToAdd
+					val mirrored = mousePos.mirror()
+					TowerDefense.sendMessage(f"${Game.token} Tower ${towerToAdd.getClass().getName()} ${mirrored.x} ${mirrored.y}")
+					if (towerToAdd.isInstanceOf[WallTower])
+						Game.opponentMap.map(mousePos.x.toInt)(mousePos.y.toInt) = Wall
+					else
+						Game.opponentMap.map(mousePos.x.toInt)(mousePos.y.toInt) = OccupiedTowerCell
+					Game.multiplayerGold -= towerToAdd.cost
+					val towerName = towerToAdd.getClass.getName
+					towerToAdd = Class.forName(towerName).getConstructor().newInstance().asInstanceOf[Tower]
 				}
 			}
 	}
@@ -75,7 +92,12 @@ class MultiplayerDefensePhase extends View { outer =>
 			spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
 			spriteFront = SpriteLoader.fromString("Fight !", 60, 15)
 			action = () => {
-				GamePanel.changeView("WaitOpponent")
+				ready = true
+				buttons.clear()
+				reactions -= mouseMovedReaction
+				reactions -= mouseReleasedReaction
+				TowerDefense.sendMessage(f"${Game.token} End")
+				moveNextPhaseIfReady()
 			}
 		},
 		new Button(new Point(585, 140), new Dimension(30, 30), false) {
@@ -111,14 +133,6 @@ class MultiplayerDefensePhase extends View { outer =>
 				towerToAdd = new MultiTower
 			}
 		},
-		new Button(new Point(585, 280), new Dimension(30, 30), false) {
-			spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
-			spriteFront = SpriteLoader.fromResource("dualtour.png")
-			spriteTooltip = SpriteLoader.tooltip("Dual Tower\nCost : 80 Gold\nPower : 20\nTwo towers making a laser barrier")
-			action = () => {
-				towerToAdd = new HalfDualTower
-			}
-		},
 		new Button(new Point(620, 245), new Dimension(30, 30), false) {
 			spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
 			spriteFront = SpriteLoader.fromResource("wall.png")
@@ -133,13 +147,6 @@ class MultiplayerDefensePhase extends View { outer =>
 			spriteTooltip = SpriteLoader.tooltip("Thunder Tower\nCost : 500 Gold\nFreezes enemies around during 5 seconds")
 			action = () => {
 				towerToAdd = new ThunderTower
-			}
-		},
-		new Button(new Point(605, 320), new Dimension(60, 30)) {
-			spriteBack = SpriteLoader.fromResource("menuButtonLargeVar.png")
-			spriteFront = SpriteLoader.fromString("Go back", 60, 15)
-			action = () => {
-				GamePanel.changeView("CampaignMenu")
 			}
 		}
 	)
@@ -166,25 +173,31 @@ class MultiplayerDefensePhase extends View { outer =>
 		for (c <- compoundsBuffer)
 			c.render(time, delta)
 
-		val mousePos = mouseCursorPosition.toCellPoint
-		if (mousePos.x <= Cst.mapWidth - 1 && mousePos.y <= Cst.mapHeight - 1) {
-			if (mousePos.x <= (Cst.mapWidth / 2) - 1
-			  && (Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == EmptyTowerCell && !towerToAdd.isInstanceOf[WallTower])
-			      || (Game.map.map(mousePos.x.toInt)(mousePos.y.toInt) == Path && towerToAdd.isInstanceOf[WallTower])
-			  && Game.gold >= towerToAdd.cost
-			  && (!towerToAdd.isInstanceOf[TowerCompound] || towerToAdd.asInstanceOf[TowerCompound].isValidDistance(compoundsBuffer, mousePos))) {
-				towerToAdd.pos = mousePos
-				towerToAdd.render(time, delta)
+		if (!ready) {
+			val mousePos = mouseCursorPosition.toCellPoint
+			if (mousePos.x <= Cst.mapWidth - 1 && mousePos.y <= Cst.mapHeight - 1) {
+				if (mousePos.x <= (Cst.mapWidth / 2) - 1
+				&& ( 	(Game.opponentMap.map(mousePos.x.toInt)(mousePos.y.toInt) == EmptyTowerCell && !towerToAdd.isInstanceOf[WallTower])
+					||	(Game.opponentMap.map(mousePos.x.toInt)(mousePos.y.toInt) == Path && towerToAdd.isInstanceOf[WallTower]))
+				&& Game.multiplayerGold >= towerToAdd.cost
+				&& (!towerToAdd.isInstanceOf[TowerCompound] || towerToAdd.asInstanceOf[TowerCompound].isValidDistance(compoundsBuffer, mousePos))) {
+					towerToAdd.pos = mousePos
+					towerToAdd.render(time, delta)
+				}
+				else {
+					val stroke = new BasicStroke(4)
+					Renderer.userInterface.setStroke(stroke)
+					Renderer.userInterface.setColor(Color.RED)
+					val x = mousePos.x.toInt * Cst.cellSize
+					val y = mousePos.y.toInt * Cst.cellSize
+					Renderer.userInterface.drawLine(x, y, x + Cst.cellSize, y + Cst.cellSize)
+					Renderer.userInterface.drawLine(x + Cst.cellSize, y, x, y + Cst.cellSize)
+				}
 			}
-			else {
-				val stroke = new BasicStroke(4)
-				Renderer.userInterface.setStroke(stroke)
-				Renderer.userInterface.setColor(Color.RED)
-				val x = mousePos.x.toInt * Cst.cellSize
-				val y = mousePos.y.toInt * Cst.cellSize
-				Renderer.userInterface.drawLine(x, y, x + Cst.cellSize, y + Cst.cellSize)
-				Renderer.userInterface.drawLine(x + Cst.cellSize, y, x, y + Cst.cellSize)
-			}
+
+		} else {
+			val waitImg = SpriteLoader.fromString("Waiting for opponent...", 400, 35)
+			Renderer.drawOnTextLayerCentered(waitImg, 320, 110)
 		}
 
 		val gold = SpriteLoader.fromString(f"Gold : ${Game.multiplayerGold}", 60, 15)

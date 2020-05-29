@@ -1,5 +1,5 @@
 import engine.core.{Entity, GamePanel, Renderer, View}
-import engine.helpers.{CellPoint, ScreenPoint}
+import engine.helpers.{CellPoint, ScreenPoint, Delay}
 import engine.loaders.SpriteLoader
 import engine.interaction.{MouseHelper, Button}
 import engine.Cst
@@ -15,10 +15,50 @@ import scala.collection.mutable.ArrayBuffer
   * enemies attack and towers defend the player.
   */
 class MultiplayerAttackPhase extends View { outer =>
-	val r = scala.util.Random
 	var enemyToAdd: Enemy = new ProtoEnemy
-	// var waveTime = -5.0
-	// var wave: ArrayBuffer[(Double, Int, String)] = ArrayBuffer(Game.map.wave: _*)
+	var opponentNoMoney = false
+
+	TowerDefense.callback = onReceive
+
+	def onReceive(from: String, message: String): Unit = {
+		val command: Array[String] = message.split(" ")
+		val otherToken = command(0).toInt
+		if (otherToken != Game.token) {
+			command(1) match {
+				case "Enemy" =>
+					val enemyName = command(2)
+					val x = command(3).toDouble
+					val y = command(4).toDouble
+					val enemy = Class.forName(enemyName).getConstructor().newInstance().asInstanceOf[Enemy]
+
+					if (enemyToAdd.isInstanceOf[MovingEnemy]) {
+						val menemy = enemy.asInstanceOf[MovingEnemy]
+						menemy.pos = new CellPoint(x, y)
+						menemy.targetedCheckpoint = 1 // 0 is the enemy checkpoint
+
+						val cp = Game.map.checkpoints(1)
+						menemy.targetedPos = cp.a
+
+						menemy.computePath()
+					}
+
+					Game.entities += enemy.asInstanceOf[Entity]
+
+				case "NoMoney" =>
+					opponentNoMoney = true
+					if (opponentNoMoney && Game.multiplayerGold < 20) {
+						Game.reset
+						GamePanel.changeView("MultiplayerDrawMenu")
+					}
+				case "Dead" =>
+					Game.reset
+					GamePanel.changeView("MultiplayerWinMenu")
+				case "Surrender" =>
+					Game.reset
+					GamePanel.changeView("MultiplayerWinMenu")
+			}
+		}
+	}
 
 	var mouseCursorPosition = new ScreenPoint(0, 0)
 
@@ -44,8 +84,14 @@ class MultiplayerAttackPhase extends View { outer =>
 					menemy.computePath()
 				}
 
-				Game.entities += enemyToAdd.asInstanceOf[Entity]
+				Game.opponentEntities += enemyToAdd.asInstanceOf[Entity]
+				Game.multiplayerGold -= enemyToAdd.gold
+				if (Game.multiplayerGold < 20) {
+					new Delay(30000, () => TowerDefense.sendMessage(f"${Game.token} NoMoney")) { run = true }
+				}
 				val enemyName = enemyToAdd.getClass.getName
+				val mirrored = mousePos.mirror()
+				TowerDefense.sendMessage(f"${Game.token} Enemy ${enemyName} ${mirrored.x} ${mirrored.y}")
 				enemyToAdd = Class.forName(enemyName).getConstructor().newInstance().asInstanceOf[Enemy]
 			}
 	}
@@ -56,7 +102,8 @@ class MultiplayerAttackPhase extends View { outer =>
 			spriteFront   = SpriteLoader.fromString("surrender", 75, 15)
 			action = () => {
 				Game.reset
-				GamePanel.changeView("LoseMenu")
+				TowerDefense.sendMessage(f"${Game.token} Surrender")
+				GamePanel.changeView("MultiplayerLoseMenu")
 			}
 		},
 		new Button(new Point(585, 140), new Dimension(30, 30), false) {
@@ -95,15 +142,37 @@ class MultiplayerAttackPhase extends View { outer =>
 
 	override def tick(time: Double, delta: Double): Unit = {
 		if (Game.health <= 0) {
-			GamePanel.changeView("LoseMenu")
+			Game.reset
+			TowerDefense.sendMessage(f"${Game.token} Dead")
+			GamePanel.changeView("MultiplayerLoseMenu")
 		}
-
-		// Todo : add entities sent from opponent
 
 		for (e <- Game.entities)
 			e.tick(time, delta)
+		val saveHealth = Game.health
+
+		// swapping
+		val tempEnt = Game.entities
+		Game.entities = Game.opponentEntities
+		Game.opponentEntities = tempEnt
+		val tempMap = Game.map
+		Game.map = Game.opponentMap
+		Game.opponentMap = tempMap
+
+		for (e <- Game.entities)
+			e.tick(time, delta)
+		Game.health = saveHealth // Here, entities attacking the enemy are reducing our own health bar. We are restoring it
+
+		// swapping
+		val tempEnt2 = Game.entities
+		Game.entities = Game.opponentEntities
+		Game.opponentEntities = tempEnt2
+		val tempMap2 = Game.map
+		Game.map = Game.opponentMap
+		Game.opponentMap = tempMap2
 
 		Game.entities = Game.entities.filter((p: Entity) => p.valid)
+		Game.opponentEntities = Game.opponentEntities.filter((p: Entity) => p.valid)
 
 		// if (wave.length == 0 && Game.entities.filter(_.isInstanceOf[Enemy]).length == 0) {
 		// 	GamePanel.changeView("WinMenu")
@@ -134,6 +203,9 @@ class MultiplayerAttackPhase extends View { outer =>
 		}
 
 		for(e <- Game.entities) {
+			e.render(time, delta)
+		}
+		for(e <- Game.opponentEntities) {
 			e.render(time, delta)
 		}
 
@@ -169,9 +241,12 @@ class MultiplayerAttackPhase extends View { outer =>
 		Renderer.userInterface.setColor(Color.RED)
 		Renderer.userInterface.fillRect(610, 50 + ((Game.maxHealth - Game.health) * 300 / Game.maxHealth), 20, Game.health * 300 / Game.maxHealth)
 
-		// if (Renderer.debugMode) {
-		// 	Renderer.debug.setColor(Color.PINK)
-		// 	Renderer.debug.drawString(f"$waveTime%.1f ms", 0, 30)
-		// }
+		val stroke = new BasicStroke(2)
+		Renderer.userInterface.setStroke(stroke)
+		Renderer.userInterface.setColor(Color.WHITE)
+		Renderer.userInterface.drawRect( 0 * Cst.cellSize,  1 * Cst.cellSize, ( 4 -  0) * Cst.cellSize, ( 4 -  1) * Cst.cellSize)
+		Renderer.userInterface.drawRect( 0 * Cst.cellSize, 12 * Cst.cellSize, ( 3 -  0) * Cst.cellSize, (16 - 12) * Cst.cellSize)
+		Renderer.userInterface.drawRect( 0 * Cst.cellSize, 21 * Cst.cellSize, ( 5 -  0) * Cst.cellSize, (27 - 21) * Cst.cellSize)
+		Renderer.userInterface.drawRect(15 * Cst.cellSize, 28 * Cst.cellSize, (23 - 15) * Cst.cellSize, (30 - 28) * Cst.cellSize)
 	}
 }

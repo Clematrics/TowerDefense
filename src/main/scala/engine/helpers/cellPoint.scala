@@ -57,7 +57,7 @@ class CellPoint(var x: Double, var y: Double) extends Point2D {
 	}
 
 	def mirror(): CellPoint = {
-		return new CellPoint(Cst.mapWidth.toDouble - x, Cst.mapHeight.toDouble - y)
+		return new CellPoint(Cst.mapWidth.toDouble - x - 1, Cst.mapHeight.toDouble - y - 1)
 	}
 
 	def insideBox(a: CellPoint, b: CellPoint): Boolean = {

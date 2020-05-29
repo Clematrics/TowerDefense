@@ -19,7 +19,8 @@ class NetworkView extends View {
 	/**
 	  * The tokens are randomly generated integers stored as strings
 	  */
-	var myToken: String = scala.util.Random.nextInt().toString
+	Game.token = scala.util.Random.nextInt()
+	val myToken = Game.token.toString()
 
 	/**
 	  * The longest the list have been, to know where to put the next button (naive, but sufficient).
@@ -106,6 +107,7 @@ class NetworkView extends View {
 			  * Todo : Go to play a game
 			  */
 			Game.map = MapLoader.loadMap("multiplayer")
+			Game.opponentMap = MapLoader.loadMap("multiplayer")
 			GamePanel.changeView("MultiplayerDefensePhase")
 		}
 	}
@@ -140,6 +142,7 @@ class NetworkView extends View {
 					  */
 					println(s"I agreed to play with the player $from !")
 					Game.map = MapLoader.loadMap("multiplayer")
+					Game.opponentMap = MapLoader.loadMap("multiplayer")
 					GamePanel.changeView("MultiplayerDefensePhase")
 				}
 			}
