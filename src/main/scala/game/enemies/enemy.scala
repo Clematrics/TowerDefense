@@ -6,4 +6,5 @@ import engine.core.Entity
 	*/
 trait Enemy extends Entity with Destructible {
 	def getName(): String
+	var damage: Int
 }

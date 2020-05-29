@@ -12,6 +12,7 @@ import java.awt.geom.AffineTransform
 class SphereEnemy extends MovingEnemy with LivingEnemy {
 	gold = 50
 	experience = 200
+	var damage = 5
 
 	def getName(): String = {
 		return "High Dimensional Sphere"
@@ -19,10 +20,6 @@ class SphereEnemy extends MovingEnemy with LivingEnemy {
 
 	def takeDamage(dmg: Int): Unit = {
 		setLifePoints(lifePoints - dmg)
-	}
-
-	def getGold(): Int = {
-		return 5 // Constant reward
 	}
 
 	override def render(time: Double, delta: Double): Unit = {

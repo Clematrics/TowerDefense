@@ -12,6 +12,7 @@ class ProtoEnemy extends MovingEnemy with LivingEnemy {
 	speed = 1.2
 	gold = 20
 	experience = 100
+	var damage = 10
 
 	def getName(): String = {
 		return "Chess pawn"
@@ -19,10 +20,6 @@ class ProtoEnemy extends MovingEnemy with LivingEnemy {
 
 	def takeDamage(dmg: Int): Unit = {
 		setLifePoints(lifePoints - dmg)
-	}
-
-	def getGold(): Int = {
-		return scala.util.Random.nextInt(15) // Random reward
 	}
 
 	override def render(time: Double, delta: Double): Unit = {

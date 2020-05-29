@@ -26,7 +26,7 @@ trait MovingEnemy extends Enemy {
 	def tick(time: Double, delta: Double) : Unit = {
 		if (path.isEmpty) {
 			if (reachedGoal && pos.distance(targetedPos) < 0.1) { // no walls around blocking the path, so the enemy has reached the goal
-				Game.health = (Game.health - 20) max 0
+				Game.health = (Game.health - damage) max 0
 				valid = false
 				return
 			}

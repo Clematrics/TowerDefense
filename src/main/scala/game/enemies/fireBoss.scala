@@ -13,6 +13,7 @@ class FireBoss extends MovingEnemy with LivingEnemy {
 	speed = 0.6
 	gold = 200
 	experience = 1000
+	var damage = 40
 
 	/**
   	 * The extra protection for this enemy.
@@ -28,10 +29,6 @@ class FireBoss extends MovingEnemy with LivingEnemy {
 		} else {
 			armorPoints -= dmg / 2 //Armor resistance
 		}
-	}
-
-	def getGold(): Int = {
-		return gold
 	}
 
 	override def drawHealthBar(p: ScreenPoint) = {

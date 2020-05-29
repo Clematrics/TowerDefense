@@ -12,6 +12,7 @@ class FlyingEnemy extends MovingEnemy with LivingEnemy {
 	speed = 6.0
 	gold = 80
 	experience = 400
+	var damage = 20
 
 	def getName(): String = {
 		return "Dragon"
@@ -19,10 +20,6 @@ class FlyingEnemy extends MovingEnemy with LivingEnemy {
 
 	def takeDamage(dmg: Int): Unit = {
 		setLifePoints(lifePoints - dmg)
-	}
-
-	def getGold(): Int = {
-		return gold
 	}
 
 	override def render(time: Double, delta: Double): Unit = {
