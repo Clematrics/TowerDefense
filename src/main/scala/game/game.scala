@@ -18,6 +18,7 @@ object Game {
 	var multiplayerGold = 1000
 	var experience = 0
 	var token = 0
+	var opponentToken = 0
 
 	var map: Map = null
 	var opponentMap: Map = null

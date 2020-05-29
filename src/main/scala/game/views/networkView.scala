@@ -103,9 +103,7 @@ class NetworkView extends View {
 	def receiveConfirmation(from: String, to: String) = {
 		if (to == myToken) {
 			println(s"Going to play with $from, because he just confirmed")
-			/**
-			  * Todo : Go to play a game
-			  */
+			Game.opponentToken = from.toInt
 			Game.map = MapLoader.loadMap("multiplayer")
 			Game.opponentMap = MapLoader.loadMap("multiplayer")
 			GamePanel.changeView("MultiplayerDefensePhase")
@@ -137,10 +135,8 @@ class NetworkView extends View {
 				buttons(idx + 1).spriteTooltip = SpriteLoader.tooltip("Fight now")
 				buttons(idx + 1).action = () => {
 					sendConfirmation(from)
-					/**
-					  * TODO : Going to play with this player (from)
-					  */
 					println(s"I agreed to play with the player $from !")
+					Game.opponentToken = from.toInt
 					Game.map = MapLoader.loadMap("multiplayer")
 					Game.opponentMap = MapLoader.loadMap("multiplayer")
 					GamePanel.changeView("MultiplayerDefensePhase")

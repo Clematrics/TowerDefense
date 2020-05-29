@@ -19,7 +19,7 @@ abstract class View extends Publisher {
 		case MouseMoved(_, point, _) =>
 			for(b <- buttons) b.onMoved(MouseHelper.fromMouse(point))
 		case MouseReleased(_, point, _, _, _) =>
-			if (point != null) for(b <- buttons) b.onRelease(MouseHelper.fromMouse(point))
+			for(b <- buttons) b.onRelease(MouseHelper.fromMouse(point))
 		case KeyTyped(_, 'd', _, _) =>
 			Renderer.debugMode = !Renderer.debugMode
 	}

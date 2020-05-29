@@ -26,7 +26,7 @@ class MultiplayerDefensePhase extends View { outer =>
 	def onReceive(from: String, message: String): Unit = {
 		val command: Array[String] = message.split(" ")
 		val otherToken = command(0).toInt
-		if (otherToken != Game.token) {
+		if (otherToken != Game.token && otherToken == Game.opponentToken) {
 			command(1) match {
 				case "Tower" =>
 					val towerName = command(2)
@@ -44,6 +44,10 @@ class MultiplayerDefensePhase extends View { outer =>
 				case "End" =>
 					opponentReady = true
 					moveNextPhaseIfReady()
+
+				case _ =>
+					Game.reset
+					GamePanel.changeView("NetworkErrorMenu")
 			}
 		}
 	}
