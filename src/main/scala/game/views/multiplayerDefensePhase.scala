@@ -200,8 +200,8 @@ class MultiplayerDefensePhase extends View { outer =>
 			Renderer.drawOnTextLayerCentered(waitImg, 320, 110)
 		}
 
-		val gold = SpriteLoader.fromString(f"Gold : ${Game.multiplayerGold}", 60, 15)
-		Renderer.drawOnTextLayer(gold,  560, 45)
+		val goldImg = SpriteLoader.fromString(f"Gold : ${Game.multiplayerGold}", 60, 15)
+		Renderer.drawOnTextLayer(goldImg,  560, 45)
 
 		for (b <- buttons) {
 			b.render(time, delta)

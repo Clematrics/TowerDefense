@@ -232,6 +232,9 @@ class MultiplayerAttackPhase extends View { outer =>
 			}
 		}
 
+		val goldImg = SpriteLoader.fromString(f"Gold : ${Game.multiplayerGold}", 60, 15)
+		Renderer.drawOnTextLayer(goldImg,  560, 45)
+
 		Renderer.userInterface.setColor(Color.BLACK)
 		Renderer.userInterface.fillRect(610, 50, 20, 300)
 		Renderer.userInterface.setColor(Color.RED)
@@ -239,7 +242,7 @@ class MultiplayerAttackPhase extends View { outer =>
 
 		val stroke = new BasicStroke(2)
 		Renderer.userInterface.setStroke(stroke)
-		Renderer.userInterface.setColor(Color.WHITE)
+		Renderer.userInterface.setColor(Color.GRAY)
 		Renderer.userInterface.drawRect( 0 * Cst.cellSize,  1 * Cst.cellSize, ( 4 -  0) * Cst.cellSize, ( 4 -  1) * Cst.cellSize)
 		Renderer.userInterface.drawRect( 0 * Cst.cellSize, 12 * Cst.cellSize, ( 3 -  0) * Cst.cellSize, (16 - 12) * Cst.cellSize)
 		Renderer.userInterface.drawRect( 0 * Cst.cellSize, 21 * Cst.cellSize, ( 5 -  0) * Cst.cellSize, (27 - 21) * Cst.cellSize)
