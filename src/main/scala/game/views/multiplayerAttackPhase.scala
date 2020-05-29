@@ -12,7 +12,7 @@ import scala.collection.mutable.ArrayBuffer
 
 /**
   * This class is the phase of the game (seen as a Level class) where
-  * enemies attack and towers defend the player.
+  * enemies attack and towers defend the player in the multiplayer mode.
   */
 class MultiplayerAttackPhase extends View { outer =>
 	var enemyToAdd: Enemy = new ProtoEnemy
@@ -34,7 +34,7 @@ class MultiplayerAttackPhase extends View { outer =>
 					if (enemyToAdd.isInstanceOf[MovingEnemy]) {
 						val menemy = enemy.asInstanceOf[MovingEnemy]
 						menemy.pos = new CellPoint(x, y)
-						menemy.targetedCheckpoint = 1 // 0 is the enemy checkpoint
+						menemy.targetedCheckpoint = 1 // 1 is our own nexus
 
 						val cp = Game.map.checkpoints(1)
 						menemy.targetedPos = cp.a
@@ -173,10 +173,6 @@ class MultiplayerAttackPhase extends View { outer =>
 
 		Game.entities = Game.entities.filter((p: Entity) => p.valid)
 		Game.opponentEntities = Game.opponentEntities.filter((p: Entity) => p.valid)
-
-		// if (wave.length == 0 && Game.entities.filter(_.isInstanceOf[Enemy]).length == 0) {
-		// 	GamePanel.changeView("WinMenu")
-		// }
 	}
 
 	/**

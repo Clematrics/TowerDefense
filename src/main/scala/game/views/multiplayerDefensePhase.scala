@@ -16,7 +16,7 @@ import engine.helpers.CellPoint
 
 /**
   * This class is the phase of the game where the player can buy
-  * and add towers to defend the place.
+  * and add towers to defend the place in the multiplayer mode.
   */
 class MultiplayerDefensePhase extends View { outer =>
 	var ready = false
