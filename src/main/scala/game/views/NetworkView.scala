@@ -105,6 +105,8 @@ class NetworkView extends View {
 			/**
 			  * Todo : Go to play a game
 			  */
+			Game.map = MapLoader.loadMap("multiplayer")
+			GamePanel.changeView("MultiplayerDefensePhase")
 		}
 	}
 
