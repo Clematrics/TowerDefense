@@ -47,6 +47,7 @@ class MultiplayerDefensePhase extends View { outer =>
 
 				case _ =>
 					Game.reset
+					TowerDefense.sendMessage(f"${Game.token} Bye")
 					GamePanel.changeView("NetworkErrorMenu")
 			}
 		}
