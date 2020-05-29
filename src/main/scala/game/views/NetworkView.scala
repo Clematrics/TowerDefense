@@ -139,6 +139,8 @@ class NetworkView extends View {
 					  * TODO : Going to play with this player (from)
 					  */
 					println(s"I agreed to play with the player $from !")
+					Game.map = MapLoader.loadMap("multiplayer")
+					GamePanel.changeView("MultiplayerDefensePhase")
 				}
 			}
 		}

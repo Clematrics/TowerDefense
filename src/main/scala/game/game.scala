@@ -15,6 +15,7 @@ object Game {
 	var health = 100
 	var maxHealth = 100
 	var gold = 100
+	var multiplayerGold = 1000
 	var experience = 0
 
 	var map: Map = null

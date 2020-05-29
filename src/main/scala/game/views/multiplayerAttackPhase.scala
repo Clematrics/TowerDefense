@@ -1,7 +1,8 @@
 import engine.core.{Entity, GamePanel, Renderer, View}
-import engine.helpers.CellPoint
+import engine.helpers.{CellPoint, ScreenPoint}
 import engine.loaders.SpriteLoader
-import engine.interaction.Button
+import engine.interaction.{MouseHelper, Button}
+import engine.Cst
 
 import scala.swing.event._
 import java.awt.{Color, Dimension, Graphics2D, Point}
@@ -15,8 +16,39 @@ import scala.collection.mutable.ArrayBuffer
   */
 class MultiplayerAttackPhase extends View { outer =>
 	val r = scala.util.Random
+	var enemyToAdd: Enemy = new ProtoEnemy
 	// var waveTime = -5.0
 	// var wave: ArrayBuffer[(Double, Int, String)] = ArrayBuffer(Game.map.wave: _*)
+
+	var mouseCursorPosition = new ScreenPoint(0, 0)
+
+	reactions += {
+		case MouseMoved(_, point, _) =>
+			mouseCursorPosition = MouseHelper.fromMouse(point)
+		case MouseReleased(_, point, _, _, _) =>
+			val mousePos = mouseCursorPosition.toCellPoint
+			if (	( 	mousePos.insideBox(new CellPoint( 0,  1), new CellPoint( 4,  4))
+					||	mousePos.insideBox(new CellPoint( 0, 12), new CellPoint( 3, 16))
+					||	mousePos.insideBox(new CellPoint( 0, 21), new CellPoint( 5, 27))
+					||	mousePos.insideBox(new CellPoint(15, 28), new CellPoint(23, 30)) )
+				&& enemyToAdd.gold <= Game.multiplayerGold
+			) {
+				if (enemyToAdd.isInstanceOf[MovingEnemy]) {
+					val menemy = enemyToAdd.asInstanceOf[MovingEnemy]
+					menemy.pos = mousePos
+					menemy.targetedCheckpoint = 0 // 0 is the enemy checkpoint
+
+					val cp = Game.map.checkpoints(0)
+					menemy.targetedPos = cp.a
+
+					menemy.computePath()
+				}
+
+				Game.entities += enemyToAdd.asInstanceOf[Entity]
+				val enemyName = enemyToAdd.getClass.getName
+				enemyToAdd = Class.forName(enemyName).getConstructor().newInstance().asInstanceOf[Enemy]
+			}
+	}
 
 	buttons ++= ArrayBuffer(
 		new Button(new Point(600, 20), new Dimension(75, 30)) {
@@ -26,6 +58,38 @@ class MultiplayerAttackPhase extends View { outer =>
 				Game.reset
 				GamePanel.changeView("LoseMenu")
 			}
+		},
+		new Button(new Point(585, 140), new Dimension(30, 30), false) {
+			spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
+			spriteFront = SpriteLoader.fromResource("pion.png")
+			spriteTooltip = SpriteLoader.tooltip("Proto enemy\nCost : 20 Gold\nDamage : 10\nSpeed : 1.2\nA basic chess piece")
+			action = () => {
+				enemyToAdd = new ProtoEnemy
+			}
+		},
+		new Button(new Point(585, 175), new Dimension(30, 30), false) {
+			listenTo(outer)
+			spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
+			spriteTooltip = SpriteLoader.tooltip("Sphere enemy\nCost : 50 Gold\nDamage : 5\nSpeed : 2.4\nA high dimensional sphere. Careful with it!")
+			action = () => {
+				enemyToAdd = new SphereEnemy
+			}
+		},
+		new Button(new Point(585, 210), new Dimension(30, 30), false) {
+			spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
+			spriteFront = SpriteLoader.fromResource("anim/dragon0.png")
+			spriteTooltip = SpriteLoader.tooltip("Dragon\nCost : 80 Gold\nDamage : 20\nSpeed : 6\nA dragon. He can fly above the world!")
+			action = () => {
+				enemyToAdd = new FlyingEnemy
+			}
+		},
+		new Button(new Point(585, 245), new Dimension(30, 30), false) {
+			spriteBack = SpriteLoader.fromResource("menuButtonLarge.png")
+			spriteFront = SpriteLoader.fromResource("anim/boss0.png")
+			spriteTooltip = SpriteLoader.tooltip("Fire boss\nCost : 200 Gold\nDamage : 40\nSpeed : 0.6\nA burning boss doing serious damages")
+			action = () => {
+				enemyToAdd = new FireBoss
+			}
 		}
 	)
 
@@ -34,31 +98,7 @@ class MultiplayerAttackPhase extends View { outer =>
 			GamePanel.changeView("LoseMenu")
 		}
 
-		// waveTime += delta
-
-		// while (wave.length > 0 && wave.head._1 * 1000 <= waveTime) {
-		// 	val (t, i, name) = wave.head
-
-		// 	val constr = Class.forName(name).getConstructor()
-		// 	val enemy: Enemy = constr.newInstance().asInstanceOf[Enemy]
-
-		// 	if (enemy.isInstanceOf[MovingEnemy]) {
-		// 		val menemy = enemy.asInstanceOf[MovingEnemy]
-		// 		//Random choice of the target on the portal segment for spawn location
-		// 		val cp = Game.map.checkpoints(i)
-		// 		menemy.pos = cp.randomPoint()
-		// 		menemy.targetedCheckpoint = cp.next
-
-		// 		//Random choice of the target on the portal segment for destination
-		// 		val cpp = Game.map.checkpoints(cp.next)
-		// 		menemy.targetedPos = cpp.randomPoint()
-
-		// 		menemy.computePath()
-		// 	}
-
-		// 	Game.entities += enemy.asInstanceOf[Entity]
-		// 	wave.remove(0)
-		// }
+		// Todo : add entities sent from opponent
 
 		for (e <- Game.entities)
 			e.tick(time, delta)
@@ -99,6 +139,29 @@ class MultiplayerAttackPhase extends View { outer =>
 
 		for(b <- buttons) {
 			b.render(time, delta)
+		}
+
+		val mousePos = mouseCursorPosition.toCellPoint
+		if (mousePos.x <= Cst.mapWidth - 1 && mousePos.y <= Cst.mapHeight - 1) {
+			if (	( 	mousePos.insideBox(new CellPoint( 0,  1), new CellPoint( 4,  4))
+					||	mousePos.insideBox(new CellPoint( 0, 12), new CellPoint( 3, 16))
+					||	mousePos.insideBox(new CellPoint( 0, 21), new CellPoint( 5, 27))
+					||	mousePos.insideBox(new CellPoint(15, 28), new CellPoint(23, 30)) )
+				&& enemyToAdd.gold <= Game.multiplayerGold
+				&& enemyToAdd.isInstanceOf[MovingEnemy]
+			) {
+				enemyToAdd.asInstanceOf[MovingEnemy].pos = mousePos
+				enemyToAdd.render(time, delta)
+			}
+			else {
+				val stroke = new BasicStroke(4)
+				Renderer.userInterface.setStroke(stroke)
+				Renderer.userInterface.setColor(Color.RED)
+				val x = mousePos.x.toInt * Cst.cellSize
+				val y = mousePos.y.toInt * Cst.cellSize
+				Renderer.userInterface.drawLine(x, y, x + Cst.cellSize, y + Cst.cellSize)
+				Renderer.userInterface.drawLine(x + Cst.cellSize, y, x, y + Cst.cellSize)
+			}
 		}
 
 		Renderer.userInterface.setColor(Color.BLACK)
