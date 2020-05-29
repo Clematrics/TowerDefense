@@ -22,7 +22,14 @@ class MultiplayerAttackPhase extends View { outer =>
 
 	def onReceive(from: String, message: String): Unit = {
 		val command: Array[String] = message.split(" ")
-		val otherToken = command(0).toInt
+		var otherToken = -1
+
+		try {
+			otherToken = command(0).toInt
+		} catch {
+			case e:java.lang.NumberFormatException => return
+		}
+
 		if (otherToken != Game.token && otherToken == Game.opponentToken) {
 			command(1) match {
 				case "Enemy" =>

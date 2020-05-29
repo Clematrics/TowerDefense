@@ -8,7 +8,7 @@ import java.awt.geom.AffineTransform
 import scala.collection.mutable._
 
 /**
-  * This window is visible when the player wins.
+  * This window is visible in case of fatal network error.
   *
   */
 class NetworkErrorMenu extends View {
