@@ -10,8 +10,6 @@ import java.awt._
   */
 trait LivingEnemy extends Enemy {
 	var lifePoints = 100
-	var gold:Int = 0
-	var experience:Int = 0
 
 	def isAlive(): Boolean = {
 		return lifePoints >= 0
